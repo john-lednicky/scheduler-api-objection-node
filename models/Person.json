@@ -1,0 +1,57 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Person",
+    "description": "A person who can be assigned to an event.",
+    "type": "object",
+    "required": [
+        "firstName",
+        "lastName",
+        "updateUser",
+        "updateDttm"
+    ],
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[a-zA-Z ,.'-]+$"
+        },
+        "middleName": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 20,
+            "pattern": "^[a-zA-Z ,.'-]*$"
+        },
+        "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[a-zA-Z ,.'-]+$"
+        },
+        "phone": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 10,
+            "pattern": "^(\\d{10})?$"
+        },
+        "email": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 200,
+            "pattern": "^([^\\s@]+@[^\\s@]+.[^\\s@]+)?$"
+        },
+        "updateUser": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 45,
+            "pattern": "^[a-zA-Z0-9 .-@]+$"
+        },
+        "updateDttm": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$"
+        }
+    }
+}

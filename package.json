@@ -1,0 +1,47 @@
+{
+  "name": "scheduler-api",
+  "version": "1.0.0",
+  "description": "Scheduler API built on node, express, and objection",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"No tests yet\"",
+    "lint-all": "eslint ./**/*.js",
+    "start": "node ./server.js",
+    "devstart": "set NODE_ENV=development&nodemon ./server.js",
+    "sqlite-start": "set NODE_ENV=sqlite& npm run devstart",
+    "prod-start": "set NODE_ENV=production& npm run devstart",
+    "migrate": "npx knex migrate:latest",
+    "seed": "npx knex seed:run",
+    "sqlite-migrate": "set NODE_ENV=sqlite& npx knex migrate:latest",
+    "sqlite-seed": "set NODE_ENV=sqlite& npx knex seed:run"
+  },
+  "repository": "none yet",
+  "keywords": [
+    "sample",
+    "learning",
+    "node",
+    "express",
+    "objection"
+  ],
+  "author": "John Lednicky",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^2.22.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-winston": "^4.1.0",
+    "helmet": "^4.6.0",
+    "http-errors": "^1.8.0",
+    "knex": "^0.95.4",
+    "mysql2": "^2.2.5",
+    "objection": "^2.2.15",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.29.0",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.9",
+    "sqlite3": "^5.0.2"
+  }
+}

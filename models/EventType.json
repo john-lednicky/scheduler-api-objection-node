@@ -1,0 +1,38 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "EventType",
+    "description": "An activity that can be scheduled as an event on the calendar zero or more times.",
+    "type": "object",
+    "required": [
+        "name",
+        "updateUser",
+        "updateDttm"
+    ],
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 25,
+            "pattern": "^[a-zA-Z ,.'-]+$"
+        },
+        "description": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 250,
+            "pattern": "^[a-zA-Z0-9 .,:;\\-?!&/\\\\']*$"
+        },
+        "updateUser": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 45,
+            "pattern": "^[a-zA-Z0-9 .-@]+$"
+        },
+        "updateDttm": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$"
+        }
+    }
+}
