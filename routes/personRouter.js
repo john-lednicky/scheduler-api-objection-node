@@ -1,8 +1,8 @@
-var express = require('express');
+const express = require('express');
 
-var router = express.Router();
+const router = express.Router();
 
-const personController = require('../controllers/personController.js'); 
+const personController = require('../controllers/personController.js');
 
 /**
  * @swagger

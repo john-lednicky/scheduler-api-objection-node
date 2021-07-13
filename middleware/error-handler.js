@@ -15,38 +15,38 @@ const NODE_ENVIRONMENT = process.env.NODE_ENV || 'development';
  * @param {Function} next - Express `next()` function
  */
 function errorHandlerMiddleware(error, request, response, next) {
-	const errorMessage = getErrorMessage(error);
+  const errorMessage = getErrorMessage(error);
 
-	/**
+  /**
 	 * If response headers have already been sent,
 	 * delegate to the default Express error handler.
 	 */
-	if (response.headersSent) {
-		return next(error);
-	}
+  if (response.headersSent) {
+    return next(error);
+  }
 
-	const errorResponse = {
-		statusCode: getHttpStatusCode({ error, response }),
-		body: undefined
-	};
+  const errorResponse = {
+    statusCode: getHttpStatusCode({ error, response }),
+    body: undefined,
+  };
 
-	/**
+  /**
 	 * Error messages and error stacks often reveal details
 	 * about the internals of your application, potentially
 	 * making it vulnerable to attack, so these parts of an
 	 * Error object should never be sent in a response when
 	 * your application is running in production.
 	 */
-	if (NODE_ENVIRONMENT !== 'production') {
-		errorResponse.body = errorMessage;
-	}
+  if (NODE_ENVIRONMENT !== 'production') {
+    errorResponse.body = errorMessage;
+  }
 
-	/**
+  /**
 	 * Set the response status code.
 	 */
-	response.status(errorResponse.statusCode);
+  response.status(errorResponse.statusCode);
 
-	/**
+  /**
 	 * Send an appropriately formatted response.
 	 *
 	 * The Express `res.format()` method automatically
@@ -58,34 +58,34 @@ function errorHandlerMiddleware(error, request, response, next) {
 	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation
 	 */
-	response.format({
-		//
-		// Callback to run when `Accept` header contains either
-		// `application/json` or `*/*`, or if it isn't set at all.
-		//
-		'application/json': () => {
-			/**
+  response.format({
+    //
+    // Callback to run when `Accept` header contains either
+    // `application/json` or `*/*`, or if it isn't set at all.
+    //
+    'application/json': () => {
+      /**
 			 * Set a JSON formatted response body.
 			 * Response header: `Content-Type: `application/json`
 			 */
-			response.json({ message: errorResponse.body });
-		},
-		/**
+      response.json({ message: errorResponse.body });
+    },
+    /**
 		 * Callback to run when none of the others are matched.
 		 */
-		default: () => {
-			/**
+    default: () => {
+      /**
 			 * Set a plain text response body.
 			 * Response header: `Content-Type: text/plain`
 			 */
-			response.type('text/plain').send(errorResponse.body);
-		},
-	});
+      response.type('text/plain').send(errorResponse.body);
+    },
+  });
 
-	/**
+  /**
 	 * Ensure any remaining middleware are run.
 	 */
-	next();
+  next();
 }
 
 // src/middleware/error-handler.js
@@ -98,21 +98,21 @@ function errorHandlerMiddleware(error, request, response, next) {
  * @param {Error} error
  * @return {string} - String representation of the error object.
  */
- function getErrorMessage(error) {
-	/**
+function getErrorMessage(error) {
+  /**
 	 * If it exists, prefer the error stack as it usually
 	 * contains the most detail about an error:
 	 * an error message and a function call stack.
 	 */
-	if (error.stack) {
-		return error.stack;
-	}
+  if (error.stack) {
+    return error.stack;
+  }
 
-	if (typeof error.toString === 'function') {
-		return error.toString();
-	}
+  if (typeof error.toString === 'function') {
+    return error.toString();
+  }
 
-	return '';
+  return '';
 }
 
 /**
@@ -122,7 +122,7 @@ function errorHandlerMiddleware(error, request, response, next) {
  * @return {boolean}
  */
 function isErrorStatusCode(statusCode) {
-	return statusCode >= 400 && statusCode < 600;
+  return statusCode >= 400 && statusCode < 600;
 }
 
 /**
@@ -139,33 +139,33 @@ function isErrorStatusCode(statusCode) {
  * @return {number} - HTTP status code
  */
 function getHttpStatusCode({ error, response }) {
-	/**
+  /**
 	 * Check if the error object specifies an HTTP
 	 * status code which we can use.
 	 */
-	const statusCodeFromError = error.status || error.statusCode;
-	if (isErrorStatusCode(statusCodeFromError)) {
-		return statusCodeFromError;
-	}
+  const statusCodeFromError = error.status || error.statusCode;
+  if (isErrorStatusCode(statusCodeFromError)) {
+    return statusCodeFromError;
+  }
 
-	/**
+  /**
 	 * The existing response `statusCode`. This is 200 (OK)
 	 * by default in Express, but a route handler or
 	 * middleware might already have set an error HTTP
 	 * status code (4xx or 5xx).
 	 */
-	const statusCodeFromResponse = response.statusCode;
-	if (isErrorStatusCode(statusCodeFromResponse)) {
-		return statusCodeFromResponse;
-	}
+  const statusCodeFromResponse = response.statusCode;
+  if (isErrorStatusCode(statusCodeFromResponse)) {
+    return statusCodeFromResponse;
+  }
 
-	/**
+  /**
 	 * Fall back to a generic error HTTP status code.
 	 * 500 (Internal Server Error).
 	 *
 	 * @see https://httpstatuses.com/500
 	 */
-	return 500;
+  return 500;
 }
 
 module.exports = errorHandlerMiddleware;

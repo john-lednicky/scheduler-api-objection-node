@@ -15,8 +15,8 @@ module.exports = {
       password: process.env.PROD_MYSQL_PASSWORD,
       host: process.env.PROD_MYSQL_HOST,
       connectionLimit: 10,
-      queueLimit: 10, /*pool property*/ 
-      waitForConnections: true  /*pool property*/
+      queueLimit: 10, /* pool property */
+      waitForConnections: true, /* pool property */
     },
     useNullAsDefault: true,
     migrations: {
@@ -27,8 +27,8 @@ module.exports = {
       directory: './db/seeds',
     },
     ...knexSnakeCaseMappers(),
-  }, 
-    development: {
+  },
+  development: {
     client: 'mysql2',
     connection: {
       database: process.env.LOCAL_MYSQL_DBNAME,
@@ -36,8 +36,8 @@ module.exports = {
       password: process.env.LOCAL_MYSQL_PASSWORD,
       host: process.env.LOCAL_MYSQL_HOST,
       connectionLimit: 10,
-      queueLimit: 10, /*pool property*/ 
-      waitForConnections: true  /*pool property*/
+      queueLimit: 10, /* pool property */
+      waitForConnections: true, /* pool property */
     },
     useNullAsDefault: true,
     migrations: {
@@ -52,7 +52,7 @@ module.exports = {
   sqlite: {
     client: 'sqlite3',
     connection: {
-      filename: './scheduler_autotest.sqlite'
+      filename: './scheduler_autotest.sqlite',
     },
     useNullAsDefault: true,
     migrations: {
@@ -63,7 +63,7 @@ module.exports = {
       directory: './db/seeds',
     },
     ...knexSnakeCaseMappers(),
-  },  
+  },
   test: {
     client: 'mysql2',
     connection: {
@@ -72,8 +72,8 @@ module.exports = {
       password: process.env.TEST_MYSQL_PASSWORD,
       host: process.env.TEST_MYSQL_HOST,
       connectionLimit: 10,
-      queueLimit: 10, /*pool property*/
-      waitForConnections: true  /*pool property*/
+      queueLimit: 10, /* pool property */
+      waitForConnections: true, /* pool property */
     },
     useNullAsDefault: true,
     migrations: {

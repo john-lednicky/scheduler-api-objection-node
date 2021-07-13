@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
 
-const eventTypeController = require('../controllers/eventTypeController.js'); 
+const router = express.Router();
+
+const eventTypeController = require('../controllers/eventTypeController.js');
 
 router.get('/', eventTypeController.index);
 router.get('/:id', eventTypeController.find);

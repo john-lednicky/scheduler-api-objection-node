@@ -1,5 +1,4 @@
-exports.seed = async function(knex) {
-  
+exports.seed = async function (knex) {
   await knex('assignment').del();
   await knex('event').del();
   await knex('person').del();

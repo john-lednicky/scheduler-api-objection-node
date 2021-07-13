@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
 
-const assignmentController = require('../controllers/assignmentController.js'); 
+const router = express.Router();
+
+const assignmentController = require('../controllers/assignmentController.js');
 
 router.get('/', assignmentController.index);
 router.get('/:personId/:eventId', assignmentController.find);

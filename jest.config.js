@@ -1,4 +1,5 @@
-const {defaults} = require('jest-config');
+const { defaults } = require('jest-config');
+
 module.exports = {
-    "testPathIgnorePatterns": ["<rootDir>/tests/db"]
+  testPathIgnorePatterns: ['<rootDir>/tests/db'],
 };
