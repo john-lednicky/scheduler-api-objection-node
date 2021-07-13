@@ -1,3 +1,5 @@
+const createError = require('http-errors');
+
 const knexConfig = require('../knexfile.js');
 const { Model } = require('objection');
 const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
@@ -18,8 +20,8 @@ exports.create = async (event) => {
 };
 
 exports.update = async (event) => {
-    if (!Event.id) {
-        //TODO Throw an exception when id is null in EventService.update()
+    if (!event.id) {
+        throw createError(400, `event lacks an id`);
     }
     return Event.query().updateAndFetchById(event.id, event);
 };

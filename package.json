@@ -4,7 +4,7 @@
   "description": "Scheduler API built on node, express, and objection",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"No tests yet\"",
+    "test": "jest",
     "lint-all": "eslint ./**/*.js",
     "start": "node ./server.js",
     "devstart": "set NODE_ENV=development&nodemon ./server.js",
@@ -36,6 +36,8 @@
     "mysql2": "^2.2.5",
     "objection": "^2.2.15",
     "serve-favicon": "^2.5.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3"
   },
   "devDependencies": {

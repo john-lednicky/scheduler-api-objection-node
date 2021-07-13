@@ -4,6 +4,10 @@ const helmet = require('helmet');
 const winston = require('winston');
 const expressWinston = require('express-winston');
 const createError = require('http-errors');
+const swaggerUi = require("swagger-ui-express");
+const swaggerDoc = require("./services/swaggerService.js").getDoc();
+const favicon = require('serve-favicon');
+const errorHandlerMiddleware = require('./middleware/error-handler.js');
 
 const app = express();
 
@@ -40,7 +44,13 @@ app.use(expressWinston.logger({
     ]
 }));
 
-var favicon = require('serve-favicon');
+/* swagger api */
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDoc)
+);
+
 app.use(favicon('./public/images/favicon.ico'));
 
 app.use('/persons', require('./routes/personRouter'));
@@ -73,7 +83,6 @@ app.use(expressWinston.errorLogger({
     ] 
 }));
 
-const errorHandlerMiddleware = require('./middleware/error-handler.js');
 app.use(errorHandlerMiddleware);
 
 module.exports = app;

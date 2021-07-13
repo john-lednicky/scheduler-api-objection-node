@@ -14,14 +14,10 @@ exports.find = async (personId, eventId) => {
 };
 
 exports.create = async (assignment) => {
-    //TODO Error handling for assignmentService.create() (duplicate key crashed server.js)
     return Assignment.query().insert(assignment);
 };
 
 exports.update = async (assignment) => {
-    if (!Assignment.id) {
-        //TODO Throw an exception when personId or eventId is null in assignmentService.update()
-    }
     return Assignment.query().updateAndFetchById([assignment.personId, assignment.eventId], assignment);
 };
 

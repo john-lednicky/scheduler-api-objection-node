@@ -46,7 +46,7 @@ exports.update = async (req, res, next) => {
                 res.json(data);
             } 
             else {
-                next(createError(500, `Attempt to update event ${event.id} resulted in no records updated.`)); 
+                next(createError(404, `event ${id}`));
             }
         })
         .catch((err) => {

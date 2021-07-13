@@ -11,47 +11,55 @@
     ],
     "properties": {
         "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 10
         },
         "firstName": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20,
-            "pattern": "^[a-zA-Z ,.'-]+$"
+            "pattern": "^[a-zA-Z ,.'-]+$",
+            "example": "John"
         },
         "middleName": {
             "type": "string",
             "minLength": 0,
             "maxLength": 20,
-            "pattern": "^[a-zA-Z ,.'-]*$"
+            "pattern": "^[a-zA-Z ,.'-]*$",
+            "example": "D."
         },
         "lastName": {
             "type": "string",
             "minLength": 1,
             "maxLength": 20,
-            "pattern": "^[a-zA-Z ,.'-]+$"
+            "pattern": "^[a-zA-Z ,.'-]+$",
+            "example": "Lednicky"
         },
         "phone": {
             "type": "string",
             "minLength": 0,
             "maxLength": 10,
-            "pattern": "^(\\d{10})?$"
+            "pattern": "^(\\d{10})?$",
+            "example": "5124715689"
         },
         "email": {
             "type": "string",
             "minLength": 0,
             "maxLength": 200,
-            "pattern": "^([^\\s@]+@[^\\s@]+.[^\\s@]+)?$"
+            "pattern": "^([^\\s@]+@[^\\s@]+.[^\\s@]+)?$",
+            "example": "john.d.lednicky@dot.com"
         },
         "updateUser": {
             "type": "string",
             "minLength": 1,
             "maxLength": 45,
-            "pattern": "^[a-zA-Z0-9 .-@]+$"
+            "pattern": "^[a-zA-Z0-9 .-@]+$",
+            "example": "john.d.lednicky"
         },
         "updateDttm": {
             "type": "string",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$"
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
+            "example": "2021-03-08 11:00:00"
         }
     }
 }

@@ -21,13 +21,12 @@ exports.create = async (person) => {
 
 exports.update = async (person) => {
     if (!person.id) {
-        //TODO Throw an exception when id is null in personService.update()
+        throw createError(400, `person lacks an id`);
     }
     return Person.query().updateAndFetchById(person.id, person);
 };
 
 exports.delete = async (id) => {
-    //TODO Cascade delete assignments when person is deleted
     Assignment.query().delete().where('personId','=',id)
     .then( () => {
         return Person.query().deleteById(id);

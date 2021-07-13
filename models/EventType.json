@@ -10,29 +10,34 @@
     ],
     "properties": {
         "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 3
         },
         "name": {
             "type": "string",
             "minLength": 1,
             "maxLength": 25,
-            "pattern": "^[a-zA-Z ,.'-]+$"
+            "pattern": "^[a-zA-Z ,.'-]+$",
+            "example": "Cafe A Shift"
         },
         "description": {
             "type": "string",
             "minLength": 0,
             "maxLength": 250,
-            "pattern": "^[a-zA-Z0-9 .,:;\\-?!&/\\\\']*$"
+            "pattern": "^[a-zA-Z0-9 .,:;\\-?!&/\\\\']*$",
+            "example": "This shift is from 8:15am-11:00am. You will be helping prep and serve food to our clients! You will be on your feet moving the whole time so come with close toed shoes and appropriate clothes for the tasks. Sometimes requires minor heavy lifting."
         },
         "updateUser": {
             "type": "string",
             "minLength": 1,
             "maxLength": 45,
-            "pattern": "^[a-zA-Z0-9 .-@]+$"
+            "pattern": "^[a-zA-Z0-9 .-@]+$",
+            "example": "john.d.lednicky"
         },
         "updateDttm": {
             "type": "string",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$"
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
+            "example": "2021-03-08 11:00:00"
         }
     }
 }

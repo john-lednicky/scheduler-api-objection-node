@@ -19,7 +19,7 @@ exports.create = async (eventType) => {
 
 exports.update = async (eventType) => {
     if (!eventType.id) {
-        //TODO Throw an exception when id is null in eventTypeService.update()
+        throw createError(400, `eventType lacks an id`);
     }
     return EventType.query().updateAndFetchById(eventType.id, eventType);
 };

@@ -12,39 +12,47 @@
     ],
     "properties": {
         "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1320
         },
         "eventTypeId": {
-            "type": "integer"
+            "type": "integer",
+            "example": 3
         },
         "beginDttm": {
             "type": "string",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$"
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
+            "example": "2021-03-08 11:00:00"
         },
         "endDttm": {
             "type": "string",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$"
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
+            "example": "2021-03-08 11:00:00"
         },
         "peopleNeeded": {
             "type": "integer",
             "minimum": 1,
-            "maximum": 25
+            "maximum": 25,
+            "example": 3
         },
         "comment": {
             "type": "string",
             "minLength": 0,
             "maxLength": 500,
-            "pattern": "^[a-zA-Z0-9 .,:;\\-?!&/\\\\']*$"
+            "pattern": "^[a-zA-Z0-9 .,:;\\-?!&/\\\\']*$",
+            "example": "On this date, we will be deep-cleaning the walk-in."
         },
         "updateUser": {
             "type": "string",
             "minLength": 1,
             "maxLength": 45,
-            "pattern": "^[a-zA-Z0-9 .-@]+$"
+            "pattern": "^[a-zA-Z0-9 .-@]+$",
+            "example": "john.d.lednicky"
         },
         "updateDttm": {
             "type": "string",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$"
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
+            "example": "2021-03-08 11:00:00"
         }
     }
 }
