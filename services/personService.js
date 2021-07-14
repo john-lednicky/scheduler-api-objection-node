@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const knexConfig = require('../knexfile.js');
 const { Model } = require('objection');
 const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
@@ -11,9 +12,11 @@ exports.getAll = async () => Person.query();
 
 exports.find = async (id) => Person.query().findById(id);
 
-exports.create = async (person) =>
-// return Person.query().insertGraph(person);
-  Person.query().insertAndFetch(person);
+exports.create = async (person) => {
+  delete person.id;
+  return Person.query().insertAndFetch(person);
+};
+
 exports.update = async (person) => {
   if (!person.id) {
     throw createError(400, 'person lacks an id');

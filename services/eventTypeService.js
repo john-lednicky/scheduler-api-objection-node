@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const knexConfig = require('../knexfile.js');
 const { Model } = require('objection');
 const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);

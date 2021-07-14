@@ -12,14 +12,17 @@
     "properties": {
         "personId": {
             "type": "integer",
+            "description": "The unique id of the person assigned.",
             "example": 10
         },
         "eventId": {
             "type": "integer",
+            "description": "The unique id of the event that the person is assigned to.",
             "example": 1320
         },
         "updateUser": {
             "type": "string",
+            "description": "The username of the person responsible for creating the assignment. Note: assignments are not updated.",
             "minLength": 1,
             "maxLength": 45,
             "pattern": "^[a-zA-Z0-9 .-@]+$",
@@ -27,6 +30,7 @@
         },
         "updateDttm": {
             "type": "string",
+            "description": "The date and time when the assignment was created. Note: assignments are not updated.",
             "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
             "example": "2021-03-08 11:00:00"
         }

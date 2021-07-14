@@ -9,19 +9,32 @@ const personController = require('../controllers/personController.js');
  *
  * /persons:
  *   get:
- *     summary: Get all
+ *     summary: Get all persons
  *     description: Retrieves a list of all persons
- *     produces:
- *       - application/json
+ *     responses:
+ *       200:
+ *         description: A list of persons
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Person'
+ *       500:
+ *         description: Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage' 
  */
 router.get('/', personController.index);
 
 /**
  * @swagger
  *
- * /person/{id}:
+ * /persons/{id}:
  *   get:
- *     summary: Get one
+ *     summary: Get one person
  *     description: Retrieves a specific person.
  *     parameters:
  *       - name: id
@@ -30,43 +43,103 @@ router.get('/', personController.index);
  *         type: int
  *         description: The id of the person to retrieve.
  *         example: 0
- *     produces:
- *       - application/json
+ *     responses:
+ *       200:
+ *         description: A person
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Person'
+ *       404:
+ *         description: Not Found Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       500:
+ *         description: Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
 router.get('/:id', personController.find);
 
 /**
  * @swagger
  *
- * /person:
+ * /persons:
  *   post:
  *     summary: Create
  *     description: Creates a new person.
  *     requestBody:
+ *       description: A JSON representation of the new person, without an id.
  *       required: true
- *     produces:
- *       - application/json
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Person'
+ *     responses:
+ *       200:
+ *         description: The person created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Person'
+ *       400:
+ *         description: Validation Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       500:
+ *         description: Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
 router.post('/', personController.create);
 
 /**
  * @swagger
  *
- * /person:
+ * /persons:
  *   put:
  *     summary: Update
  *     description: Updates an existing person.
  *     requestBody:
+ *       description: A JSON representation of the person to update, identified by the id.
  *       required: true
- *     produces:
- *       - application/json
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Person'
+ *     responses:
+ *       200:
+ *         description: The person updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Person'
+ *       400:
+ *         description: Validation Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       500:
+ *         description: Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
 router.put('/', personController.update);
 
 /**
- * @swagger
  *
- * /person/delete/{id}:
+ * /persons/delete/{id}:
  *   get:
  *     summary: Delete one
  *     description: Deletes a specific person.
@@ -77,8 +150,31 @@ router.put('/', personController.update);
  *         type: int
  *         description: The id of the person to delete.
  *         example: 0
- *     produces:
- *       - application/json
+ *     responses:
+ *       200:
+ *         description: The person deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Message'
+ *       400:
+ *         description: Validation Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       404:
+ *         description: Not Found Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       500:
+ *         description: Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
 router.delete('/:id', personController.delete);
 

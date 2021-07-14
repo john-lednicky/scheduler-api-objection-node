@@ -13,3 +13,4 @@
 // TODO Catch unhandled exceptions: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/catchunhandledpromiserejection.md
 // TODO Consider ajv for upfront json validation
 // TODO Await returned promises: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/returningpromises.md
+// TODO Objection returns a date in one format, but accepts the date in another.
