@@ -13,12 +13,12 @@
         "personId": {
             "type": "integer",
             "description": "The unique id of the person assigned.",
-            "example": 10
+            "example": 5
         },
         "eventId": {
             "type": "integer",
             "description": "The unique id of the event that the person is assigned to.",
-            "example": 1320
+            "example": 240
         },
         "updateUser": {
             "type": "string",

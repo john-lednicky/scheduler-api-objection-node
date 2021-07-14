@@ -1,8 +1,14 @@
 const express = require('express');
 
 const router = express.Router();
-
 const personController = require('../controllers/personController.js');
+
+/**
+ * @swagger
+ * tags:
+ *   name: Persons
+ *   description: Methods to manage Person objects
+ */
 
 /**
  * @swagger
@@ -11,6 +17,7 @@ const personController = require('../controllers/personController.js');
  *   get:
  *     summary: Get all persons
  *     description: Retrieves a list of all persons
+ *     tags: [Persons]
  *     responses:
  *       200:
  *         description: A list of persons
@@ -36,6 +43,7 @@ router.get('/', personController.index);
  *   get:
  *     summary: Get one person
  *     description: Retrieves a specific person.
+ *     tags: [Persons]
  *     parameters:
  *       - name: id
  *         in: path
@@ -72,6 +80,7 @@ router.get('/:id', personController.find);
  *   post:
  *     summary: Create
  *     description: Creates a new person.
+ *     tags: [Persons]
  *     requestBody:
  *       description: A JSON representation of the new person, without an id.
  *       required: true
@@ -108,6 +117,7 @@ router.post('/', personController.create);
  *   put:
  *     summary: Update
  *     description: Updates an existing person.
+ *     tags: [Persons]
  *     requestBody:
  *       description: A JSON representation of the person to update, identified by the id.
  *       required: true
@@ -138,11 +148,13 @@ router.post('/', personController.create);
 router.put('/', personController.update);
 
 /**
+ * @swagger
  *
- * /persons/delete/{id}:
- *   get:
+ * /persons/{id}:
+ *   delete:
  *     summary: Delete one
  *     description: Deletes a specific person.
+ *     tags: [Persons]
  *     parameters:
  *       - name: id
  *         in: path
@@ -152,7 +164,7 @@ router.put('/', personController.update);
  *         example: 0
  *     responses:
  *       200:
- *         description: The person deleted
+ *         description: Delete confirmation
  *         content:
  *           application/json:
  *             schema:

@@ -1,4 +1,4 @@
-// TODO make swagger definition for API
+
 // TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
 // TODO Jest unit tests at service layer
 // TODO Jest unit tests at API layer
@@ -14,3 +14,4 @@
 // TODO Consider ajv for upfront json validation
 // TODO Await returned promises: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/returningpromises.md
 // TODO Objection returns a date in one format, but accepts the date in another.
+// TODO Automatically insert correct verson in swagger doc (probably during build)
