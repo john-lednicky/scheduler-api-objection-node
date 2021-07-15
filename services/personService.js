@@ -1,30 +1,36 @@
-const createError = require('http-errors');
-const knexConfig = require('../knexfile.js');
-const { Model } = require('objection');
-const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
-Model.knex(knex);
+const baseService = require('./baseService.js');
 
-const Person = require('../models/Person');
-const Assignment = require('../models/Assignment');
+class personService extends baseService {
 
-exports.getAll = async () => Person.query();
+  constructor(env = null) {
+    super(env);
+    this.Person = require('../models/Person');
+    this.Assignment = require('../models/Assignment');
+  };
 
-exports.find = async (id) => Person.query().findById(id);
+  getAll = async () => this.Person.query();
+  find = async (id) => this.Person.query().findById(id);
 
-exports.create = async (person) => {
-  delete person.id;
-  return Person.query().insertAndFetch(person);
-};
+  create = async (person) => {
+    delete person.id;
+    return this.Person.query().insertAndFetch(person);
+  };
 
-exports.update = async (person) => {
-  if (!person.id) {
-    throw createError(400, 'person lacks an id');
-  }
-  return Person.query().updateAndFetchById(person.id, person);
-};
+  update = async (person) => {
+    if (!person.id) {
+      throw this.createError(400, 'person lacks an id');
+    }
+    return this.Person.query().updateAndFetchById(person.id, person);
+  };
 
-exports.delete = async (id) => {
-  Assignment.query().delete().where('personId', '=', id)
-    .then(() => Person.query().deleteById(id));
-};
+  delete = async (id) => {
+    this.Assignment.query().delete().where('personId', '=', id)
+      .then(() => this.Person.query().deleteById(id));
+  };
+}
+
+module.exports = (env = null) => { return new personService(env) }

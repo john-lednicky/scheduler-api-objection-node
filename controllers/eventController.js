@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const eventService = require('../services/eventService.js');
+const eventService = require('../services/eventService.js')();
 
 exports.index = async (req, res, next) => {
   eventService.getAll()

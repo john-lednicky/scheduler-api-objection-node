@@ -1,17 +1,21 @@
-const knexConfig = require('../knexfile.js');
-const { Model } = require('objection');
-const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
-Model.knex(knex);
+const baseService = require('./baseService.js');
 
-const Assignment = require('../models/Assignment');
+class assignmentService extends baseService {
 
-exports.getAll = async () => Assignment.query();
+    constructor(env = null) {
+        super(env);
+        this.Assignment = require('../models/Assignment');
+    };
 
-exports.find = async (personId, eventId) => Assignment.query().findById([personId, eventId]);
+    getAll = async () => this.Assignment.query();
+    find = async (personId, eventId) => this.Assignment.query().findById([personId, eventId]);
+    create = async (assignment) => this.Assignment.query().insert(assignment);
+    update = async (assignment) => this.Assignment.query().updateAndFetchById([assignment.personId, assignment.eventId], assignment);
+    delete = async (personId, eventId) => this.Assignment.query().deleteById([personId, eventId]);
+}
 
-exports.create = async (assignment) => Assignment.query().insert(assignment);
-
-exports.update = async (assignment) => Assignment.query().updateAndFetchById([assignment.personId, assignment.eventId], assignment);
-
-exports.delete = async (personId, eventId) => Assignment.query().deleteById([personId, eventId]);
+module.exports = (env=null) =>  { return new assignmentService(env) };

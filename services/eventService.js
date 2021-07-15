@@ -1,24 +1,28 @@
-const createError = require('http-errors');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
-const knexConfig = require('../knexfile.js');
-const { Model } = require('objection');
-const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
+const baseService = require('./baseService.js');
 
-Model.knex(knex);
+class eventService extends baseService {
 
-const Event = require('../models/Event');
+  constructor(env = null) {
+    super(env);
+    this.Event = require('../models/Event');
+  };
 
-exports.getAll = async () => Event.query();
+  getAll = async () => this.Event.query();
+  find = async (id) => this.Event.query().findById(id);
+  create = async (event) => this.Event.query().insertAndFetch(event);
+  delete = async (id) => this.Event.query().deleteById(id);
 
-exports.find = async (id) => Event.query().findById(id);
+  update = async (event) => {
+    if (!event.id) {
+      throw this.createError(400, 'event lacks an id');
+    }
+    return this.Event.query().updateAndFetchById(event.id, event);
+  };
 
-exports.create = async (event) => Event.query().insertAndFetch(event);
+}
 
-exports.update = async (event) => {
-  if (!event.id) {
-    throw createError(400, 'event lacks an id');
-  }
-  return Event.query().updateAndFetchById(event.id, event);
-};
-
-exports.delete = async (id) => Event.query().deleteById(id);
+module.exports = (env=null) => { return new eventService(env) }

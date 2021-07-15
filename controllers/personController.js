@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const personService = require('../services/personService.js');
+const personService = require('../services/personService.js')();
 
 exports.index = async (req, res, next) => {
   personService.getAll()
