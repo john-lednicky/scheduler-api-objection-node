@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 const { Model } = require('objection');
 
 class Assignment extends Model {

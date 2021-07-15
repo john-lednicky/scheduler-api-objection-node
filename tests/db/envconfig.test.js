@@ -1,5 +1,4 @@
 console.log(process.env);
-
 const result = require('dotenv').config()
 
 if (result.error) {

@@ -1,5 +1,6 @@
 const { format, parse, parseJSON } = require('date-fns');
 
+require('dotenv').config();
 const knexConfig = require('../../knexfile.js');
 
 const { Model, knexIdentifierMapping } = require('objection');

@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 const { Model } = require('objection');
 
 // TODO unit test EventType validation

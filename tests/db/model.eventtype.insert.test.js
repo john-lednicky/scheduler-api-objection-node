@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { format } = require('date-fns');
  
 const knexConfig = require('../../knexfile.js');

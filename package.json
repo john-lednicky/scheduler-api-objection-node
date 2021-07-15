@@ -15,13 +15,15 @@
     "sqlite-migrate": "set NODE_ENV=sqlite& npx knex migrate:latest",
     "sqlite-seed": "set NODE_ENV=sqlite& npx knex seed:run"
   },
-  "repository": "none yet",
+  "repository": "https://github.com/john-lednicky/scheduler-api-objection-node",
   "keywords": [
-    "sample",
-    "learning",
     "node",
+    "javascript",
     "express",
-    "objection"
+    "objection",
+    "jest",
+    "swagger",
+    "openapi"
   ],
   "author": "John Lednicky",
   "license": "MIT",
