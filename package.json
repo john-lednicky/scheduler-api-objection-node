@@ -7,13 +7,13 @@
     "test": "jest",
     "lint-all": "eslint ./**/*.js",
     "start": "node ./server.js",
-    "devstart": "set NODE_ENV=development&nodemon ./server.js",
-    "sqlite-start": "set NODE_ENV=sqlite& npm run devstart",
-    "prod-start": "set NODE_ENV=production& npm run devstart",
+    "devstart": "cross-env NODE_ENV=development nodemon ./server.js",
+    "prodstart": "cross-env NODE_ENV=production yarn start",
     "migrate": "npx knex migrate:latest",
     "seed": "npx knex seed:run",
-    "sqlite-migrate": "set NODE_ENV=sqlite3& npx knex migrate:latest",
-    "sqlite-seed": "set NODE_ENV=sqlite3& npx knex seed:run"
+    "sqlite-migrate": "cross-env NODE_ENV=sqlite3 yarn knex migrate:latest",
+    "sqlite-seed": "cross-env NODE_ENV=sqlite3  yarn knex seed:run",
+    "sqlite-start": "cross-env NODE_ENV=sqlite3  yarn start"
   },
   "repository": "https://github.com/john-lednicky/scheduler-api-objection-node",
   "keywords": [
@@ -43,6 +43,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
