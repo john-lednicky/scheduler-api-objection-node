@@ -17,7 +17,7 @@ exports.seed = async function (knex) {
                 {
                     eventTypeId: 1,
                     beginDttm: format(set(currentDate, {hours: 8, minutes: 15}), 'yyyy-MM-dd HH:mm:ss.SS'),
-                    endDttm: format(set(currentDate, {hours: 11, minutes: 00}), 'yyyy-MM-dd HH:mm:ss.SS'),
+                    endDttm: format(set(currentDate, {hours: 11, minutes: 0}), 'yyyy-MM-dd HH:mm:ss.SS'),
                     peopleNeeded: 3, 
                     comment: '',
                     updateUser: 'john.d.lednicky',
@@ -25,7 +25,7 @@ exports.seed = async function (knex) {
                 },
                 {
                     eventTypeId: 2,
-                    beginDttm: format(set(currentDate, {hours: 11, minutes: 00}), 'yyyy-MM-dd HH:mm:ss.SS'),
+                    beginDttm: format(set(currentDate, {hours: 11, minutes: 0}), 'yyyy-MM-dd HH:mm:ss.SS'),
                     endDttm: format(set(currentDate, {hours: 13, minutes: 30}), 'yyyy-MM-dd HH:mm:ss.SS'),
                     peopleNeeded: 3, 
                     comment: '',
@@ -35,7 +35,7 @@ exports.seed = async function (knex) {
                 {
                     eventTypeId: 3,
                     beginDttm: format(set(currentDate, {hours: 8, minutes: 15}), 'yyyy-MM-dd HH:mm:ss.SS'),
-                    endDttm: format(set(currentDate, {hours: 11, minutes: 00}), 'yyyy-MM-dd HH:mm:ss.SS'),
+                    endDttm: format(set(currentDate, {hours: 11, minutes: 0}), 'yyyy-MM-dd HH:mm:ss.SS'),
                     peopleNeeded: 1, 
                     comment: '',
                     updateUser: 'john.d.lednicky',
@@ -43,7 +43,7 @@ exports.seed = async function (knex) {
                 },
                 {
                     eventTypeId: 4,
-                    beginDttm: format(set(currentDate, {hours: 11, minutes: 00}), 'yyyy-MM-dd HH:mm:ss.SS'),
+                    beginDttm: format(set(currentDate, {hours: 11, minutes: 0}), 'yyyy-MM-dd HH:mm:ss.SS'),
                     endDttm: format(set(currentDate, {hours: 13, minutes: 30}), 'yyyy-MM-dd HH:mm:ss.SS'),
                     peopleNeeded: 1, 
                     comment: '',

@@ -25,7 +25,67 @@ module.exports = {
   sqlite3: {
     client: 'sqlite3',
     connection: {
-      filename: './scheduler_autotest.sqlite',
+      filename: './sqlite3/scheduler.sqlite',
+    },
+    useNullAsDefault: true,
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './db/migrations',
+    },
+    seeds: {
+      directory: './db/seeds',
+    },
+    ...knexSnakeCaseMappers(),
+  },
+  autotest_personService: {
+    client: 'sqlite3',
+    connection: {
+      filename: './sqlite3/autotest_personService.sqlite',
+    },
+    useNullAsDefault: true,
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './db/migrations',
+    },
+    seeds: {
+      directory: './db/seeds',
+    },
+    ...knexSnakeCaseMappers(),
+  },
+  autotest_eventService: {
+    client: 'sqlite3',
+    connection: {
+      filename: './sqlite3/autotest_eventService.sqlite',
+    },
+    useNullAsDefault: true,
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './db/migrations',
+    },
+    seeds: {
+      directory: './db/seeds',
+    },
+    ...knexSnakeCaseMappers(),
+  },
+  autotest_eventTypeService: {
+    client: 'sqlite3',
+    connection: {
+      filename: './sqlite3/autotest_eventTypeService.sqlite',
+    },
+    useNullAsDefault: true,
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './db/migrations',
+    },
+    seeds: {
+      directory: './db/seeds',
+    },
+    ...knexSnakeCaseMappers(),
+  },
+  autotest_assignmentService: {
+    client: 'sqlite3',
+    connection: {
+      filename: './sqlite3/autotest_assignmentService.sqlite',
     },
     useNullAsDefault: true,
     migrations: {
@@ -37,4 +97,5 @@ module.exports = {
     },
     ...knexSnakeCaseMappers(),
   }
+
 };

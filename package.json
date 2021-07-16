@@ -12,8 +12,8 @@
     "prod-start": "set NODE_ENV=production& npm run devstart",
     "migrate": "npx knex migrate:latest",
     "seed": "npx knex seed:run",
-    "sqlite-migrate": "set NODE_ENV=sqlite& npx knex migrate:latest",
-    "sqlite-seed": "set NODE_ENV=sqlite& npx knex seed:run"
+    "sqlite-migrate": "set NODE_ENV=sqlite3& npx knex migrate:latest",
+    "sqlite-seed": "set NODE_ENV=sqlite3& npx knex seed:run"
   },
   "repository": "https://github.com/john-lednicky/scheduler-api-objection-node",
   "keywords": [
