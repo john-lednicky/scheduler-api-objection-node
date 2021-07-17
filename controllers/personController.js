@@ -55,8 +55,16 @@ exports.update = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   const { id } = req.params;
   personService.delete(id)
-    .then(() => {
-      res.json({ message: `deleted person ${id}` });
+    .then((data) => {
+      if (data === 1) {
+        res.json({ message: `deleted person ${id}` });
+      }
+      else if (data === 0) {
+        next(createError(404, `person ${id}`));
+      }
+      else {
+        createError(500, `unexpected problem deleting person ${id}`)
+      }
     })
     .catch((err) => {
       next(err);

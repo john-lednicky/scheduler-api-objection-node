@@ -45,8 +45,9 @@ class personService extends baseService {
     if (!this.isPositiveInteger(id)) {
       throw this.createError(400, `id is not a positive integer ${id}`);
     };    
-    this.Assignment.query().delete().where('personId', '=', id)
-      .then(() => this.Person.query().deleteById(id));
+    // TODO personService.delete() correctly chain the two deletes
+    await this.Assignment.query().delete().where('personId', '=', id);
+    return this.Person.query().deleteById(id);
   };
 }
 
