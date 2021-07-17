@@ -1,14 +1,12 @@
 exports.seed = async function (knex, promise) {
-  const { format } = require('date-fns');
+  const { format, parse } = require('date-fns');
 
   const { Model } = require('objection');
   Model.knex(knex);
   const Assignment = require('../../models/Assignment');
   const Event = require('../../models/Event');
 
-  const { parse } = require('date-fns');
-
-  const events = await Event.query()
+    const events = await Event.query()
     .select('event.id', 'event.eventTypeId', 'beginDttm')
     .where('event.event_type_id', '1')
     .orWhere('event.event_type_id', '2');

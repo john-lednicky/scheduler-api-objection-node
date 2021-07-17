@@ -44,10 +44,13 @@ class personService extends baseService {
   delete = async (id) => {
     if (!this.isPositiveInteger(id)) {
       throw this.createError(400, `id is not a positive integer ${id}`);
-    };    
-    // TODO personService.delete() correctly chain the two deletes
-    await this.Assignment.query().delete().where('personId', '=', id);
-    return this.Person.query().deleteById(id);
+    };
+
+    return this.Assignment.query().delete().where('personId', '=', id)
+      .then( () => {
+        return this.Person.query().deleteById(id)
+      })
+      .catch((err) => { return Promise.reject(err) })
   };
 }
 

@@ -1,12 +1,16 @@
 const fs = require('fs');
+const { format, parse } = require('date-fns');
+
 const jestConfig = require('../../jest.config.js');
 jest.setTimeout(20000);
 
 const knexEnvName = 'autotest_personService'; /* This should match a sqlite3 environment in the knex file */
-//const knexEnvName = 'development'; /* This should match a sqlite3 environment in the knex file */
+//const knexEnvName = 'development'; /* This might not be idempotent because it depends on the state of the external dev mysql database*/
 
 /* set up service */
 const personService = require('../../services/personService.js')(knexEnvName);
+const eventService = require('../../services/eventService.js')(knexEnvName);
+const assignmentService = require('../../services/assignmentService.js')(knexEnvName);
 
 beforeAll(async () => {
     /* delete database file if it exists (it should not) */
@@ -52,14 +56,61 @@ test('personService.delete() - success', async () => {
     expect(deleteResult).toBe(1);
 
     const personFetched = await personService.find(personCreated.id);
-    expect(personFetched).toBeUndefined();    
+    expect(personFetched).toBeUndefined();
+});
+
+test('personService.delete() - success - cascade assignments', async () => {
+    const personToCreate = {
+        'firstName': 'William',
+        'middleName': '',
+        'lastName': 'Watkins',
+        'phone': '5127778888',
+        'email': 'william.watkins@scratch.com',
+        'updateUser': 'john.d.lednicky',
+        'updateDttm': '2021-07-04 13:00:00.00'
+    };
+    const personCreated = await personService.create(personToCreate);
+    expect(personCreated).toHaveProperty('id');
+
+    const eventToCreate = {
+        "beginDttm": "2021-07-04 13:00:00.00",
+        "endDttm": "2021-07-04 13:00:00.00",
+        "eventTypeId": 1,
+        "peopleNeeded": 3,
+        "comment": "",
+        "updateUser": "john.d.lednicky",
+        "updateDttm": "2021-07-04 13:00:00.00"
+    };
+    const eventCreated = await eventService.create(eventToCreate);
+    expect(eventCreated).toHaveProperty('id');
+
+    const assignmentToCreate = {
+        "eventId": eventCreated.id,
+        "personId": personCreated.id,
+        "updateUser": "john.d.lednicky",
+        "updateDttm": "2021-07-04 13:00:00.00"
+    };
+    const assignmentCreated = await assignmentService.create(assignmentToCreate);
+    expect(assignmentCreated).toHaveProperty('eventId');
+    expect(assignmentCreated.eventId).toBe(eventCreated.id);
+    expect(assignmentCreated).toHaveProperty('personId');
+    expect(assignmentCreated.personId).toBe(personCreated.id);
+
+    const deleteResult = await personService.delete(personCreated.id);
+    expect(deleteResult).toBe(1);
+
+    const personFetched = await personService.find(personCreated.id);
+    expect(personFetched).toBeUndefined();
+
+    const assignmentFetched = await assignmentService.find(personCreated.id, eventCreated.id);
+    expect(assignmentFetched).toBeUndefined();
 });
 
 test('personService.delete() - not found', async () => {
     const allPersons = await personService.getAll();
     expect(Array.isArray(allPersons)).toBe(true);
-    const greatestId = Math.max.apply(Math, allPersons.map( (person) => person.id ));
-    const deleteResult = await personService.delete(greatestId+509);
+    const greatestId = Math.max.apply(Math, allPersons.map((person) => person.id));
+    const deleteResult = await personService.delete(greatestId + 509);
     expect(deleteResult).toBe(0);
 });
 
@@ -95,8 +146,8 @@ test('personService.find() - success', async () => {
 test('personService.find() - not found', async () => {
     const allPersons = await personService.getAll();
     expect(Array.isArray(allPersons)).toBe(true);
-    const greatestId = Math.max.apply(Math, allPersons.map( (person) => person.id ));
-    const personFetched = await personService.find(greatestId+45);
+    const greatestId = Math.max.apply(Math, allPersons.map((person) => person.id));
+    const personFetched = await personService.find(greatestId + 45);
     expect(personFetched).toBeUndefined();
 });
 
@@ -121,14 +172,21 @@ test('personService.create() - success', async () => {
         'updateUser': 'john.d.lednicky',
         'updateDttm': '2021-07-04 13:00:00.00'
     };
+    
     const personCreated = await personService.create(personToCreate);
 
     expect(personCreated).toHaveProperty('id');
 
     personToCreate.id = personCreated.id;
+    
+    if (personService.knexEnvironmentConfig.client == 'mysql2') {
+        personToCreate.updateDttm = parse(personToCreate.updateDttm, 'yyyy-MM-dd HH:mm:ss.SS', new Date());
+    }
+    
     expect(personCreated).toEqual(personToCreate);
 
     const personFetched = await personService.find(personCreated.id);
+
     expect(personFetched).toEqual(personCreated);
 });
 
@@ -284,7 +342,7 @@ test('personService.create() - validation error email too long', async () => {
         'middleName': '',
         'lastName': 'Watkins',
         'phone': '5124584521',
-        'email': 'dot'+'a'.repeat(190)+'@dot.com',
+        'email': 'dot' + 'a'.repeat(190) + '@dot.com',
         'updateUser': 'john.d.lednicky',
         'updateDttm': '2021-07-04 13:00:00.00'
     };
@@ -405,10 +463,12 @@ test('personService.update() - success', async () => {
     expect(personCreated).toHaveProperty('id');
 
     personCreated.middleName = 'Wilberforce';
+    personCreated.updateDttm = personToCreate.updateDttm;
+
     const personUpdated = await personService.update(personCreated);
     expect(personUpdated).toEqual(personCreated);
     expect(personUpdated.middleName).toEqual('Wilberforce');
-    
+
     const personFetched = await personService.find(personUpdated.id);
     expect(personFetched).toEqual(personUpdated);
 });
@@ -632,7 +692,7 @@ test('personService.update() - validation error email too long', async () => {
     const personCreated = await personService.create(personToCreate);
     expect(personCreated).toHaveProperty('id');
 
-    personCreated.email = 'dot'+'a'.repeat(190)+'@dot.com';
+    personCreated.email = 'dot' + 'a'.repeat(190) + '@dot.com';
 
     await expect(personService.update(personCreated)).rejects.toThrow('email: should NOT be longer than 200 characters');
 });
