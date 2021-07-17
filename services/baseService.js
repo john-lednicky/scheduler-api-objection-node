@@ -8,6 +8,15 @@ class baseService {
         this.knex = require('knex')(this.knexEnvironmentConfig);
         this.model = require('objection').Model;
         this.model.knex(this.knex);
+        this.isPositiveInteger = (value) => {
+            /* https://stackoverflow.com/a/14794066 */
+            var x;
+            if (isNaN(value)) {
+              return false;
+            }
+            x = parseFloat(value);
+            return x > 0 && (x | 0) === x;
+        }
     };
 }
 

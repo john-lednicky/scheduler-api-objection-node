@@ -12,7 +12,13 @@ class eventTypeService extends baseService {
   };
 
   getAll = async () => this.EventType.query();
-  find = async (id) => this.EventType.query().findById(id);
+
+  find = async (id) => { 
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };
+    return this.EventType.query().findById(id);
+  }
 
   create = async (eventType) => {
     //if the passed eventType is already a model, we have to explicitly call validate
@@ -36,6 +42,9 @@ class eventTypeService extends baseService {
   delete = async (id) => {
     // TODO eventType needs to be disabled instead of hard deleting
     // TODO delete future events based on this eventType, but not past events
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };    
     this.EventType.query().deleteById(id);
   }
 }

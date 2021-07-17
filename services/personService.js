@@ -13,7 +13,13 @@ class personService extends baseService {
   };
 
   getAll = async () => this.Person.query();
-  find = async (id) => this.Person.query().findById(id);
+
+  find = async (id) => {
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };
+    return this.Person.query().findById(id);
+  }
 
   create = async (person) => {
     delete person.id;
@@ -34,8 +40,11 @@ class personService extends baseService {
     }
     return this.Person.query().updateAndFetchById(person.id, person);
   };
-  
+
   delete = async (id) => {
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };    
     this.Assignment.query().delete().where('personId', '=', id)
       .then(() => this.Person.query().deleteById(id));
   };
