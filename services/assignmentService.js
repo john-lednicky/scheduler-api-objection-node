@@ -13,9 +13,15 @@ class assignmentService extends baseService {
 
     getAll = async () => this.Assignment.query();
     find = async (personId, eventId) => this.Assignment.query().findById([personId, eventId]);
-    create = async (assignment) => this.Assignment.query().insert(assignment);
-    update = async (assignment) => this.Assignment.query().updateAndFetchById([assignment.personId, assignment.eventId], assignment);
     delete = async (personId, eventId) => this.Assignment.query().deleteById([personId, eventId]);
+    
+    create = async (assignment) => {
+        //if the passed event is already a model, we have to explicitly call validate
+        if (assignment.$modelClass) {
+            assignment.$validate();
+        }
+        return this.Assignment.query().insert(assignment);
+    }
 }
 
-module.exports = (env=null) =>  { return new assignmentService(env) };
+module.exports = (env = null) => { return new assignmentService(env) };

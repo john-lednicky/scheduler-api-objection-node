@@ -17,6 +17,10 @@ class personService extends baseService {
 
   create = async (person) => {
     delete person.id;
+    //if the passed person is already a model, we have to explicitly call validate
+    if (person.$modelClass) {
+      person.$validate();
+    }
     return this.Person.query().insertAndFetch(person);
   };
 
@@ -24,9 +28,13 @@ class personService extends baseService {
     if (!person.id) {
       throw this.createError(400, 'person lacks an id');
     }
+    //if the passed person is already a model, we have to explicitly call validate
+    if (person.$modelClass) {
+      person.$validate();
+    }
     return this.Person.query().updateAndFetchById(person.id, person);
   };
-
+  
   delete = async (id) => {
     this.Assignment.query().delete().where('personId', '=', id)
       .then(() => this.Person.query().deleteById(id));

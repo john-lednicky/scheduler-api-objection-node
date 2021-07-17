@@ -13,11 +13,22 @@ class eventTypeService extends baseService {
 
   getAll = async () => this.EventType.query();
   find = async (id) => this.EventType.query().findById(id);
-  create = async (eventType) => this.EventType.query().insertAndFetch(eventType);
+
+  create = async (eventType) => {
+    //if the passed eventType is already a model, we have to explicitly call validate
+    if (eventType.$modelClass) {
+      eventType.$validate();
+    }
+    return this.EventType.query().insertAndFetch(eventType);
+  }
   
   update = async (eventType) => {
     if (!eventType.id) {
       throw this.createError(400, 'eventType lacks an id');
+    }
+    //if the passed eventType is already a model, we have to explicitly call validate
+    if (eventType.$modelClass) {
+      eventType.$validate();
     }
     return this.EventType.query().updateAndFetchById(eventType.id, eventType);
   };
