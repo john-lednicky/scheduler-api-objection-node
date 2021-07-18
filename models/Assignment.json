@@ -13,11 +13,13 @@
         "personId": {
             "type": "integer",
             "description": "The unique id of the person assigned.",
+            "minimum": 1,
             "example": 5
         },
         "eventId": {
             "type": "integer",
             "description": "The unique id of the event that the person is assigned to.",
+            "minimum": 1,
             "example": 240
         },
         "updateUser": {

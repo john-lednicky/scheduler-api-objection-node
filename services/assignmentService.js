@@ -15,20 +15,20 @@ class assignmentService extends baseService {
 
   find = async (personId, eventId) => {
     if (!this.isPositiveInteger(personId)) {
-      throw this.createError(400, `personId is not a positive integer ${id}`);
+      return Promise.reject(this.createError(400, `personId is not a positive integer ${personId}`));
     };    
     if (!this.isPositiveInteger(eventId)) {
-      throw this.createError(400, `eventId is not a positive integer ${id}`);
+      return Promise.reject(this.createError(400, `eventId is not a positive integer ${eventId}`));
     };   
     return this.Assignment.query().findById([personId, eventId]);
   }
 
   delete = async (personId, eventId) => {
     if (!this.isPositiveInteger(personId)) {
-      throw this.createError(400, `personId is not a positive integer ${id}`);
+      return Promise.reject(this.createError(400, `personId is not a positive integer ${personId}`));
     };    
     if (!this.isPositiveInteger(eventId)) {
-      throw this.createError(400, `eventId is not a positive integer ${id}`);
+      return Promise.reject(this.createError(400, `eventId is not a positive integer ${eventId}`));
     };   
     return this.Assignment.query().deleteById([personId, eventId]);
   }
