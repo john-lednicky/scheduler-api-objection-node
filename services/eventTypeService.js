@@ -45,7 +45,7 @@ class eventTypeService extends baseService {
     if (!this.isPositiveInteger(id)) {
       throw this.createError(400, `id is not a positive integer ${id}`);
     };    
-    this.EventType.query().deleteById(id);
+    return this.EventType.query().deleteById(id);
   }
 }
 
