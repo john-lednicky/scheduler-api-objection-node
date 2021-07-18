@@ -1,17 +1,45 @@
-const knexConfig = require('../knexfile.js');
-const { Model } = require('objection');
-const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
-Model.knex(knex);
+const baseService = require('./baseService.js');
 
-const Assignment = require('../models/Assignment');
+class assignmentService extends baseService {
 
-exports.getAll = async () => Assignment.query();
+  constructor(env = null) {
+    super(env);
+    this.Assignment = require('../models/Assignment');
+  };
 
-exports.find = async (personId, eventId) => Assignment.query().findById([personId, eventId]);
+  getAll = async () => this.Assignment.query();
 
-exports.create = async (assignment) => Assignment.query().insert(assignment);
+  find = async (personId, eventId) => {
+    if (!this.isPositiveInteger(personId)) {
+      return Promise.reject(this.createError(400, `personId is not a positive integer ${personId}`));
+    };    
+    if (!this.isPositiveInteger(eventId)) {
+      return Promise.reject(this.createError(400, `eventId is not a positive integer ${eventId}`));
+    };   
+    return this.Assignment.query().findById([personId, eventId]);
+  }
 
-exports.update = async (assignment) => Assignment.query().updateAndFetchById([assignment.personId, assignment.eventId], assignment);
+  delete = async (personId, eventId) => {
+    if (!this.isPositiveInteger(personId)) {
+      return Promise.reject(this.createError(400, `personId is not a positive integer ${personId}`));
+    };    
+    if (!this.isPositiveInteger(eventId)) {
+      return Promise.reject(this.createError(400, `eventId is not a positive integer ${eventId}`));
+    };   
+    return this.Assignment.query().deleteById([personId, eventId]);
+  }
 
-exports.delete = async (personId, eventId) => Assignment.query().deleteById([personId, eventId]);
+  create = async (assignment) => {
+    //if the passed event is already a model, we have to explicitly call validate
+    if (assignment.$modelClass) {
+      assignment.$validate();
+    }
+    return this.Assignment.query().insert(assignment);
+  }
+}
+
+module.exports = (env = null) => { return new assignmentService(env) };

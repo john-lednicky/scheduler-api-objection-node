@@ -1,26 +1,52 @@
-const createError = require('http-errors');
-const knexConfig = require('../knexfile.js');
-const { Model } = require('objection');
-const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
-Model.knex(knex);
+const baseService = require('./baseService.js');
 
-const EventType = require('../models/EventType');
+class eventTypeService extends baseService {
 
-exports.getAll = async () => EventType.query();
+  constructor(env = null) {
+    super(env);
+    this.EventType = require('../models/EventType');
+  };
 
-exports.find = async (id) => EventType.query().findById(id);
+  getAll = async () => this.EventType.query();
 
-exports.create = async (eventType) => EventType.query().insertAndFetch(eventType);
-
-exports.update = async (eventType) => {
-  if (!eventType.id) {
-    throw createError(400, 'eventType lacks an id');
+  find = async (id) => { 
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };
+    return this.EventType.query().findById(id);
   }
-  return EventType.query().updateAndFetchById(eventType.id, eventType);
-};
 
-exports.delete = async (id) =>
-// TODO eventType needs to be disabled instead of hard deleting
-// TODO delete future events based on this eventType, but not past events
-  EventType.query().deleteById(id);
+  create = async (eventType) => {
+    //if the passed eventType is already a model, we have to explicitly call validate
+    if (eventType.$modelClass) {
+      eventType.$validate();
+    }
+    return this.EventType.query().insertAndFetch(eventType);
+  }
+  
+  update = async (eventType) => {
+    if (!eventType.id) {
+      throw this.createError(400, 'eventType lacks an id');
+    }
+    //if the passed eventType is already a model, we have to explicitly call validate
+    if (eventType.$modelClass) {
+      eventType.$validate();
+    }
+    return this.EventType.query().updateAndFetchById(eventType.id, eventType);
+  };
+
+  delete = async (id) => {
+    // TODO eventType needs to be disabled instead of hard deleting
+    // TODO delete future events based on this eventType, but not past events
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };    
+    return this.EventType.query().deleteById(id);
+  }
+}
+
+module.exports = (env = null) => { return new eventTypeService(env) }

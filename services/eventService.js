@@ -1,24 +1,52 @@
-const createError = require('http-errors');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
-const knexConfig = require('../knexfile.js');
-const { Model } = require('objection');
-const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
+const baseService = require('./baseService.js');
 
-Model.knex(knex);
+class eventService extends baseService {
 
-const Event = require('../models/Event');
+  constructor(env = null) {
+    super(env);
+    this.Event = require('../models/Event');
+  };
 
-exports.getAll = async () => Event.query();
+  getAll = async () => this.Event.query();
 
-exports.find = async (id) => Event.query().findById(id);
-
-exports.create = async (event) => Event.query().insertAndFetch(event);
-
-exports.update = async (event) => {
-  if (!event.id) {
-    throw createError(400, 'event lacks an id');
+  find = async (id) => {
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };
+    return this.Event.query().findById(id);
   }
-  return Event.query().updateAndFetchById(event.id, event);
-};
 
-exports.delete = async (id) => Event.query().deleteById(id);
+  delete = async (id) => {
+    if (!this.isPositiveInteger(id)) {
+      throw this.createError(400, `id is not a positive integer ${id}`);
+    };
+    return this.Event.query().deleteById(id);
+  }
+
+  create = async (event) => {
+    // TODO eventService should validate that beginDttm is before endDttm
+    //if the passed event is already a model, we have to explicitly call validate
+    if (event.$modelClass) {
+      event.$validate();
+    }
+    return this.Event.query().insertAndFetch(event);
+  }
+
+  update = async (event) => {
+    if (!event.id) {
+      throw this.createError(400, 'event lacks an id');
+    }
+    //if the passed event is already a model, we have to explicitly call validate
+    if (event.$modelClass) {
+      event.$validate();
+    }
+    return this.Event.query().updateAndFetchById(event.id, event);
+  };
+
+}
+
+module.exports = (env = null) => { return new eventService(env) }

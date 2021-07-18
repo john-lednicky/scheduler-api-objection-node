@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const assignmentService = require('../services/assignmentService.js');
+const assignmentService = require('../services/assignmentService.js')();
 
 exports.index = async (req, res, next) => {
   assignmentService.getAll()
