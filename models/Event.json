@@ -19,6 +19,7 @@
         "eventTypeId": {
             "type": "integer",
             "description": "The unique id of the related event type.",
+            "minimum": 1,
             "example": 3
         },
         "beginDttm": {

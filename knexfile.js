@@ -48,6 +48,9 @@ module.exports = {
     connection: {
       filename: './sqlite3/scheduler.sqlite',
     },
+    pool: {
+      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+    },    
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -63,6 +66,9 @@ module.exports = {
     connection: {
       filename: './sqlite3/autotest_personService.sqlite',
     },
+    pool: {
+      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+    },    
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -78,6 +84,9 @@ module.exports = {
     connection: {
       filename: './sqlite3/autotest_eventService.sqlite',
     },
+    pool: {
+      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+    },    
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -93,6 +102,9 @@ module.exports = {
     connection: {
       filename: './sqlite3/autotest_eventTypeService.sqlite',
     },
+    pool: {
+      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+    },    
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -108,6 +120,9 @@ module.exports = {
     connection: {
       filename: './sqlite3/autotest_assignmentService.sqlite',
     },
+    pool: {
+      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+    },    
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',

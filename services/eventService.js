@@ -28,6 +28,7 @@ class eventService extends baseService {
   }
 
   create = async (event) => {
+    // TODO eventService should validate that beginDttm is before endDttm
     //if the passed event is already a model, we have to explicitly call validate
     if (event.$modelClass) {
       event.$validate();
