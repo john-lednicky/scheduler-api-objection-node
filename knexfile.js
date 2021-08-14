@@ -42,7 +42,7 @@ module.exports = {
       directory: './db/seeds',
     },
     ...knexSnakeCaseMappers(),
-  },  
+  },
   sqlite3: {
     client: 'sqlite3',
     connection: {
@@ -50,7 +50,7 @@ module.exports = {
     },
     pool: {
       afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
-    },    
+    },
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -68,7 +68,7 @@ module.exports = {
     },
     pool: {
       afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
-    },    
+    },
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -86,7 +86,7 @@ module.exports = {
     },
     pool: {
       afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
-    },    
+    },
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -104,7 +104,7 @@ module.exports = {
     },
     pool: {
       afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
-    },    
+    },
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -122,7 +122,7 @@ module.exports = {
     },
     pool: {
       afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
-    },    
+    },
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
@@ -132,6 +132,5 @@ module.exports = {
       directory: './db/seeds',
     },
     ...knexSnakeCaseMappers(),
-  }
-
+  },
 };

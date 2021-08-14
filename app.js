@@ -47,7 +47,7 @@ app.use(expressWinston.logger({
 app.use(favicon('./public/images/favicon.ico'));
 
 /* swagger api */
-app.use('/api-doc-ui', swaggerUi.serve, swaggerUi.setup(swaggerService.getDoc()) );
+app.use('/api-doc-ui', swaggerUi.serve, swaggerUi.setup(swaggerService.getDoc()));
 app.use('/api-doc', require('./routes/swaggerRouter'));
 
 app.use('/persons', require('./routes/personRouter'));
