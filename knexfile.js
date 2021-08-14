@@ -49,7 +49,7 @@ module.exports = {
       filename: './sqlite3/scheduler.sqlite',
     },
     pool: {
-      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+      afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
     },
     useNullAsDefault: true,
     migrations: {
@@ -67,7 +67,7 @@ module.exports = {
       filename: './sqlite3/autotest_personService.sqlite',
     },
     pool: {
-      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+      afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
     },
     useNullAsDefault: true,
     migrations: {
@@ -85,7 +85,7 @@ module.exports = {
       filename: './sqlite3/autotest_eventService.sqlite',
     },
     pool: {
-      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+      afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
     },
     useNullAsDefault: true,
     migrations: {
@@ -103,7 +103,7 @@ module.exports = {
       filename: './sqlite3/autotest_eventTypeService.sqlite',
     },
     pool: {
-      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+      afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
     },
     useNullAsDefault: true,
     migrations: {
@@ -121,7 +121,7 @@ module.exports = {
       filename: './sqlite3/autotest_assignmentService.sqlite',
     },
     pool: {
-      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb)
+      afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
     },
     useNullAsDefault: true,
     migrations: {

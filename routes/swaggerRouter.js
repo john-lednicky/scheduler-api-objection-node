@@ -30,7 +30,7 @@ const swaggerService = require('../services/swaggerService');
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/', async (req, res, next) => { res.send(swaggerService.getDoc()); });
+router.get('/', async (req, res) => { res.send(swaggerService.getDoc()); });
 
 /**
  * @swagger
