@@ -1,0 +1,1396 @@
+{
+	"info": {
+		"_postman_id": "a77de328-7714-4d0b-9f4c-9489a41ed77c",
+		"name": "Initial API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Persons",
+			"item": [
+				{
+					"name": "Persons - get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/persons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const person = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"personId\", person.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/persons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Events - create (copy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const event = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"eventId\", event.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{personId}},\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"Wilberforce\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/persons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - update - invalid first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{personId}},\r\n    \"firstName\": \"Aaaaaaaaaaaaaaaaaaaaa\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/persons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Assignments - create (copy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/assignments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"assignments"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/persons/{{personId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons",
+								"{{personId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - delete one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/persons/{{personId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons",
+								"{{personId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - delete one - not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/persons/{{personId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons",
+								"{{personId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - get one - not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/persons/{{personId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons",
+								"{{personId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - update one - not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{personId}},\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"Wilberforce\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/persons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - create - invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Invalid\",\r\n    \"middleName\": \"\",\r\n    \"phone\": \"xxxxxxxxxx\",\r\n    \"email\": \"invalid.nosurname@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/persons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assignments",
+			"item": [
+				{
+					"name": "Persons - create (copy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const person = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"personId\", person.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/persons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Events - create (copy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const event = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"eventId\", event.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Assignments- get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/assignments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"assignments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assignments - create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/assignments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"assignments"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Assignments - create (db error)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/assignments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"assignments"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Assignments - create (invalid  error)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/assignments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"assignments"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Assignments - get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/assignments/{{personId}}/{{eventId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"assignments",
+								"{{personId}}",
+								"{{eventId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Assignments- delete one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/assignments/{{personId}}/{{eventId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"assignments",
+								"{{personId}}",
+								"{{eventId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Persons - delete one (copy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/persons/{{personId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"persons",
+								"{{personId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Events - delete one (copy)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/events/{{eventId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events",
+								"{{eventId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Events - get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Events - create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const event = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"eventId\", event.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Events - update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{eventId}}, \r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 4, \r\n\t\"comment\" : \"This event was updated.\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Events - update - error (invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 4, \r\n\t\"comment\" : \"This event was updated.\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Events - get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/events/{{eventId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events",
+								"{{eventId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				},
+				{
+					"name": "Events - delete one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/events/{{eventId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"events",
+								"{{eventId}}"
+							]
+						},
+						"description": "        "
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EventTypes",
+			"item": [
+				{
+					"name": "Event Types - get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/eventTypes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"eventTypes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Types - create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const eventType = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"eventTypeId\", eventType.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Test Event\",\r\n\t\"description\": \"\",\r\n\t\"updateUser\": \"john.d.lednicky\",\r\n\t\"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/eventTypes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"eventTypes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Types - update one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{eventTypeId}},\r\n\t\"name\": \"Updated Test Event Type\",\r\n\t\"description\": \"This event type was updated from a Postman test.\",\r\n\t\"updateUser\": \"john.d.lednicky\",\r\n\t\"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/eventTypes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"eventTypes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Types - get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/eventTypes/{{eventTypeId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"eventTypes",
+								"{{eventTypeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Types - delete one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/eventTypes/{{eventTypeId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"eventTypes",
+								"{{eventTypeId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Swagger",
+			"item": [
+				{
+					"name": "Get Swagger UI",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is test/html\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('text/html; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api-doc-ui/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api-doc-ui",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Swagger Doc",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api-doc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api-doc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
