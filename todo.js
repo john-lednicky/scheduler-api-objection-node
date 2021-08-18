@@ -12,7 +12,6 @@
 // TODO Add node-specific plugins to eslint: https://github.com/goldbergyoni/nodebestpractices#-32-nodejs-specific-plugins
 // TODO Switch to xo linter https://github.com/xojs/xo)
 // TODO Lint entire project, but only after under source control
-// TODO Run using SSL
 // TODO Authentication
 // TODO Consider Pino or Log4js for logging. Look for log viewing tools.
 // TODO Catch unhandled exceptions: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/catchunhandledpromiserejection.md

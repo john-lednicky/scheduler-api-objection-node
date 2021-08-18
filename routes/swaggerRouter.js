@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const swaggerService = require('../services/swaggerService.js');
+const swaggerService = require('../services/swaggerService');
 
 /**
  * @swagger
@@ -28,9 +28,9 @@ const swaggerService = require('../services/swaggerService.js');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage' 
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/', async (req, res, next) => { res.send(swaggerService.getDoc()) });
+router.get('/', async (req, res) => { res.send(swaggerService.getDoc()); });
 
 /**
  * @swagger
@@ -50,7 +50,7 @@ router.get('/', async (req, res, next) => { res.send(swaggerService.getDoc()) })
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage' 
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
 
 module.exports = router;

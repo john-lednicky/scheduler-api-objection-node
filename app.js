@@ -5,9 +5,9 @@ const winston = require('winston');
 const expressWinston = require('express-winston');
 const createError = require('http-errors');
 const swaggerUi = require('swagger-ui-express');
-const swaggerService = require('./services/swaggerService.js');
 const favicon = require('serve-favicon');
-const errorHandlerMiddleware = require('./middleware/error-handler.js');
+const swaggerService = require('./services/swaggerService');
+const errorHandlerMiddleware = require('./middleware/error-handler');
 
 const app = express();
 
@@ -47,7 +47,7 @@ app.use(expressWinston.logger({
 app.use(favicon('./public/images/favicon.ico'));
 
 /* swagger api */
-app.use('/api-doc-ui', swaggerUi.serve, swaggerUi.setup(swaggerService.getDoc()) );
+app.use('/api-doc-ui', swaggerUi.serve, swaggerUi.setup(swaggerService.getDoc()));
 app.use('/api-doc', require('./routes/swaggerRouter'));
 
 app.use('/persons', require('./routes/personRouter'));
