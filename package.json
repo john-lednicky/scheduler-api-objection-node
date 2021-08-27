@@ -8,7 +8,7 @@
     "lint-all": "eslint ./**/*.js",
     "start": "node ./server.js",
     "devstart": "cross-env NODE_ENV=development nodemon ./server.js",
-    "sslstart": "yarn local-ssl-proxy --source 443 --target 3333",
+    "proxy": "yarn local-ssl-proxy --source 443 --target 3333",
     "prodstart": "cross-env NODE_ENV=production yarn start",
     "migrate": "npx knex migrate:latest",
     "seed": "npx knex seed:run",
