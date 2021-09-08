@@ -1,4 +1,3 @@
-require('dotenv');
 const express = require('express');
 const helmet = require('helmet');
 const createError = require('http-errors');
@@ -27,7 +26,8 @@ app.use('/api-doc-ui', swaggerUi.serve, swaggerUi.setup(swaggerService.getDoc())
 app.use('/api-doc', require('./routes/swaggerRouter'));
 
 /* configure passport */
-require('./middleware/auth')();
+require('./middleware/auth-google')();
+require('./middleware/auth-google-id-token')();
 
 /* authorization routes */
 app.use('/auth', require('./routes/authRouter'));
