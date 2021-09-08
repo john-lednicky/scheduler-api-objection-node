@@ -7,11 +7,11 @@
     "test": "jest",
     "lint-all": "eslint ./**/*.js",
     "start": "node ./server.js",
-    "devstart": "cross-env NODE_ENV=development nodemon ./server.js",
+    "devstart": "dotenv -- cross-env NODE_ENV=development nodemon ./server.js",
     "proxy": "yarn local-ssl-proxy --source 443 --target 3333",
     "prodstart": "cross-env NODE_ENV=production yarn start",
-    "migrate": "npx knex migrate:latest",
-    "seed": "npx knex seed:run",
+    "migrate": "dotenv -- npx knex migrate:latest",
+    "seed": "dotenv -- npx knex seed:run",
     "sqlite-migrate": "cross-env NODE_ENV=sqlite3 yarn knex migrate:latest",
     "sqlite-seed": "cross-env NODE_ENV=sqlite3  yarn knex seed:run",
     "sqlite-start": "cross-env NODE_ENV=sqlite3  yarn start"
@@ -30,7 +30,6 @@
   "license": "MIT",
   "dependencies": {
     "date-fns": "^2.22.1",
-    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-winston": "^4.1.0",
     "helmet": "^4.6.0",
@@ -52,6 +51,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",

@@ -8,7 +8,8 @@ const router = express.Router();
 //   request.  The first step in Google authentication will involve
 //   redirecting the user to google.com.  After authorization, Google
 //   will redirect the user back to this application at /auth/google/callback
-router.get('/google', passport.authenticate('google', { session: false }));
+router.get('/google',
+  passport.authenticate('google', { session: false }));
 
 // GET /auth/google/callback
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -24,6 +25,7 @@ router.get('/google/callback',
 //   Uses a Google ID JWT bearer token.
 //   Token is deserialized and signature is verified.
 //   req.user is populated with the payload of the JWT.
+//   Token only, from jmreyes passport-google-id-token
 router.get('/google/profile',
   passport.authenticate('google-id-token', { session: false }),
   (req, res) => {

@@ -1,11 +1,8 @@
 /* eslint-disable no-console */
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
-const GoogleTokenStrategy = require('./passport-google-id-token');
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '407408718192.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'GTovi_m-W198XJARTz3soQlf';
-const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3333/auth/google/callback';
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
 
 module.exports = () => {
   // Configure the strategy for use by Passport.
@@ -35,18 +32,6 @@ module.exports = () => {
         console.log(`accessToken==${accessToken}`);
         console.log(`refreshToken==${refreshToken}`);
         return cb(null, profile);
-      }),
-    ),
-  );
-
-  passport.use(
-    new GoogleTokenStrategy(
-      {
-        clientID: GOOGLE_CLIENT_ID,
-      },
-      ((token, googleId, done) => {
-        console.log(`googleId==${googleId}`);
-        done(null, token);
       }),
     ),
   );
