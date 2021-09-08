@@ -1,4 +1,5 @@
-
+// TODO standardize date storage format (probably unix epoch)
+// TODO choose api authentication design and implement. News-API (complete server only, JWT api only) 
 // TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
 // TODO Jest unit tests at service layer
 // TODO Jest unit tests at API layer
