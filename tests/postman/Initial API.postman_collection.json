@@ -407,8 +407,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 500\", function () {\r",
-									"    pm.response.to.have.status(500);\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"pm.test(\"Content-Type header is application/json\", () => {\r",
 									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
@@ -1389,6 +1389,254 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "GoogleApi calls",
+					"item": [
+						{
+							"name": "Get Id Token from Google",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "tokenType",
+											"value": "Bearer",
+											"type": "string"
+										},
+										{
+											"key": "accessToken",
+											"value": "ya29.a0ARrdaM9Fi_0mdVS6WTXIzvwBfBnIl6vz6NjXDIbbmVOlQVEPsYZ2SDgTI6SlFeFS5hoC09vnhWA_92KLLoz5Rgxsjve6gj4jabz2QN8X5eSyjt4FlIqds-GyS82If6VXxKrQmo5hKcy04mjACUOHznsauAsr",
+											"type": "string"
+										},
+										{
+											"key": "scope",
+											"value": "openid profile email",
+											"type": "string"
+										},
+										{
+											"key": "audience",
+											"value": {
+												"e09f6bf3-423b-4d9a-965a-e03c90799fde": "630356498798-0t2bcf58i2o3akq5dbg1ju7f5knt2nlp.apps.googleusercontent.com"
+											},
+											"type": "any"
+										},
+										{
+											"key": "clientId",
+											"value": "630356498798-0t2bcf58i2o3akq5dbg1ju7f5knt2nlp.apps.googleusercontent.com",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "https://accounts.google.com/o/oauth2/auth",
+											"type": "string"
+										},
+										{
+											"key": "state",
+											"value": "CrossX123",
+											"type": "string"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "http://localhost:3333/auth/google/callback",
+											"type": "string"
+										},
+										{
+											"key": "useBrowser",
+											"value": false,
+											"type": "boolean"
+										},
+										{
+											"key": "tokenName",
+											"value": "Google ID",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "implicit",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						},
+						{
+							"name": "GoogleApi_userinfo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "ya29.a0ARrdaM8M197QiVt2uTe9rHnCvpw_8xGN3UF2D1hEAdOn2UlTv7Y5Alhy_-sn41uSrl8XawLSQXsQ4HAqNj4qvAuHEwPdlujgfK0q0nnL85gtL-H7kZW2KBCZ9ni2aF1HgsC2IFDwXW7We6KXwR3tK95ZG3Ud",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://openidconnect.googleapis.com/v1/userinfo",
+									"protocol": "https",
+									"host": [
+										"openidconnect",
+										"googleapis",
+										"com"
+									],
+									"path": [
+										"v1",
+										"userinfo"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Google auth redirect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 302\", function () {\r",
+									"    pm.response.to.have.status(302);\r",
+									"});\r",
+									"\r",
+									"const googleLoginUrl = 'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3333%2Fauth%2Fgoogle%2Fcallback&scope=profile%20openid%20email&client_id=630356498798-0t2bcf58i2o3akq5dbg1ju7f5knt2nlp.apps.googleusercontent.com';\r",
+									"pm.test(\"Location header is correct\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Location')).to.eql(googleLoginUrl);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/auth/google",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"google"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Google profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5MWIwNjM2YWFkYTM0MWM1YTA4ZTBkOGYyNDA2OTcyMDY0ZGM4ZWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MDc0MDg3MTgxOTIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MDc0MDg3MTgxOTIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTExNjE0MDcyMzc5MzE4Njc3NTMiLCJlbWFpbCI6InRlc3QubGVkbmlja3lAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJZXzF0UXdWS243RFYtLVp3TlRBLWVBIiwibmFtZSI6IlRlc3QgTGVkbmlja3kiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUFUWEFKekxsbUtsUmw0OG1Wc3RlYnVBSUR3VTRvWmM1V0h2ZG0ybUt5RmI9czk2LWMiLCJnaXZlbl9uYW1lIjoiVGVzdCIsImZhbWlseV9uYW1lIjoiTGVkbmlja3kiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTYzMTA3MTQwOSwiZXhwIjoxNjMxMDc1MDA5fQ.fZwafZZ7DPUXahz0NhyL2C9-mtGr_ZLlpatYhd8cF8XGWdMOWS_UtWOeXzeaaaOFA90Smi5vx5Lc8x4mS3zqAmEaKu5w-szfUwar2NPNm0mwGjRdtVFuYBxUqgWgqbfIZWOsoMbygYDqi0W7HGCzeePyjz-tGuNQ5thnNxE8BRbUxrKCIz_ZSp_CyRzfelGqAgnDwrWhU6YYarNu5c5JphQ17yRaS1TnyK3Q6arqRqZT4F7jmQnaCoV_xAE6fW0NCD2zywVZZTU3mf66GIYhuxZtoh40EATS6Zic0cvFR_JnVf5iUrb98Ng9AqGjbgAeamRqk28hq2t_n4o8FDMhlg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/auth/google/profile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"google",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
