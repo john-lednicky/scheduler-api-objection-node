@@ -1,7 +1,8 @@
 const express = require('express');
+const createError = require('http-errors');
+const personService = require('../services/personService')();
 
 const router = express.Router();
-const personController = require('../controllers/personController.js');
 
 /**
  * @swagger
@@ -32,9 +33,17 @@ const personController = require('../controllers/personController.js');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage' 
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/', personController.index);
+router.get('/', async (req, res, next) => {
+  personService.getAll()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -71,7 +80,20 @@ router.get('/', personController.index);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/:id', personController.find);
+router.get('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  personService.find(id)
+    .then((data) => {
+      if (!data) {
+        next(createError(404, `person ${id}`));
+      } else {
+        res.json(data);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -108,7 +130,16 @@ router.get('/:id', personController.find);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.post('/', personController.create);
+router.post('/', async (req, res, next) => {
+  const person = req.body;
+  personService.create(person)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -145,7 +176,20 @@ router.post('/', personController.create);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.put('/', personController.update);
+router.put('/', async (req, res, next) => {
+  const person = req.body;
+  personService.update(person)
+    .then((data) => {
+      if (data) {
+        res.json(data);
+      } else {
+        next(createError(404, `person ${person.id}`));
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -188,6 +232,21 @@ router.put('/', personController.update);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.delete('/:id', personController.delete);
+router.delete('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  personService.delete(id)
+    .then((data) => {
+      if (data === 1) {
+        res.json({ message: `deleted person ${id}` });
+      } else if (data === 0) {
+        next(createError(404, `person ${id}`));
+      } else {
+        createError(500, `unexpected problem deleting person ${id}`);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 module.exports = router;
