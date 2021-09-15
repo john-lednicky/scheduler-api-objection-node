@@ -1,7 +1,8 @@
 const express = require('express');
+const createError = require('http-errors');
+const assignmentService = require('../services/assignmentService')();
 
 const router = express.Router();
-const assignmentController = require('../controllers/assignmentController.js');
 
 /**
  * @swagger
@@ -32,9 +33,17 @@ const assignmentController = require('../controllers/assignmentController.js');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage' 
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/', assignmentController.index);
+router.get('/', async (req, res, next) => {
+  assignmentService.getAll()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -77,7 +86,20 @@ router.get('/', assignmentController.index);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/:personId/:eventId', assignmentController.find);
+router.get('/:personId/:eventId', async (req, res, next) => {
+  const { personId, eventId } = req.params;
+  assignmentService.find(personId, eventId)
+    .then((data) => {
+      if (!data) {
+        next(createError(404, `assignment for person ${personId} and event ${eventId}`));
+      } else {
+        res.json(data);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -114,7 +136,16 @@ router.get('/:personId/:eventId', assignmentController.find);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.post('/', assignmentController.create);
+router.post('/', async (req, res, next) => {
+  const assignment = req.body;
+  assignmentService.create(assignment)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -163,6 +194,15 @@ router.post('/', assignmentController.create);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
- router.delete('/:personId/:eventId', assignmentController.delete);
+router.delete('/:personId/:eventId', async (req, res, next) => {
+  const { personId, eventId } = req.params;
+  assignmentService.delete(personId, eventId)
+    .then(() => {
+      res.json({ message: `deleted assignment for person ${personId} and event ${eventId}` });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 module.exports = router;

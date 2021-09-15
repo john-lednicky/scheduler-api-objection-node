@@ -1,6 +1,8 @@
 const express = require('express');
+const createError = require('http-errors');
+const eventService = require('../services/eventService')();
+
 const router = express.Router();
-const eventController = require('../controllers/eventController.js');
 
 /**
  * @swagger
@@ -31,9 +33,17 @@ const eventController = require('../controllers/eventController.js');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage' 
+ *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/', eventController.index);
+router.get('/', async (req, res, next) => {
+  eventService.getAll()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -70,7 +80,20 @@ router.get('/', eventController.index);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.get('/:id', eventController.find);
+router.get('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  eventService.find(id)
+    .then((data) => {
+      if (!data) {
+        next(createError(404, `event ${id}`));
+      } else {
+        res.json(data);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -107,7 +130,16 @@ router.get('/:id', eventController.find);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.post('/', eventController.create);
+router.post('/', async (req, res, next) => {
+  const event = req.body;
+  eventService.create(event)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -144,7 +176,20 @@ router.post('/', eventController.create);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
-router.put('/', eventController.update);
+router.put('/', async (req, res, next) => {
+  const event = req.body;
+  eventService.update(event)
+    .then((data) => {
+      if (data) {
+        res.json(data);
+      } else {
+        next(createError(404, `event ${event.id}`));
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 /**
  * @swagger
@@ -187,6 +232,15 @@ router.put('/', eventController.update);
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
  */
- router.delete('/:id', eventController.delete);
+router.delete('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  eventService.delete(id)
+    .then(() => {
+      res.json({ message: `deleted event ${id}` });
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 module.exports = router;
