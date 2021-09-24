@@ -1,43 +1,58 @@
 const { knexSnakeCaseMappers } = require('objection');
-
-/*
-How to get knex connection from async function
-https://stackoverflow.com/a/64980273/4628416
-
 const waitPort = require('wait-port');
 const fs = require('fs');
 
-const {
-    MYSQL_HOST: HOST,
-    MYSQL_HOST_FILE: HOST_FILE,
-    MYSQL_USER: USER,
-    MYSQL_USER_FILE: USER_FILE,
-    MYSQL_PASSWORD: PASSWORD,
-    MYSQL_PASSWORD_FILE: PASSWORD_FILE,
-    MYSQL_DB: DB,
-    MYSQL_DB_FILE: DB_FILE,
-} = process.env;
+async function getConfig() {
+  const {
+    MYSQL_HOST,
+    MYSQL_HOST_FILE,
+    MYSQL_USERNAME,
+    MYSQL_USERNAME_FILE,
+    MYSQL_PASSWORD,
+    MYSQL_PASSWORD_FILE,
+    MYSQL_DBNAME,
+    MYSQL_DBNAME_FILE,
+  } = process.env;
 
-  // these will read from the file first, otherwise the environment variable
-  const host = HOST_FILE ? fs.readFileSync(HOST_FILE) : HOST;
-  const user = USER_FILE ? fs.readFileSync(USER_FILE) : USER;
-  const password = PASSWORD_FILE ? fs.readFileSync(PASSWORD_FILE) : PASSWORD;
-  const database = DB_FILE ? fs.readFileSync(DB_FILE) : DB;
+  let host;
+  let user;
+  let password;
+  let database;
 
-  await waitPort({ host, port : 3306}); //this blocks until the port is available
-*/
+  try {
+    // If file is specified, read from it, otherwise try the environment variable
+    host = MYSQL_HOST_FILE ? fs.readFileSync(MYSQL_HOST_FILE, 'utf-8') : MYSQL_HOST;
+    user = MYSQL_USERNAME_FILE ? fs.readFileSync(MYSQL_USERNAME_FILE, 'utf-8') : MYSQL_USERNAME;
+    password = MYSQL_PASSWORD_FILE ? fs.readFileSync(MYSQL_PASSWORD_FILE, 'utf-8') : MYSQL_PASSWORD;
+    database = MYSQL_DBNAME_FILE ? fs.readFileSync(MYSQL_DBNAME_FILE, 'utf-8') : MYSQL_DBNAME;
+  } catch (err) {
+    return Promise.reject(err);
+  }
+
+  try {
+    await waitPort({ host, port: 3306, output: 'silent' }); // this blocks until the port is available
+  } catch (err) {
+    return Promise.reject(err);
+  }
+
+  const config = {
+    database,
+    user,
+    password,
+    host,
+    connectionLimit: 10,
+    queueLimit: 10,
+    waitForConnections: true,
+  };
+
+  return config;
+}
 
 module.exports = {
   production: {
     client: 'mysql2',
-    connection: {
-      database: process.env.LOCAL_MYSQL_DBNAME,
-      user: process.env.LOCAL_MYSQL_USERNAME,
-      password: process.env.LOCAL_MYSQL_PASSWORD,
-      host: process.env.LOCAL_MYSQL_HOST,
-      connectionLimit: 10,
-      queueLimit: 10, /* pool property */
-      waitForConnections: true, /* pool property */
+    async connection() {
+      return getConfig();
     },
     useNullAsDefault: true,
     migrations: {
@@ -51,14 +66,8 @@ module.exports = {
   },
   development: {
     client: 'mysql2',
-    connection: {
-      database: process.env.LOCAL_MYSQL_DBNAME,
-      user: process.env.LOCAL_MYSQL_USERNAME,
-      password: process.env.LOCAL_MYSQL_PASSWORD,
-      host: process.env.LOCAL_MYSQL_HOST,
-      connectionLimit: 10,
-      queueLimit: 10, /* pool property */
-      waitForConnections: true, /* pool property */
+    async connection() {
+      return getConfig();
     },
     useNullAsDefault: true,
     migrations: {

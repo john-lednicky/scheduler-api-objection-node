@@ -1,7 +1,3 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
-
 const baseService = require('./baseService.js');
 
 class eventTypeService extends baseService {
