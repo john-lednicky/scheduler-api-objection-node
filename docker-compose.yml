@@ -2,6 +2,7 @@ version: "3.8"
 
 volumes:
   scheduler-mysql-data:
+  scheduler-app-logs:
 
 services:
 
@@ -23,6 +24,7 @@ services:
     volumes:
       - ./config/MYSQL_USERNAME:/app/config/MYSQL_USERNAME
       - ./config/MYSQL_PASSWORD:/app/config/MYSQL_PASSWORD
+      - scheduler-app-logs:/app/logs
 
   mysql:
     image: mysql:8.0.26
