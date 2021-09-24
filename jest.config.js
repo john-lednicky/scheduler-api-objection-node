@@ -6,6 +6,6 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: [
     '<rootDir>/tests/db',
-    '<rootDir>/tests/sample.test.js'
-  ]
+    '<rootDir>/tests/sample.test.js',
+  ],
 };
