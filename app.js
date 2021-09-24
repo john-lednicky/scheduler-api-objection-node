@@ -25,13 +25,6 @@ app.use(favicon('./public/images/favicon.ico'));
 app.use('/api-doc-ui', swaggerUi.serve, swaggerUi.setup(swaggerService.getDoc()));
 app.use('/api-doc', require('./routes/swaggerRouter'));
 
-/* configure passport */
-require('./middleware/auth-google')();
-require('./middleware/auth-google-id-token')();
-
-/* authorization routes */
-app.use('/auth', require('./routes/authRouter'));
-
 /* scheduler routes */
 app.use('/persons', require('./routes/personRouter'));
 app.use('/events', require('./routes/eventRouter'));

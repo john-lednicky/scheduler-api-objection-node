@@ -1,0 +1,38 @@
+version: "3.8"
+
+volumes:
+  scheduler-mysql-data:
+
+services:
+
+  app:
+    image: lednicky/scheduler-app
+    depends_on:
+      - mysql
+    ports: 
+      - 3333:3333
+    working_dir: /app
+    environment:
+      NODE_ENV: production
+      MYSQL_HOST: mysql
+      MYSQL_DBNAME: scheduler
+      MYSQL_USERNAME_FILE: /app/config/MYSQL_USERNAME
+      MYSQL_PASSWORD_FILE: /app/config/MYSQL_PASSWORD
+      GOOGLE_CLIENT_ID: 630356498798-0t2bcf58i2o3akq5dbg1ju7f5knt2nlp.apps.googleusercontent.com
+      GOOGLE_CALLBACK_URL: http://localhost:80/auth/google/callback 
+    volumes:
+      - ./config/MYSQL_USERNAME:/app/config/MYSQL_USERNAME
+      - ./config/MYSQL_PASSWORD:/app/config/MYSQL_PASSWORD
+
+  mysql:
+    image: mysql:8.0.26
+    volumes: 
+      - scheduler-mysql-data:/var/lib/mysql
+      - ./config/MYSQL_USERNAME:/config/MYSQL_USERNAME
+      - ./config/MYSQL_PASSWORD:/config/MYSQL_PASSWORD
+    environment:
+      MYSQL_DATABASE: scheduler
+      MYSQL_ONETIME_PASSWORD: yes # This doesn't seem to do anything. (https://github.com/GoogleCloudPlatform/mysql-docker/blob/master/5/README.md#securely-set-up-the-server-1)
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_USER_FILE: /config/MYSQL_USERNAME
+      MYSQL_PASSWORD_FILE: /config/MYSQL_PASSWORD
