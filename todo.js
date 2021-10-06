@@ -1,7 +1,7 @@
+// TODO Add health checks and graceful shutdown: https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
 // TODO standardize date storage format (probably unix epoch)
 // TODO choose api authentication design and implement. News-API (complete server only, JWT api only) 
 // TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
-// TODO Jest unit tests at service layer
 // TODO Jest unit tests at API layer
             /*
             starting server automatically https://glebbahmutov.com/blog/how-to-correctly-unit-test-express-server/
@@ -20,5 +20,3 @@
 // TODO Await returned promises: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/returningpromises.md
 // TODO Objection returns a date in one format, but accepts the date in another.
 // TODO Automatically insert correct verson in swagger doc (probably during build)
-// TODO Deploy to docker container
-// TODO Develop in docker container 

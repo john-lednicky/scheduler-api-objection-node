@@ -1,0 +1,57 @@
+version: "3.8"
+
+networks:
+  dex-data:
+  oauth:
+  app:
+
+volumes:
+  dex-mysql-data:
+  scheduler-app-logs:
+
+services:
+
+  oauth2-proxy:
+    container_name: oauth2-proxy.lednicky.localhost
+    image: lednicky/oauth2-proxy
+    depends_on:
+      - dex
+    networks:
+      - oauth
+      - app
+    ports: 
+      - 127.0.0.1:443:443
+    volumes: 
+      - ./oauth2-proxy/oauth2-proxy.config.yaml:/etc/proxy/oauth2-proxy.config.yaml:ro
+      - ./config/lednicky.localhost.crt:/etc/proxy/lednicky.localhost.crt:ro
+      - ./config/lednicky.localhost.decrypted.key:/etc/proxy/lednicky.localhost.decrypted.key:ro
+    command: --config /etc/proxy/oauth2-proxy.config.yaml   
+
+  dex:
+    container_name: dex.lednicky.localhost
+    image: ghcr.io/dexidp/dex:v2.30.0
+    depends_on:
+      - dex-sql
+    networks:
+      - oauth
+      - dex-data
+    volumes: 
+      - ./dex/dex.config.yaml:/etc/dex/config.docker.yaml:ro
+      - ./config/lednicky.localhost.crt:/etc/dex/lednicky.localhost.crt:ro
+      - ./config/lednicky.localhost.decrypted.key:/etc/dex/lednicky.localhost.decrypted.key:ro
+
+  dex-sql:
+    container_name: dex-sql
+    image: mysql:8.0.26
+    networks:
+      - dex-data
+    volumes:
+      - dex-mysql-data:/var/lib/mysql
+      - ./config/MYSQL_USERNAME:/config/MYSQL_USERNAME
+      - ./config/MYSQL_PASSWORD:/config/MYSQL_PASSWORD
+      - ./config/MYSQL_ROOT_PASSWORD:/config/MYSQL_ROOT_PASSWORD
+    environment:
+      MYSQL_DATABASE: dex
+      MYSQL_USER_FILE: /config/MYSQL_USERNAME
+      MYSQL_PASSWORD_FILE: /config/MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD_FILE: /config/MYSQL_ROOT_PASSWORD
