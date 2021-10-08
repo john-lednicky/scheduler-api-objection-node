@@ -1,6 +1,6 @@
 // TODO Add health checks and graceful shutdown: https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
-// TODO standardize date storage format (probably unix epoch)
-// TODO choose api authentication design and implement. News-API (complete server only, JWT api only) 
+// TODO standardize date storage format (store unix date as integer, return zulu date as string)
+// TODO Objection returns a date in one format, but accepts the date in another.
 // TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
 // TODO Jest unit tests at API layer
             /*
@@ -13,10 +13,8 @@
 // TODO Add node-specific plugins to eslint: https://github.com/goldbergyoni/nodebestpractices#-32-nodejs-specific-plugins
 // TODO Switch to xo linter https://github.com/xojs/xo)
 // TODO Lint entire project, but only after under source control
-// TODO Authentication
 // TODO Consider Pino or Log4js for logging. Look for log viewing tools.
 // TODO Catch unhandled exceptions: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/catchunhandledpromiserejection.md
 // TODO Consider ajv for upfront json validation
 // TODO Await returned promises: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/returningpromises.md
-// TODO Objection returns a date in one format, but accepts the date in another.
 // TODO Automatically insert correct verson in swagger doc (probably during build)
