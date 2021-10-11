@@ -26,41 +26,41 @@ pass_authorization_header = true
 
 ## the OAuth Redirect URL.
 # defaults to the "https://" + requested host header + "/oauth2/callback"
-redirect_url = "https://oauth2-proxy.lednicky.localhost/oauth2/callback"
+redirect_url = "https://lednicky.localhost/oauth2/callback"
 
 ## The OAuth provider
 provider = "oidc"
 provider_display_name = "Dex"
-oidc_issuer_url = "https://oauth2-proxy.lednicky.localhost/dex"
+oidc_issuer_url = "https://lednicky.localhost/dex"
 scope = "profile email openid"
 
 skip_oidc_discovery = true
-oidc_jwks_url = "https://oauth2-proxy.lednicky.localhost/dex/keys"
-login_url = "https://oauth2-proxy.lednicky.localhost/dex/auth"
-redeem_url = "https://oauth2-proxy.lednicky.localhost/dex/token"
-profile_url = "https://oauth2-proxy.lednicky.localhost/dex/userinfo"
+oidc_jwks_url = "https://lednicky.localhost/dex/keys"
+login_url = "https://lednicky.localhost/dex/auth"
+redeem_url = "https://lednicky.localhost/dex/token"
+profile_url = "https://lednicky.localhost/dex/userinfo"
 
 ## The OAuth Client ID, Secret
-client_id = "oauth2-proxy.lednicky.localhost"
+client_id = "lednicky.localhost"
 client_secret = "3efda189-2102-4984-971f-664a547036a6"
 
 ## the http url(s) of the upstream endpoint. If multiple, routing is based on path
 upstreams = [
     "https://mocktarget.apigee.net/echo",
     "https://dex.lednicky.localhost/dex/",
-    
-#    "http://app:3333/persons",
-#    "http://app:3333/eventTypes",
-#    "http://app:3333/events",
-#    "http://app:3333/assignments",
-#    "http://app:3333/api-doc",
-#    "http://app:3333/api-doc-ui",
+    "http://app:3333/api/",
 ]
 
 ## bypass authentication for requests that match the method & path. Format: method=path_regex OR path_regex alone for all methods
  skip_auth_routes = [
     "GET=^/dex.*",
     "POST=^/dex.*",
+    # "GET=^/api.*",
+    # "POST=^/api.*",
+    # "PUT=^/api.*",
+    # "DELETE=^/api.*",
+    "GET=^/api/api-doc.*",
+    "POST=^/api/api-doc.*",
  ]
 
 ## Logging configuration
@@ -118,10 +118,10 @@ email_domains = [
 ##            (ie: 1h means tokens are refreshed on request 1hr+ after it was set)
 ## Secure   - secure cookies are only sent by the browser of a HTTPS connection (recommended)
 ## HttpOnly - httponly cookies are not readable by javascript (recommended)
- cookie_name = "oauth2-proxy.lednicky.localhost"
+ cookie_name = "lednicky.localhost"
  cookie_secret = "j2IrsbUPEfzJLtUyiCoSZQ=="
  # cookie_domains = ""
  cookie_expire = "24h"
  cookie_refresh = "1h"
- cookie_secure = false # dev only
- cookie_httponly = false #dev only
+ cookie_secure = true 
+ cookie_httponly = true

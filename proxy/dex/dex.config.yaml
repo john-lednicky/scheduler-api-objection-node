@@ -1,0 +1,75 @@
+issuer: https://lednicky.localhost/dex
+
+storage:
+   type: mysql
+   config:
+     host: dex-sql
+     port: 3306
+     database: dex
+     user: dex
+     password: BlimBlamBlug
+     ssl:
+       mode: "false"
+
+web:
+  # http: 0.0.0.0:5556
+  https: 0.0.0.0:443
+  allowedOrigins: ['https://jwt.io'] # this is just for testing the tokens at jwt.io, which has js that fetches the signing key
+
+  # # Server certs. If TLS credentials aren't provided dex will run in plaintext (HTTP) mode.
+  # These will only work if the CA is trusted by the oauth2-proxy image
+  #   The tlsCert must be in /etc/ssl/certs/ca-certificates.crt on the oauth2-proxy host
+  tlsCert: "/etc/dex/lednicky.localhost.crt"
+  tlsKey: "/etc/dex/lednicky.localhost.decrypted.key"
+
+telemetry:
+  https: 0.0.0.0:5558
+
+# # This enables a truly ridonkulous API.
+# grpc:
+#   addr: 0.0.0.0:5557
+
+# # Client auth CA.
+# tlsClientCA: /etc/dex/client.crt
+
+# # enable reflection
+# reflection: true
+
+# OAuth2 configuration
+oauth2:
+  # use ["code", "token", "id_token"] to enable implicit flow for web-only clients
+  responseTypes: [ "code", "token", "id_token" ] # also allowed are "token" and "id_token"
+
+  # By default, Dex will ask for approval to share data with application
+  # (approval for sharing data from connected IdP to Dex is separate process on IdP)
+  skipApprovalScreen: true
+
+  # If only one authentication method is enabled, the default behavior is to
+  # go directly to it. For connected IdPs, this redirects the browser away
+  # from application to upstream provider such as the Google login page
+  alwaysShowLoginScreen: false
+
+  # Uncomment to use a specific connector for password grants
+  passwordConnector: local
+
+staticClients:
+  - id: lednicky.localhost
+    redirectURIs:
+      - 'https://lednicky.localhost/oauth2/callback'
+    name: 'oauth2-proxy'
+    secret: 3efda189-2102-4984-971f-664a547036a6
+
+connectors: 
+- type: github
+  # Required field for connector id.
+  id: github
+  # Required field for connector name.
+  name: GitHub
+  config:
+    # Credentials can be string literals or pulled from the environment.
+    clientID: 6b15b463ebe6fab696f4
+    clientSecret: 4eee95dcb4980ec4c40611c677227bce203c2064
+    redirectURI: https://lednicky.localhost/dex/callback
+
+enablePasswordDB: true
+

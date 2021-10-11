@@ -6,6 +6,7 @@ todo.js
 
 node_modules
 config
+proxy 
 
 logs
 *.log
@@ -17,7 +18,7 @@ sqlite3
 .gitignore
 
 Dockerfile
-docker-compose.yml
+docker-compose*.yml
 .dockerignore
 
 yarn-error.log

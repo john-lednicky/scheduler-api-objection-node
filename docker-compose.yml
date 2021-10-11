@@ -1,21 +1,33 @@
 version: "3.8"
 
+networks:
+  app:
+  app-sql:
+  dex-data:
+  oauth:
+  
 volumes:
   scheduler-mysql-data:
   scheduler-app-logs:
-
+  dex-mysql-data:
+  
 services:
 
   app:
     image: lednicky/scheduler-app
+    build:
+      context: ./
     depends_on:
-      - mysql
-    ports: 
+      - app-sql
+    networks:
+      - app
+      - app-sql
+    ports:
       - 3333:3333
     working_dir: /app
     environment:
       NODE_ENV: production
-      MYSQL_HOST: mysql
+      MYSQL_HOST: app-sql
       MYSQL_DBNAME: scheduler
       MYSQL_USERNAME_FILE: /app/config/MYSQL_USERNAME
       MYSQL_PASSWORD_FILE: /app/config/MYSQL_PASSWORD
@@ -26,15 +38,67 @@ services:
       - ./config/MYSQL_PASSWORD:/app/config/MYSQL_PASSWORD
       - scheduler-app-logs:/app/logs
 
-  mysql:
+  app-sql:
     image: mysql:8.0.26
-    volumes: 
+    networks:
+      - app-sql
+    volumes:
       - scheduler-mysql-data:/var/lib/mysql
       - ./config/MYSQL_USERNAME:/config/MYSQL_USERNAME
       - ./config/MYSQL_PASSWORD:/config/MYSQL_PASSWORD
+      - ./config/MYSQL_ROOT_PASSWORD:/config/MYSQL_ROOT_PASSWORD
     environment:
       MYSQL_DATABASE: scheduler
-      MYSQL_ONETIME_PASSWORD: yes # This doesn't seem to do anything. (https://github.com/GoogleCloudPlatform/mysql-docker/blob/master/5/README.md#securely-set-up-the-server-1)
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      # MYSQL_ONETIME_PASSWORD: 'yes'
+      # MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD_FILE: /config/MYSQL_ROOT_PASSWORD
       MYSQL_USER_FILE: /config/MYSQL_USERNAME
       MYSQL_PASSWORD_FILE: /config/MYSQL_PASSWORD
+
+# The below services are the same as those in ./proxy/docker-compose.yml, 
+#   but with different relative paths to the mounted configs.
+
+  proxy:
+    container_name: proxy
+    image: lednicky/oauth2-proxy
+    depends_on:
+      - dex
+    networks:
+      - oauth
+      - app
+    ports: 
+      - 127.0.0.1:443:443
+    volumes: 
+      - ./proxy/oauth2-proxy/oauth2-proxy.config.yaml:/etc/proxy/oauth2-proxy.config.yaml:ro
+      - ./proxy/config/lednicky.localhost.crt:/etc/proxy/lednicky.localhost.crt:ro
+      - ./proxy/config/lednicky.localhost.decrypted.key:/etc/proxy/lednicky.localhost.decrypted.key:ro
+    command: --config /etc/proxy/oauth2-proxy.config.yaml   
+
+  dex:
+    container_name: dex.lednicky.localhost
+    image: ghcr.io/dexidp/dex:v2.30.0
+    depends_on:
+      - dex-sql
+    networks:
+      - oauth
+      - dex-data
+    volumes: 
+      - ./proxy/dex/dex.config.yaml:/etc/dex/config.docker.yaml:ro
+      - ./proxy/config/lednicky.localhost.crt:/etc/dex/lednicky.localhost.crt:ro
+      - ./proxy/config/lednicky.localhost.decrypted.key:/etc/dex/lednicky.localhost.decrypted.key:ro
+
+  dex-sql:
+    container_name: dex-sql
+    image: mysql:8.0.26
+    networks:
+      - dex-data
+    volumes:
+      - dex-mysql-data:/var/lib/mysql
+      - ./proxy/config/MYSQL_USERNAME:/config/MYSQL_USERNAME:ro
+      - ./proxy/config/MYSQL_PASSWORD:/config/MYSQL_PASSWORD:ro
+      - ./proxy/config/MYSQL_ROOT_PASSWORD:/config/MYSQL_ROOT_PASSWORD:ro
+    environment:
+      MYSQL_DATABASE: dex
+      MYSQL_USER_FILE: /config/MYSQL_USERNAME
+      MYSQL_PASSWORD_FILE: /config/MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD_FILE: /config/MYSQL_ROOT_PASSWORD

@@ -6,6 +6,503 @@
 	},
 	"item": [
 		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "pubs",
+					"item": [
+						{
+							"name": "openid-configuration",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"pm.test(\"Content-Type header is application/json\", () => {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"const configuration = pm.response.json();\r",
+											"\r",
+											"let host = pm.environment.get('dexhost').replace('{{dexdomain}}',pm.environment.get('dexdomain'));\r",
+											"//host = 'http://dex.lednicky.app:5556';\r",
+											"\r",
+											"pm.test(\"token payload includes expected endpoints\", () => {\r",
+											"    pm.expect(configuration.issuer).to.equal(host);\r",
+											"    pm.expect(configuration.authorization_endpoint).to.equal(host + '/auth');\r",
+											"    pm.expect(configuration.jwks_uri).to.equal(host + '/keys');\r",
+											"    pm.expect(configuration.token_endpoint).to.equal(host + '/token');\r",
+											"    pm.expect(configuration.userinfo_endpoint).to.equal(host + '/userinfo');\r",
+											"});\r",
+											"\r",
+											"pm.environment.set('iss',configuration.issuer);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{dexhost}}/.well-known/openid-configuration",
+									"host": [
+										"{{dexhost}}"
+									],
+									"path": [
+										".well-known",
+										"openid-configuration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "jwks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/*\r",
+											"https://auth0.com/blog/navigating-rs256-and-jwks/\r",
+											"alg: is the algorithm for the key\r",
+											"kty: is the key type\r",
+											"use: is how the key was meant to be used. For the example above, sig represents signature verification.\r",
+											"x5c: is the x509 certificate chain\r",
+											"e: is the exponent for a standard pem\r",
+											"n: is the moduluos for a standard pem\r",
+											"kid: is the unique identifier for the key\r",
+											"x5t: is the thumbprint of the x.509 cert (SHA-1 thumbprint)\r",
+											"*/\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"pm.test(\"Content-Type header is application/json\", () => {\r",
+											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"pm.environment.set('keys',pm.response.json().keys);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{dexhost}}/keys",
+									"host": [
+										"{{dexhost}}"
+									],
+									"path": [
+										"keys"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "authorization_code (local)",
+					"item": [
+						{
+							"name": "00 sign-out (oauth2-proxy)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{oauthhost}}/sign_out",
+									"host": [
+										"{{oauthhost}}"
+									],
+									"path": [
+										"sign_out"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01 start (oauth2-proxy)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"token\", null);\r",
+											"pm.environment.set(\"auth_code\", null);\r",
+											"pm.environment.set(\"access_token\", null);\r",
+											"pm.environment.set(\"id_token\", null);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 302\", function () {\r",
+											"    pm.response.to.have.status(302);\r",
+											"});\r",
+											"\r",
+											"const location = postman.getResponseHeader(\"Location\")\r",
+											"\r",
+											"pm.test(\"location header includes 'dex'\", () => {\r",
+											"    pm.expect(location).to.include('dex');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"location header includes 'approval_prompt='\", () => {\r",
+											"    pm.expect(location).to.include('approval_prompt=');\r",
+											"    const approval_prompt = location.match(/approval_prompt=([^&]*)/)[1];\r",
+											"    pm.environment.set(\"approval_prompt\", approval_prompt);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"location header includes 'client_id='\", () => {\r",
+											"    pm.expect(location).to.include('client_id=');\r",
+											"    const client_id = location.match(/client_id=([^&]*)/)[1];\r",
+											"    pm.environment.set(\"client_id\", client_id);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"location header includes 'redirect_uri='\", () => {\r",
+											"    pm.expect(location).to.include('redirect_uri=');\r",
+											"    const redirect_uri = location.match(/redirect_uri=([^&]*)/)[1];\r",
+											"    pm.environment.set(\"redirect_uri\", redirect_uri);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"location header includes 'response_type='\", () => {\r",
+											"    pm.expect(location).to.include('response_type=');\r",
+											"    const response_type = location.match(/response_type=([^&]*)/)[1];\r",
+											"    pm.environment.set(\"response_type\", response_type);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"location header includes 'scope='\", () => {\r",
+											"    pm.expect(location).to.include('scope=');\r",
+											"    const scope = location.match(/scope=([^&]*)/)[1];\r",
+											"    pm.environment.set(\"scope\", scope);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"location header includes 'state='\", () => {\r",
+											"    pm.expect(location).to.include('state=');\r",
+											"    const state = location.match(/state=([^&]*)/)[1];\r",
+											"    pm.environment.set(\"state\", state);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "rd",
+											"value": "/oauth/start",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{oauthhost}}/start",
+									"host": [
+										"{{oauthhost}}"
+									],
+									"path": [
+										"start"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02 auth (dex)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 302\", function () {\r",
+											"    pm.response.to.have.status(302);\r",
+											"});\r",
+											"\r",
+											"const location = postman.getResponseHeader(\"Location\")\r",
+											"\r",
+											"pm.test(\"location header includes 'dex'\", () => {\r",
+											"    pm.expect(location).to.include('dex');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"const state = location.match(/state=(.*)(&|$)/)[1];\r",
+											"pm.environment.set(\"state\", state);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"followRedirects": false
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{dexhost}}/auth/local?client_id={{client_id}}&redirect_uri={{redirect_uri}}&state={{state}}&scope={{scope}}&response_type={{response_type}}",
+									"host": [
+										"{{dexhost}}"
+									],
+									"path": [
+										"auth",
+										"local"
+									],
+									"query": [
+										{
+											"key": "client_id",
+											"value": "{{client_id}}"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "{{redirect_uri}}"
+										},
+										{
+											"key": "state",
+											"value": "{{state}}"
+										},
+										{
+											"key": "scope",
+											"value": "{{scope}}"
+										},
+										{
+											"key": "response_type",
+											"value": "{{response_type}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03 login post creds (dex)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 303\", function () {\r",
+											"    pm.response.to.have.status(303);\r",
+											"});\r",
+											"\r",
+											"const location = postman.getResponseHeader(\"Location\")\r",
+											"\r",
+											"pm.test(\"location header includes 'approval'\", () => {\r",
+											"    pm.expect(location).to.include('approval');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"location header includes 'req='\", () => {\r",
+											"    pm.expect(location).to.include('req=');\r",
+											"    const req = location.match(/req=([^&]*)/)[1];\r",
+											"    pm.environment.set(\"req\", req);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "login",
+											"value": "ann@dot.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "ann",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{dexhost}}/auth/local/login?back=&state={{state}}",
+									"host": [
+										"{{dexhost}}"
+									],
+									"path": [
+										"auth",
+										"local",
+										"login"
+									],
+									"query": [
+										{
+											"key": "back",
+											"value": ""
+										},
+										{
+											"key": "state",
+											"value": "{{state}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04 confirm (dex)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 303\", function () {\r",
+											"    pm.response.to.have.status(303);\r",
+											"});\r",
+											"\r",
+											"const location = postman.getResponseHeader(\"Location\")\r",
+											"\r",
+											"pm.test(\"location header includes 'code'\", () => {\r",
+											"    pm.expect(location).to.include('code');\r",
+											"});\r",
+											"const auth_code = location.match(/code=([^&]*)/)[1];\r",
+											"pm.environment.set(\"auth_code\", auth_code);\r",
+											"console.log(`auth_code == ${auth_code}`);\r",
+											"\r",
+											"pm.test(\"location header includes 'state'\", () => {\r",
+											"    pm.expect(location).to.include('state');\r",
+											"});\r",
+											"const state = location.match(/state=([^&]*)/)[1];\r",
+											"pm.environment.set(\"state\", state);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{dexhost}}/approval?req={{req}}",
+									"host": [
+										"{{dexhost}}"
+									],
+									"path": [
+										"approval"
+									],
+									"query": [
+										{
+											"key": "req",
+											"value": "{{req}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05 callback (oauth-proxy)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 302\", function () {\r",
+											"    pm.response.to.have.status(302);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"lednicky.localhost session cookie set \", function () {\r",
+											"    pm.cookies.has('lednicky.localhost');\r",
+											"    console.log('lednicky.localhost cookie:');\r",
+											"    console.log(pm.cookies.get('lednicky.localhost'));\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{oauthhost}}/callback?code={{auth_code}}&state={{state}}",
+									"host": [
+										"{{oauthhost}}"
+									],
+									"path": [
+										"callback"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "{{auth_code}}"
+										},
+										{
+											"key": "state",
+											"value": "{{state}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "Persons",
 			"item": [
 				{

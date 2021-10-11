@@ -7,7 +7,6 @@ networks:
 
 volumes:
   dex-mysql-data:
-  scheduler-app-logs:
 
 services:
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const app = require('./app.js');
+/* eslint-disable no-console */
+const app = require('./app');
 
 const port = process.env.PORT || '3333';
 

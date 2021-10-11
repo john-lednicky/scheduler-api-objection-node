@@ -15,12 +15,9 @@ FROM node:12-alpine@sha256:1ea5900145028957ec0e7b7e590ac677797fa8962ccec4e731880
     RUN yarn install --production --frozen-lockfile
 
     # Copy specific code files and directories.
-    COPY --chown=node:node app.js knexfile.js server.js ./
-    COPY --chown=node:node db middleware models public routes services ./
-    
+    COPY --chown=node:node ./ /app
+
     # Switch to low-privileged user.
     USER node
 
-    # TODO Add an entrypoint script.
-    
     CMD ["dumb-init", "node", "./server.js"]
