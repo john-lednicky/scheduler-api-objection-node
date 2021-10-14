@@ -6,9 +6,7 @@
     "required": [
         "eventTypeId",
         "beginDttm",
-        "endDttm",
-        "updateUser",
-        "updateDttm"
+        "endDttm"
     ],
     "properties": {
         "id": {
@@ -24,15 +22,27 @@
         },
         "beginDttm": {
             "type": "string",
-            "description": "The date and time the event begins.",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
-            "example": "2021-03-08 11:00:00"
+            "description": "The date and time the event begins, in ISO 8601 UTC format, milliseconds optional.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.\\d{3})?Z$",
+            "example": "2020-01-01T10:45:00Z"
         },
         "endDttm": {
             "type": "string",
-            "description": "The date and time the event ends.",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
-            "example": "2021-03-08 11:00:00"
+            "description": "The date and time the event ends, in ISO 8601 UTC format, milliseconds optional.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.\\d{3})?Z$",
+            "example": "2020-01-01T10:45:00Z"
+        },
+        "timeZone": {
+            "type": "string",
+            "description": "The timezone of the event begin and end times.",
+            "enum": [
+                "America/New_York",
+                "America/Chicago",
+                "America/Denver",
+                "America/Phoenix",
+                "America/Los_Angeles"
+            ],
+            "example": "2020-01-01T10:45:00Z"
         },
         "peopleNeeded": {
             "type": "integer",
@@ -48,20 +58,6 @@
             "maxLength": 500,
             "pattern": "^[a-zA-Z0-9 .,:;\\-?!&/\\\\']*$",
             "example": "On this date, we will be deep-cleaning the walk-in."
-        },
-        "updateUser": {
-            "type": "string",
-            "description": "The username of the person who last updated this event.",
-            "minLength": 1,
-            "maxLength": 45,
-            "pattern": "^[a-zA-Z0-9 .-@]+$",
-            "example": "john.d.lednicky"
-        },
-        "updateDttm": {
-            "type": "string",
-            "description": "The date and time when this event was last updated.",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
-            "example": "2021-03-08 11:00:00"
         }
     }
 }

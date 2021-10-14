@@ -17,6 +17,8 @@ class eventTypeService extends baseService {
   }
 
   create = async (eventType) => {
+    eventType.updateUser = 'john.d.lednicky';
+    eventType.updateDttm = Math.floor((new Date()).getTime() / 1000);
     //if the passed eventType is already a model, we have to explicitly call validate
     if (eventType.$modelClass) {
       eventType.$validate();
@@ -28,6 +30,8 @@ class eventTypeService extends baseService {
     if (!eventType.id) {
       throw this.createError(400, 'eventType lacks an id');
     }
+    eventType.updateUser = 'john.d.lednicky';
+    eventType.updateDttm = Math.floor((new Date()).getTime() / 1000);
     //if the passed eventType is already a model, we have to explicitly call validate
     if (eventType.$modelClass) {
       eventType.$validate();

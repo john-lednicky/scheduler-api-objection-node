@@ -1,10 +1,12 @@
+// TODO Add tests for timezone service, router, api
+// TODO Add token validation
+// TODO Get updateUser from headers, maybe refactor service signatures to include updateUser and updateDttm as parameters
+// TODO Fix jest tests
 // TODO Add health checks and graceful shutdown: https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
-// TODO standardize date storage format (store unix date as integer, return zulu date as string)
-// TODO Objection returns a date in one format, but accepts the date in another.
 // TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
 // TODO Dress up UIs for dex and oauth2-proxy... mainly logo
 // TODO Investigate Keycloak
-// TODO Jest unit tests at API layer
+// TODO Jest unit tests at API layer (jest? or mocha+supertest? or jest+supertest?)
             /*
             starting server automatically https://glebbahmutov.com/blog/how-to-correctly-unit-test-express-server/
             supertest https://stackoverflow.com/a/37401775

@@ -24,6 +24,11 @@ class eventService extends baseService {
   }
 
   create = async (event) => {
+    event.updateUser = 'john.d.lednicky';
+    event.updateDttm = Math.floor((new Date()).getTime() / 1000);
+    event.beginDttm = event.beginDttm.replace('T', ' ').replace('Z', '');
+    event.endDttm = event.endDttm.replace('T', ' ').replace('Z', '');
+    
     // TODO eventService should validate that beginDttm is before endDttm
     //if the passed event is already a model, we have to explicitly call validate
     if (event.$modelClass) {
@@ -36,6 +41,11 @@ class eventService extends baseService {
     if (!event.id) {
       throw this.createError(400, 'event lacks an id');
     }
+    event.updateUser = 'john.d.lednicky';
+    event.updateDttm = Math.floor((new Date()).getTime() / 1000);
+    event.beginDttm = event.beginDttm.replace('T', ' ').replace('Z', '');
+    event.endDttm = event.endDttm.replace('T', ' ').replace('Z', '');
+
     //if the passed event is already a model, we have to explicitly call validate
     if (event.$modelClass) {
       event.$validate();

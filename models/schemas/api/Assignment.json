@@ -1,0 +1,24 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Assignment",
+    "description": "Represents the association of a Person with an Event (i.e. the person is assigned to the event).",
+    "type": "object",
+    "required": [
+        "personId",
+        "eventId"
+    ],
+    "properties": {
+        "personId": {
+            "type": "integer",
+            "description": "The unique id of the person assigned.",
+            "minimum": 1,
+            "example": 5
+        },
+        "eventId": {
+            "type": "integer",
+            "description": "The unique id of the event that the person is assigned to.",
+            "minimum": 1,
+            "example": 240
+        }
+   }
+}

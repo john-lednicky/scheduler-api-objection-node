@@ -564,7 +564,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -591,14 +591,17 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const event = pm.response.json();\r",
-									"postman.setEnvironmentVariable(\"eventId\", event.id);\r",
-									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"pm.test(\"Content-Type header is application/json\", () => {\r",
 									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"const event = pm.response.json();\r",
+									"pm.test(\"body json has a non null event.id\", () => {\r",
+									"    pm.expect(event.id).to.exist;\r",
+									"    postman.setEnvironmentVariable(\"eventId\", event.id);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -610,7 +613,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-10-13T13:00:00.000Z\",\r\n\t\"endDttm\" : \"2021-10-13T16:00:00.000Z\",\r\n    \"timeZone\": \"America/Chicago\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -739,7 +742,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -920,7 +923,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": {{personId}},\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"Wilberforce\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"id\": {{personId}},\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"Wilberforce\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -961,7 +964,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Invalid\",\r\n    \"middleName\": \"\",\r\n    \"phone\": \"xxxxxxxxxx\",\r\n    \"email\": \"invalid.nosurname@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Invalid\",\r\n    \"middleName\": \"\",\r\n    \"phone\": \"xxxxxxxxxx\",\r\n    \"email\": \"invalid.nosurname@scratch.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1012,7 +1015,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1039,15 +1042,22 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const event = pm.response.json();\r",
-									"postman.setEnvironmentVariable(\"eventId\", event.id);\r",
-									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"pm.test(\"Content-Type header is application/json\", () => {\r",
 									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
-									"});"
+									"});\r",
+									"\r",
+									"const event = pm.response.json();\r",
+									"pm.test(\"body json has a non null event.id\", () => {\r",
+									"    pm.expect(event.id).to.exist;\r",
+									"    postman.setEnvironmentVariable(\"eventId\", event.id);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1058,7 +1068,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-10-13T13:00:00.000Z\",\r\n\t\"endDttm\" : \"2021-10-13T16:00:00.000Z\",\r\n    \"timeZone\": \"America/Chicago\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1134,7 +1144,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1177,7 +1187,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"eventId\": {{eventId}},\r\n    \"personId\": {{personId}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1220,7 +1230,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"personId\": {{personId}},\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"personId\": {{personId}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1424,14 +1434,17 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const event = pm.response.json();\r",
-									"postman.setEnvironmentVariable(\"eventId\", event.id);\r",
-									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"pm.test(\"Content-Type header is application/json\", () => {\r",
 									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"const event = pm.response.json();\r",
+									"pm.test(\"body json has a non null event.id\", () => {\r",
+									"    pm.expect(event.id).to.exist;\r",
+									"    postman.setEnvironmentVariable(\"eventId\", event.id);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1443,7 +1456,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-10-13T13:00:00.000Z\",\r\n\t\"endDttm\" : \"2021-10-13T16:00:00.000Z\",\r\n    \"timeZone\": \"America/Chicago\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 3, \r\n\t\"comment\" : \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1475,6 +1488,17 @@
 									"});\r",
 									"pm.test(\"Content-Type header is application/json\", () => {\r",
 									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"const event = pm.response.json();\r",
+									"pm.test(\"body json has a non null event.id\", () => {\r",
+									"    pm.expect(event.id).to.exist;\r",
+									"    postman.setEnvironmentVariable(\"eventId\", event.id);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"body json has upated value\", () => {\r",
+									"    pm.expect(event.comment).to.exist;\r",
+									"    pm.expect(event.comment).to.equal(\"This event was updated.\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1486,7 +1510,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": {{eventId}}, \r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 4, \r\n\t\"comment\" : \"This event was updated.\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"id\": {{eventId}}, \r\n\t\"beginDttm\" : \"2021-10-14T13:00:00.000Z\",\r\n\t\"endDttm\" : \"2021-10-14T16:00:00.000Z\",\r\n    \"timeZone\": \"America/Chicago\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 4, \r\n\t\"comment\" : \"This event was updated.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1529,7 +1553,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"beginDttm\" : \"2021-07-04 13:00:00.00\",\r\n\t\"endDttm\" : \"2021-07-04 13:00:00.00\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 4, \r\n\t\"comment\" : \"This event was updated.\",\r\n\t\"updateUser\" : \"john.d.lednicky\",\r\n\t\"updateDttm\" : \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n\t\"beginDttm\" : \"2021-10-14T13:00:00.000Z\",\r\n\t\"endDttm\" : \"2021-10-14T16:00:00.000Z\",\r\n    \"timeZone\": \"America/Chicago\",\r\n    \"eventTypeId\": 1,\r\n\t\"peopleNeeded\" : 4, \r\n\t\"comment\" : \"This event was updated.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1664,15 +1688,22 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const eventType = pm.response.json();\r",
-									"postman.setEnvironmentVariable(\"eventTypeId\", eventType.id);\r",
+									"\r",
 									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"pm.test(\"Content-Type header is application/json\", () => {\r",
 									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
-									"});"
+									"});\r",
+									"\r",
+									"const eventType = pm.response.json();\r",
+									"pm.test(\"body json has a non null eventType.id\", () => {\r",
+									"    pm.expect(eventType.id).to.exist;\r",
+									"    postman.setEnvironmentVariable(\"eventTypeId\", eventType.id);\r",
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1683,7 +1714,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"name\": \"Test Event\",\r\n\t\"description\": \"\",\r\n\t\"updateUser\": \"john.d.lednicky\",\r\n\t\"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n\t\"name\": \"Test Event\",\r\n\t\"description\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1715,6 +1746,12 @@
 									"\r",
 									"pm.test(\"Content-Type header is application/json\", () => {\r",
 									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"const eventType = pm.response.json();\r",
+									"pm.test(\"body json has upated value\", () => {\r",
+									"    pm.expect(eventType.description).to.exist;\r",
+									"    pm.expect(eventType.description).to.equal(\"This event type was updated from a Postman test.\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1726,7 +1763,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": {{eventTypeId}},\r\n\t\"name\": \"Updated Test Event Type\",\r\n\t\"description\": \"This event type was updated from a Postman test.\",\r\n\t\"updateUser\": \"john.d.lednicky\",\r\n\t\"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"id\": {{eventTypeId}},\r\n\t\"name\": \"Updated Test Event Type\",\r\n\t\"description\": \"This event type was updated from a Postman test.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

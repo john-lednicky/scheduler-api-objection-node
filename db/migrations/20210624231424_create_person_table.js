@@ -10,7 +10,7 @@ exports.up = function (knex) {
     table.string('email', 200).nullable();
 
     table.string('update_user', 45).notNullable();
-    table.dateTime('update_dttm').notNullable();
+    table.integer('update_dttm', 11).unsigned().notNullable();
 
     table.index(['last_name', 'first_name', 'middle_name', 'id'], 'name');
   });

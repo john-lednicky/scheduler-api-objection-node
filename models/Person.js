@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const { Model } = require('objection');
 
 // TODO unit test person validation
@@ -22,7 +23,7 @@ class Person extends Model {
   }
 
   static get jsonSchema() {
-    return require('./Person.json');
+    return require('./schemas/db/Person.json');
   }
 }
 

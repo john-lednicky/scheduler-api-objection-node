@@ -14,6 +14,7 @@ volumes:
 services:
 
   app:
+    container_name: app
     image: lednicky/scheduler-app
     build:
       context: ./
@@ -39,6 +40,7 @@ services:
       - scheduler-app-logs:/app/logs
 
   app-sql:
+    container_name: app-sql
     image: mysql:8.0.26
     networks:
       - app-sql

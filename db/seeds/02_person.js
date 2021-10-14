@@ -1,9 +1,11 @@
+/* eslint-disable global-require */
+// eslint-disable-next-line func-names
 exports.seed = async function (knex) {
-  const { format } = require('date-fns');
-
   const { Model } = require('objection');
   Model.knex(knex);
   const Person = require('../../models/Person');
+
+  const epochTimestamp = Math.floor((new Date()).getTime() / 1000);
 
   const personValues = [
     {
@@ -14,7 +16,7 @@ exports.seed = async function (knex) {
       phone: '5121112222',
       email: 'ann@dot.com',
       updateUser: 'john.d.lednicky',
-      updateDttm: format(new Date(), 'yyyy-MM-dd HH:mm:ss.SS'),
+      updateDttm: epochTimestamp,
     },
     {
       id: 2,
@@ -24,7 +26,7 @@ exports.seed = async function (knex) {
       phone: '5122223333',
       email: 'bob@dot.com',
       updateUser: 'john.d.lednicky',
-      updateDttm: format(new Date(), 'yyyy-MM-dd HH:mm:ss.SS'),
+      updateDttm: epochTimestamp,
     },
     {
       id: 3,
@@ -34,7 +36,7 @@ exports.seed = async function (knex) {
       phone: '5124445555',
       email: 'carol@dot.com',
       updateUser: 'john.d.lednicky',
-      updateDttm: format(new Date(), 'yyyy-MM-dd HH:mm:ss.SS'),
+      updateDttm: epochTimestamp,
     },
     {
       id: 4,
@@ -44,7 +46,7 @@ exports.seed = async function (knex) {
       phone: '5126667777',
       email: 'dan@dot.com',
       updateUser: 'john.d.lednicky',
-      updateDttm: format(new Date(), 'yyyy-MM-dd HH:mm:ss.SS'),
+      updateDttm: epochTimestamp,
     },
     {
       id: 5,
@@ -54,7 +56,7 @@ exports.seed = async function (knex) {
       phone: '5127778888',
       email: 'erin@dot.com',
       updateUser: 'john.d.lednicky',
-      updateDttm: format(new Date(), 'yyyy-MM-dd HH:mm:ss.SS'),
+      updateDttm: epochTimestamp,
     },
     {
       id: 6,
@@ -64,7 +66,7 @@ exports.seed = async function (knex) {
       phone: '5127778888',
       email: 'federico@dot.com',
       updateUser: 'john.d.lednicky',
-      updateDttm: format(new Date(), 'yyyy-MM-dd HH:mm:ss.SS'),
+      updateDttm: epochTimestamp,
     },
   ];
 

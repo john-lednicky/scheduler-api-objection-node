@@ -30,6 +30,7 @@ app.use('/api/persons', require('./routes/personRouter'));
 app.use('/api/events', require('./routes/eventRouter'));
 app.use('/api/eventTypes', require('./routes/eventTypeRouter'));
 app.use('/api/assignments', require('./routes/assignmentRouter'));
+app.use('/api/timeZones', require('./routes/timeZoneRouter'));
 
 /* an error route for testing */
 app.get('/api/error', (req, res, next) => next(new Error('This is an error and it should be logged to the console')));

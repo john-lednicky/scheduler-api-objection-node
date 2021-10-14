@@ -1,12 +1,13 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const schemas = {};
-schemas.Message = require('../models/Message.json');
-schemas.ErrorMessage = require('../models/ErrorMessage.json');
-schemas.Person = require('../models/Person.json');
-schemas.Event = require('../models/Event.json');
-schemas.EventType = require('../models/EventType.json');
-schemas.Assignment = require('../models/Assignment.json');
+schemas.Message = require('../models/schemas/api/Message.json');
+schemas.ErrorMessage = require('../models/schemas/api/ErrorMessage.json');
+schemas.Person = require('../models/schemas/api/Person.json');
+schemas.Event = require('../models/schemas/api/Event.json');
+schemas.EventType = require('../models/schemas/api/EventType.json');
+schemas.Assignment = require('../models/schemas/api/Assignment.json');
+schemas.TimeZone = require('../models/schemas/api/TimeZone.json');
 
 exports.getDoc = () => {
   const options = {
@@ -33,10 +34,10 @@ exports.getDoc = () => {
         },
       ],
       components: {
-        schemas: {}
-      }
+        schemas: {},
+      },
     },
-    apis: ['./routes/*.js']
+    apis: ['./routes/*.js'],
   };
 
   options.definition.components.schemas = schemas;

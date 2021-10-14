@@ -1,0 +1,26 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "TimeZone",
+    "description": "A time zone that qualifies the start and end times of events.",
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+						"description": "The canonical name of the time zone.",
+            "example": "America/Chicago"
+        },
+        "shortDescription": {
+            "type": "string",
+						"description": "A description of the time zone.",
+            "example": "US Central"
+        }, 
+        "longDescription": {
+          "type": "string",
+          "description": "A longer description of the time zone.",
+          "example": "Applies to those parts of Arizona that do not observe daylight savings time."
+      }
+}
+}

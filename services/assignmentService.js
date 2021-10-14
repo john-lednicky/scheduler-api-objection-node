@@ -30,6 +30,8 @@ class assignmentService extends baseService {
   }
 
   create = async (assignment) => {
+    assignment.updateUser = 'john.d.lednicky';
+    assignment.updateDttm = Math.floor((new Date()).getTime() / 1000);
     //if the passed event is already a model, we have to explicitly call validate
     if (assignment.$modelClass) {
       assignment.$validate();

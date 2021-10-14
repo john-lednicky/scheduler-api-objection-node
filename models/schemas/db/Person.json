@@ -64,10 +64,11 @@
             "example": "john.d.lednicky"
         },
         "updateDttm": {
-            "type": "string",
-            "description": "The date and time when this person was last updated.",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$",
-            "example": "2021-03-08 11:00:00"
+            "type": "integer",
+            "minimum": 0, 
+            "maximum": 4294967295,
+            "description": "Epoch timestamp (number of seconds from 1970-01-01T00:00:00Z) for when the person was updated.",
+            "example": 1609495200
         }
     }
 }

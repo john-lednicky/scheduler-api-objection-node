@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const { Model } = require('objection');
 
 // TODO unit test EventType validation
@@ -21,7 +22,7 @@ class EventType extends Model {
   }
 
   static get jsonSchema() {
-    return require('./EventType.json');
+    return require('./schemas/db/EventType.json');
   }
 }
 

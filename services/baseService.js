@@ -1,18 +1,19 @@
+/* eslint-disable global-require */
 class baseService {
-  constructor(env = null, db = null) {
+  constructor(env = null) {
     this.createError = require('http-errors');
-    const knexFile = require('../knexfile.js');
+    const knexFile = require('../knexfile');
     this.knexEnvironmentConfig = knexFile[env || process.env.NODE_ENV || 'development'];
     this.knex = require('knex')(this.knexEnvironmentConfig);
     this.model = require('objection').Model;
     this.model.knex(this.knex);
     this.isPositiveInteger = (value) => {
       /* https://stackoverflow.com/a/14794066 */
-      let x;
       if (Number.isNaN(value)) {
         return false;
       }
-      x = parseFloat(value);
+      const x = parseFloat(value);
+      // eslint-disable-next-line no-bitwise
       return x > 0 && (x | 0) === x;
     };
   }

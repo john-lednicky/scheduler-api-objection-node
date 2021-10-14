@@ -19,6 +19,9 @@ class personService extends baseService {
 
   create = async (person) => {
     delete person.id;
+    person.updateUser = 'john.d.lednicky';
+    person.updateDttm = Math.floor((new Date()).getTime() / 1000);
+
     //if the passed person is already a model, we have to explicitly call validate
     if (person.$modelClass) {
       person.$validate();
@@ -30,6 +33,8 @@ class personService extends baseService {
     if (!person.id) {
       throw this.createError(400, 'person lacks an id');
     }
+    person.updateUser = 'john.d.lednicky';
+    person.updateDttm = Math.floor((new Date()).getTime() / 1000);
     //if the passed person is already a model, we have to explicitly call validate
     if (person.$modelClass) {
       person.$validate();
@@ -41,7 +46,6 @@ class personService extends baseService {
     if (!this.isPositiveInteger(id)) {
       throw this.createError(400, `id is not a positive integer ${id}`);
     };
-
     return this.Assignment.query().delete().where('personId', '=', id)
       .then( () => {
         return this.Person.query().deleteById(id)

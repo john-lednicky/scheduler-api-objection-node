@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const { Model } = require('objection');
 
 class Assignment extends Model {
@@ -33,7 +34,7 @@ class Assignment extends Model {
   }
 
   static get jsonSchema() {
-    return require('./Assignment.json');
+    return require('./schemas/db/Assignment.json');
   }
 }
 module.exports = Assignment;
