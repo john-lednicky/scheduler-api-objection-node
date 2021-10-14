@@ -1,4 +1,4 @@
-require('dotenv').config();
+const result = require('dotenv').config()
 const knexConfig = require('../../knexfile.js');
 const knex = require('knex')(knexConfig[process.env.NODE_ENV || 'development']);
 
@@ -7,9 +7,9 @@ const newPerson = {
     middle_name: '',
     last_name: 'Wilbersnort',
     phone: '5126667777',
-    email: 'wally.wilbersnort@scratch.com',   
-    update_user: 'john.d.lednicky',      
-    update_dttm: '2021-06-23 11:00:00'
+    email: 'wally.wilbersnort@scratch.com',
+    updateUser: 'john.d.lednicky',
+    updateDttm: 1634224418,
   }
 
 knex

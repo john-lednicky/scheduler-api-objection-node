@@ -1,6 +1,7 @@
+/* eslint-disable func-names */
 exports.up = function (knex) {
   return knex.schema.createTable('person', (table) => {
-    table.increments('id').unsigned().primary();
+    table.increments('id').unsigned().primary('person_pk');
 
     table.string('first_name', 20).notNullable();
     table.string('middle_name', 20).nullable();

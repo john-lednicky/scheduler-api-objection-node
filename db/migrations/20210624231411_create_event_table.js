@@ -1,6 +1,7 @@
+/* eslint-disable func-names */
 exports.up = function (knex) {
   return knex.schema.createTable('event', (table) => {
-    table.increments('id').unsigned().primary();
+    table.increments('id').unsigned().primary('event_pk');
 
     table.integer('event_type_id')
       .unsigned()

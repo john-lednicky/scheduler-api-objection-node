@@ -1,7 +1,6 @@
-// TODO Add tests for timezone service, router, api
+// TODO JSON schema validation in web layer using https://ajv.js.org/json-schema.html
 // TODO Add token validation
 // TODO Get updateUser from headers, maybe refactor service signatures to include updateUser and updateDttm as parameters
-// TODO Fix jest tests
 // TODO Add health checks and graceful shutdown: https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
 // TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
 // TODO Dress up UIs for dex and oauth2-proxy... mainly logo

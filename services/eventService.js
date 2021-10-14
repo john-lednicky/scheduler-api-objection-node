@@ -7,6 +7,14 @@ class eventService extends baseService {
     this.Event = require('../models/Event');
   };
 
+  convertZuluDateStringToSqlDateString = (dateString) => {
+    let returnValue = dateString;
+    if (returnValue) {
+      returnValue = returnValue.replace('T', ' ').replace('Z', '');
+    }
+    return returnValue;
+  }
+
   getAll = async () => this.Event.query();
 
   find = async (id) => {
@@ -26,8 +34,8 @@ class eventService extends baseService {
   create = async (event) => {
     event.updateUser = 'john.d.lednicky';
     event.updateDttm = Math.floor((new Date()).getTime() / 1000);
-    event.beginDttm = event.beginDttm.replace('T', ' ').replace('Z', '');
-    event.endDttm = event.endDttm.replace('T', ' ').replace('Z', '');
+    event.beginDttm = this.convertZuluDateStringToSqlDateString(event.beginDttm);
+    event.endDttm = this.convertZuluDateStringToSqlDateString(event.endDttm);
     
     // TODO eventService should validate that beginDttm is before endDttm
     //if the passed event is already a model, we have to explicitly call validate
@@ -43,8 +51,8 @@ class eventService extends baseService {
     }
     event.updateUser = 'john.d.lednicky';
     event.updateDttm = Math.floor((new Date()).getTime() / 1000);
-    event.beginDttm = event.beginDttm.replace('T', ' ').replace('Z', '');
-    event.endDttm = event.endDttm.replace('T', ' ').replace('Z', '');
+    event.beginDttm = this.convertZuluDateStringToSqlDateString(event.beginDttm);
+    event.endDttm = this.convertZuluDateStringToSqlDateString(event.endDttm);
 
     //if the passed event is already a model, we have to explicitly call validate
     if (event.$modelClass) {

@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 exports.up = function (knex) {
   return knex.schema.createTable('assignment', (table) => {
     table.integer('event_id')
