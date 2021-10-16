@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 const { Model } = require('objection');
+const { dbSchemas } = require('../services/jsonSchemaService');
 
 // TODO unit test EventType validation
 class EventType extends Model {
@@ -22,7 +23,7 @@ class EventType extends Model {
   }
 
   static get jsonSchema() {
-    return require('./schemas/db/EventType.json');
+    return dbSchemas.eventTypeSchema;
   }
 }
 

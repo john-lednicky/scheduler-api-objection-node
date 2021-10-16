@@ -325,7 +325,7 @@ test('eventService.create() - validation error timeZone is empty string', async 
     comment: '',
   };
   eventToCreate.timeZone = '';
-  await expect(eventService.create(eventToCreate)).rejects.toThrow('timeZone: should match pattern');
+  await expect(eventService.create(eventToCreate)).rejects.toThrow('timeZone: should be equal to one of the allowed values');
 });
 test('eventService.create() - validation error timeZone has invalid characters', async () => {
   const eventToCreate = {
@@ -337,7 +337,7 @@ test('eventService.create() - validation error timeZone has invalid characters',
     comment: '',
   };
   eventToCreate.timeZone = 'America\\Chicago';
-  await expect(eventService.create(eventToCreate)).rejects.toThrow('timeZone: should match pattern');
+  await expect(eventService.create(eventToCreate)).rejects.toThrow('timeZone: should be equal to one of the allowed values');
 });
 
 test('eventService.create() - validation error comment too long', async () => {
@@ -706,7 +706,7 @@ test('eventService.update() - validation error timeZone is empty string', async 
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.timeZone = '';
 
-  await expect(eventService.update(eventToCreate)).rejects.toThrow('timeZone: should match pattern');
+  await expect(eventService.update(eventToCreate)).rejects.toThrow('timeZone: should be equal to one of the allowed values');
 });
 test('eventService.update() - validation error timeZone has invalid characters', async () => {
   const eventToCreate = {
@@ -724,7 +724,7 @@ test('eventService.update() - validation error timeZone has invalid characters',
   eventToCreate.id = eventCreated.id;
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.timeZone = 'America\\Chicago';
-  await expect(eventService.update(eventToCreate)).rejects.toThrow('timeZone: should match pattern');
+  await expect(eventService.update(eventToCreate)).rejects.toThrow('timeZone: should be equal to one of the allowed values');
 });
 
 test('eventService.update() - validation error comment too long', async () => {

@@ -66,7 +66,7 @@ router.get('/', async (req, res, next) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Person'
+ *               $ref: '#/components/schemas/Event'
  *       404:
  *         description: Not Found Error
  *         content:
@@ -109,7 +109,7 @@ router.get('/:id', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Event'
+ *             $ref: '#/components/schemas/AddEvent'
  *     responses:
  *       200:
  *         description: The event created
@@ -155,7 +155,7 @@ router.post('/', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Event'
+ *             $ref: '#/components/schemas/UpdateEvent'
  *     responses:
  *       200:
  *         description: The event updated

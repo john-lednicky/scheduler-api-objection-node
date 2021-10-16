@@ -109,7 +109,7 @@ router.get('/:id', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Person'
+ *             $ref: '#/components/schemas/AddPerson'
  *     responses:
  *       200:
  *         description: The person created
@@ -155,7 +155,7 @@ router.post('/', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Person'
+ *             $ref: '#/components/schemas/UpdatePerson'
  *     responses:
  *       200:
  *         description: The person updated

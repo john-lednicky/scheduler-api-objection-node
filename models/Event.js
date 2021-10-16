@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 const { Model } = require('objection');
+const { dbSchemas } = require('../services/jsonSchemaService');
 
 class Event extends Model {
   static get tableName() {
@@ -21,7 +22,7 @@ class Event extends Model {
   }
 
   static get jsonSchema() {
-    return require('./schemas/db/Event.json');
+    return dbSchemas.eventSchema;
   }
 }
 

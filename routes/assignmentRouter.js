@@ -115,7 +115,7 @@ router.get('/:personId/:eventId', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Assignment'
+ *             $ref: '#/components/schemas/AddAssignment'
  *     responses:
  *       200:
  *         description: The assignment created

@@ -109,7 +109,7 @@ router.get('/:id', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/EventType'
+ *             $ref: '#/components/schemas/AddEventType'
  *     responses:
  *       200:
  *         description: The event type created
@@ -155,7 +155,7 @@ router.post('/', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/EventType'
+ *             $ref: '#/components/schemas/UpdateEventType'
  *     responses:
  *       200:
  *         description: The event type updated

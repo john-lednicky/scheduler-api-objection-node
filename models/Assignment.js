@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 const { Model } = require('objection');
+const { dbSchemas } = require('../services/jsonSchemaService');
 
 class Assignment extends Model {
   static get tableName() {
@@ -34,7 +35,7 @@ class Assignment extends Model {
   }
 
   static get jsonSchema() {
-    return require('./schemas/db/Assignment.json');
+    return dbSchemas.assignmentSchema;
   }
 }
 module.exports = Assignment;

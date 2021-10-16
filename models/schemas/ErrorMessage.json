@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ErrorMessage",
+  "description": "The message returned when an error is encountered.",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "A description of the error.",
+      "example": "NotFoundError: person 39\\n    at C:\\Users\\johnd\\Documents\\scheduler\\scheduler-api-objection-node\\controllers\\personController.js:19:14\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"
+    }
+  }
+}
