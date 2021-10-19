@@ -1,4 +1,3 @@
-// TODO JSON schema validation in web layer using https://ajv.js.org/json-schema.html
 // TODO Add token validation
 // TODO Get updateUser from headers, maybe refactor service signatures to include updateUser and updateDttm as parameters
 // TODO Add health checks and graceful shutdown: https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
@@ -19,7 +18,6 @@
 // TODO Lint entire project, but only after under source control
 // TODO Consider Pino or Log4js for logging. Look for log viewing tools.
 // TODO Catch unhandled exceptions: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/catchunhandledpromiserejection.md
-// TODO Consider ajv for upfront json validation
 // TODO Await returned promises: https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/returningpromises.md
 // TODO Refactor code to make API versioning convenient
 // TODO Automatically insert correct verson in swagger doc (probably during build)

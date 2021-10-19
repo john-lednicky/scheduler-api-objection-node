@@ -1,5 +1,6 @@
 const express = require('express');
 const createError = require('http-errors');
+const validationService = require('../services/validationService');
 const assignmentService = require('../services/assignmentService')();
 
 const router = express.Router();
@@ -138,6 +139,10 @@ router.get('/:personId/:eventId', async (req, res, next) => {
  */
 router.post('/', async (req, res, next) => {
   const assignment = req.body;
+  const validationResult = validationService.validateEntity('Assignment', 'add', assignment);
+  if (validationResult) {
+    next(createError(400, validationResult));
+  }
   assignmentService.create(assignment)
     .then((data) => {
       res.json(data);

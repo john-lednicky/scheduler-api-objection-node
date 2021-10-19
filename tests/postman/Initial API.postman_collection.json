@@ -656,7 +656,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": {{personId}},\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"Wilberforce\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\",\r\n    \"updateUser\": \"john.d.lednicky\",\r\n    \"updateDttm\": \"2021-07-04 13:00:00.00\"\r\n}",
+							"raw": "{\r\n    \"id\": {{personId}},\r\n    \"firstName\": \"William\",\r\n    \"middleName\": \"Wilberforce\",\r\n    \"lastName\": \"Watkins\",\r\n    \"phone\": \"5127778888\",\r\n    \"email\": \"william.watkins@scratch.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1394,6 +1394,39 @@
 		{
 			"name": "Events",
 			"item": [
+				{
+					"name": "TimeZones - get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/timezones",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"timezones"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Events - get all",
 					"event": [
