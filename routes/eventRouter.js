@@ -1,5 +1,6 @@
 const express = require('express');
 const createError = require('http-errors');
+const validationService = require('../services/validationService');
 const eventService = require('../services/eventService')();
 
 const router = express.Router();
@@ -132,6 +133,10 @@ router.get('/:id', async (req, res, next) => {
  */
 router.post('/', async (req, res, next) => {
   const event = req.body;
+  const validationResult = validationService.validateEntity('Event', 'add', event);
+  if (validationResult) {
+    next(createError(400, validationResult));
+  }
   eventService.create(event)
     .then((data) => {
       res.json(data);
@@ -178,6 +183,10 @@ router.post('/', async (req, res, next) => {
  */
 router.put('/', async (req, res, next) => {
   const event = req.body;
+  const validationResult = validationService.validateEntity('Event', 'update', event);
+  if (validationResult) {
+    next(createError(400, validationResult));
+  }
   eventService.update(event)
     .then((data) => {
       if (data) {
