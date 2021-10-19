@@ -25,9 +25,6 @@ const validators = {
   },
 };
 
-// eslint-disable-next-line no-console
-console.log('compiled schemas');
-
 exports.validateEntity = (entityName, operation, json) => {
   if (!validators[entityName]) {
     throw createError(400, `entityName must be "Person", "EventType", "Event", or "Assignment" (case-sensitive). You passed "${entityName}"`);

@@ -9,6 +9,7 @@
     "updateUser",
     "updateDttm"
   ],
+  "additionalProperties": false,
   "properties": {
     "personId": {
       "type": "integer",

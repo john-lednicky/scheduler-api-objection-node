@@ -10,6 +10,7 @@
     "updateUser",
     "updateDttm"
   ],
+  "additionalProperties": false,
   "properties": {
     "id": {
       "type": "integer",
