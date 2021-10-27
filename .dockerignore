@@ -1,24 +1,24 @@
+# files in root
 .vscode/
-jest.config.js
-.eslint*
-*.md
-todo.js
-
-node_modules
-config
-proxy 
-
-logs
-*.log
-
-sqlite3
-*.sqlite
-
 .git
 .gitignore
-
-Dockerfile
-docker-compose*.yml
 .dockerignore
+.eslint*
+jest.config.js
+todo.js
 
-yarn-error.log
+# file wildcards
+*.md
+*.sqlite
+*Dockerfile
+*docker-compose*.yml
+*.log
+
+# directories
+**node_modules
+# **config
+**tests
+**logs
+**sqlite3
+
+
