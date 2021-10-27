@@ -29,6 +29,12 @@ const router = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Event'
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  *       500:
  *         description: Server Error
  *         content:
@@ -68,6 +74,12 @@ router.get('/', async (req, res, next) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Event'
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  *       404:
  *         description: Not Found Error
  *         content:
@@ -124,6 +136,12 @@ router.get('/:id', async (req, res, next) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorMessage'
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  *       500:
  *         description: Server Error
  *         content:
@@ -170,6 +188,12 @@ router.post('/', async (req, res, next) => {
  *               $ref: '#/components/schemas/Event'
  *       400:
  *         description: Validation Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       403:
+ *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
@@ -224,6 +248,12 @@ router.put('/', async (req, res, next) => {
  *               $ref: '#/components/schemas/Message'
  *       400:
  *         description: Validation Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       403:
+ *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:

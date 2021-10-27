@@ -1,15 +1,14 @@
-// TODO Add token validation
 // TODO Get updateUser from headers, maybe refactor service signatures to include updateUser and updateDttm as parameters
 // TODO Add health checks and graceful shutdown: https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
-// TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
-// TODO Dress up UIs for dex and oauth2-proxy... mainly logo
-// TODO Investigate Keycloak
-// TODO Jest unit tests at API layer (jest? or mocha+supertest? or jest+supertest?)
+// TODO Jest unit tests at API layer (jest+supertest)
             /*
             starting server automatically https://glebbahmutov.com/blog/how-to-correctly-unit-test-express-server/
             supertest https://stackoverflow.com/a/37401775
             jest and supertest https://dev.to/lukekyl/testing-your-express-js-backend-server-3ae6
             */
+// TODO add module comments per https://jsdoc.app/howto-commonjs-modules.html
+// TODO Dress up UIs for dex and oauth2-proxy... mainly logo
+// TODO Investigate Keycloak
 // TODO Add an entrypoint script to api Dockerfile           
 // TODO Require modules by folders (add index.js) https://github.com/goldbergyoni/nodebestpractices#-39-require-modules-by-folders-as-opposed-to-the-files-directly
 // TODO Add prettier to vs code

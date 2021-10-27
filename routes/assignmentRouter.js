@@ -29,6 +29,12 @@ const router = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Assignment'
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  *       500:
  *         description: Server Error
  *         content:
@@ -74,6 +80,12 @@ router.get('/', async (req, res, next) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Person'
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  *       404:
  *         description: Not Found Error
  *         content:
@@ -124,6 +136,12 @@ router.get('/:personId/:eventId', async (req, res, next) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Assignment'
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
  *       400:
  *         description: Validation Error
  *         content:
@@ -182,6 +200,12 @@ router.post('/', async (req, res, next) => {
  *               $ref: '#/components/schemas/Message'
  *       400:
  *         description: Validation Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorMessage'
+ *       403:
+ *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:

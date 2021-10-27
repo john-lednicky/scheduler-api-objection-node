@@ -20,6 +20,7 @@ services:
       context: ./
     depends_on:
       - app-sql
+      - dex
     networks:
       - app
       - app-sql
@@ -27,13 +28,14 @@ services:
       - 3333:3333
     working_dir: /app
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
+      NODE_EXTRA_CA_CERTS: ./certs/lednicky.localhost.crt
+      OAUTH_ISSUER: https://lednicky.localhost/dex
+      OAUTH_AUDIENCE: lednicky.localhost
       MYSQL_HOST: app-sql
       MYSQL_DBNAME: scheduler
       MYSQL_USERNAME_FILE: /app/config/MYSQL_USERNAME
       MYSQL_PASSWORD_FILE: /app/config/MYSQL_PASSWORD
-      GOOGLE_CLIENT_ID: 630356498798-0t2bcf58i2o3akq5dbg1ju7f5knt2nlp.apps.googleusercontent.com
-      GOOGLE_CALLBACK_URL: http://localhost:80/auth/google/callback 
     volumes:
       - ./config/MYSQL_USERNAME:/app/config/MYSQL_USERNAME
       - ./config/MYSQL_PASSWORD:/app/config/MYSQL_PASSWORD
@@ -61,7 +63,7 @@ services:
 #   but with different relative paths to the mounted configs.
 
   proxy:
-    container_name: proxy
+    container_name: lednicky.localhost
     image: lednicky/oauth2-proxy
     depends_on:
       - dex

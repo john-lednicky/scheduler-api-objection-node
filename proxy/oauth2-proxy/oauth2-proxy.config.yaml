@@ -19,6 +19,8 @@ reverse_proxy = false
 # These pass request headers to the upstream server.
 pass_access_token = true
 pass_authorization_header = true
+pass_user_headers = true
+prefer_email_to_user = true
 
 # These pass response headers to the downstream client.
 # set_xauthrequest = true
