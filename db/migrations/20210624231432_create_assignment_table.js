@@ -13,7 +13,7 @@ exports.up = function (knex) {
       .references('id')
       .inTable('person');
 
-    table.string('update_user', 45)
+    table.string('update_user', 200)
       .notNullable();
 
     table.integer('update_dttm', 11)

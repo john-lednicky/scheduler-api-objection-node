@@ -41,7 +41,7 @@ const createPersonEventPair = async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const personCreated = await personService.create(personToCreate, 'john.lednicky', personService.getCurrentTimestamp());
 
   const eventToCreate = {
     beginDttm: '2021-10-13T13:00:00.000Z',
@@ -51,7 +51,7 @@ const createPersonEventPair = async () => {
     peopleNeeded: 3,
     comment: '',
   };
-  const eventCreated = await eventService.create(eventToCreate);
+  const eventCreated = await eventService.create(eventToCreate, 'john.lednicky', personService.getCurrentTimestamp());
 
   return {
     person: personCreated,
@@ -75,7 +75,7 @@ test('assignmentService.delete() - success', async () => {
     personId: person.id,
     eventId: event.id,
   };
-  const assignmentCreated = await assignmentService.create(assignmentToCreate);
+  const assignmentCreated = await assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp());
   expect(assignmentCreated).toHaveProperty('personId');
   expect(assignmentCreated).toHaveProperty('eventId');
 
@@ -117,7 +117,7 @@ test('assignmentService.find() - success', async () => {
     personId: person.id,
     eventId: event.id,
   };
-  const assignmentCreated = await assignmentService.create(assignmentToCreate);
+  const assignmentCreated = await assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp());
   expect(assignmentCreated).toHaveProperty('personId');
   expect(assignmentCreated).toHaveProperty('eventId');
 
@@ -160,7 +160,7 @@ test('assignmentService.create() - success', async () => {
     personId: person.id,
     eventId: event.id,
   };
-  const assignmentCreated = await assignmentService.create(assignmentToCreate);
+  const assignmentCreated = await assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp());
   expect(assignmentCreated).toHaveProperty('personId');
   expect(assignmentCreated).toHaveProperty('eventId');
 
@@ -178,14 +178,16 @@ test('assignmentService.create() - personId missing', async () => {
   const assignmentToCreate = {
     eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow('personId: is a required property');
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow('personId: is a required property');
 });
 test('assignmentService.create() - eventId missing', async () => {
   const { person } = await createPersonEventPair();
   const assignmentToCreate = {
     personId: person.id,
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow('eventId: is a required property');
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow('eventId: is a required property');
 });
 test('assignmentService.create() - personId invalid - not a positive integer', async () => {
   const { event } = await createPersonEventPair();
@@ -193,7 +195,8 @@ test('assignmentService.create() - personId invalid - not a positive integer', a
     personId: -1,
     eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow('personId: should be >= 1');
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow('personId: should be >= 1');
 });
 test('assignmentService.create() - eventId invalid - not a positive integer', async () => {
   const { person } = await createPersonEventPair();
@@ -201,7 +204,8 @@ test('assignmentService.create() - eventId invalid - not a positive integer', as
     personId: person.id,
     eventId: -1,
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow('eventId: should be >= 1');
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow('eventId: should be >= 1');
 });
 test('assignmentService.create() - personId invalid - not a positive integer', async () => {
   const { event } = await createPersonEventPair();
@@ -209,7 +213,8 @@ test('assignmentService.create() - personId invalid - not a positive integer', a
     personId: 'a',
     eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow('personId: should be integer');
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow('personId: should be integer');
 });
 test('assignmentService.create() - eventId invalid - not a positive integer', async () => {
   const { person } = await createPersonEventPair();
@@ -217,7 +222,8 @@ test('assignmentService.create() - eventId invalid - not a positive integer', as
     personId: person.id,
     eventId: 'a',
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow('eventId: should be integer');
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow('eventId: should be integer');
 });
 test('assignmentService.create() - personId invalid - no related record', async () => {
   const allPersons = await personService.getAll();
@@ -229,7 +235,8 @@ test('assignmentService.create() - personId invalid - no related record', async 
     personId: greatestId + 1547,
     eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow(/(a foreign key constraint fail)|(FOREIGN KEY constraint failed)/);
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow(/(a foreign key constraint fail)|(FOREIGN KEY constraint failed)/);
 });
 test('assignmentService.create() - eventId invalid - no related record', async () => {
   const allEvents = await eventService.getAll();
@@ -241,81 +248,85 @@ test('assignmentService.create() - eventId invalid - no related record', async (
     personId: person.id,
     eventId: greatestId + 2547,
   };
-  await expect(assignmentService.create(assignmentToCreate)).rejects.toThrow(/(a foreign key constraint fail)|(FOREIGN KEY constraint failed)/);
+  await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
+    .rejects.toThrow(/(a foreign key constraint fail)|(FOREIGN KEY constraint failed)/);
 });
 
-/*
 test('assignmentService.create() - validation error updateUser too long', async () => {
+  const { event, person } = await createPersonEventPair();
   const assignmentToCreate = {
-    'name': 'Test',
-    'description': '',
-    'updateUser': 'a'.repeat(46),
-    'updateDttm': '2021-07-04 13:00:00.00'
+    personId: person.id,
+    eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate))
-    .rejects.toThrow('updateUser: should NOT be longer than 45 characters');
+  const updateUser = 'a'.repeat(201);
+
+  await expect(assignmentService.create(assignmentToCreate,
+    updateUser, personService.getCurrentTimestamp()))
+    .rejects.toThrow('updateUser: should NOT be longer than 200 characters');
 });
+
 test('assignmentService.create() - validation error updateUser missing', async () => {
+  const { event, person } = await createPersonEventPair();
   const assignmentToCreate = {
-    'name': 'Invalid@',
-    'description': '',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    personId: person.id,
+    eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate))
-    .rejects.toThrow('updateUser: is a required property');
+  await expect(assignmentService.create(assignmentToCreate,
+    null, personService.getCurrentTimestamp()))
+    .rejects.toThrow('missing updateUser');
 });
 test('assignmentService.create() - validation error updateUser empty string', async () => {
+  const { event, person } = await createPersonEventPair();
   const assignmentToCreate = {
-    'name': 'Test',
-    'description': '',
-    'updateUser': '',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    personId: person.id,
+    eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate))
-    .rejects.toThrow('updateUser: should match pattern '^[a-zA-Z0-9 .-@]+$', !< 1 character');
+  await expect(assignmentService.create(assignmentToCreate,
+    '', personService.getCurrentTimestamp()))
+    .rejects.toThrow('missing updateUser');
 });
 test('assignmentService.create() - validation error updateUser has bad characters', async () => {
+  const { event, person } = await createPersonEventPair();
   const assignmentToCreate = {
-    'name': 'Test',
-    'description': '',
-    'updateUser': 'john.d.ledni$cky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    personId: person.id,
+    eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate))
-    .rejects.toThrow('updateUser: should match pattern '^[a-zA-Z0-9 .-@]+$'');
+  const updateUser = 'name space lname';
+  await expect(assignmentService.create(assignmentToCreate,
+    updateUser, personService.getCurrentTimestamp()))
+    .rejects.toThrow('updateUser: should match pattern');
 });
 
 test('assignmentService.create() - validation error updateDttm missing', async () => {
+  const { event, person } = await createPersonEventPair();
   const assignmentToCreate = {
-    'name': 'Test',
-    'description': '',
-    'updateUser': 'john.d.lednicky'
+    personId: person.id,
+    eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate))
-    .rejects.toThrow('updateDttm: is a required property');
+  const updateUser = 'john.lednicky';
+  await expect(assignmentService.create(assignmentToCreate,
+    updateUser))
+    .rejects.toThrow('missing timestamp');
 });
 test('assignmentService.create() - validation error updateDttm empty string', async () => {
+  const { event, person } = await createPersonEventPair();
   const assignmentToCreate = {
-    'name': 'Test',
-    'description': '',
-    'updateUser': 'john.d.lednick',
-    'updateDttm': ''
+    personId: person.id,
+    eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate))
-    .rejects.toThrow('updateDttm: should match pattern
-     '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$'');
+  const updateUser = 'john.lednicky';
+  await expect(assignmentService.create(assignmentToCreate,
+    updateUser, ''))
+    .rejects.toThrow('missing timestamp');
 });
 test('assignmentService.create() - validation error updateDttm invalid characters', async () => {
+  const { event, person } = await createPersonEventPair();
   const assignmentToCreate = {
-    'name': 'Test',
-    'description': '',
-    'updateUser': 'john.d.ledni$cky',
-    'updateDttm': '7-4-2021'
+    personId: person.id,
+    eventId: event.id,
   };
-  await expect(assignmentService.create(assignmentToCreate))
-    .rejects.toThrow('updateDttm: should match pattern
-    '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{2})?$'');
+  const updateUser = 'john.lednicky';
+  await expect(assignmentService.create(assignmentToCreate, updateUser, 'not a timestamp'))
+    .rejects.toThrow('updateDttm: should be integer');
 });
-*/
-
 // #endregion assignmentService.create()

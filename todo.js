@@ -1,4 +1,3 @@
-// TODO Get updateUser from headers, maybe refactor service signatures to include updateUser and updateDttm as parameters
 // TODO Add health checks and graceful shutdown: https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
 // TODO Jest unit tests at API layer (jest+supertest)
             /*

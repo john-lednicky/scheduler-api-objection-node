@@ -19,7 +19,7 @@ exports.up = function (knex) {
 
     table.integer('people_needed').unsigned().notNullable();
     table.string('comment', 500).nullable();
-    table.string('update_user', 45).notNullable();
+    table.string('update_user', 200).notNullable();
     table.integer('update_dttm', 11).unsigned().notNullable();
   });
 };

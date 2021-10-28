@@ -16,9 +16,16 @@ class eventTypeService extends baseService {
     return this.EventType.query().findById(id);
   }
 
-  create = async (eventType) => {
-    eventType.updateUser = 'john.d.lednicky';
-    eventType.updateDttm = Math.floor((new Date()).getTime() / 1000);
+  create = async (eventType, updateUser, timestamp) => {
+    if (!updateUser) {
+      throw this.createError(400, 'missing updateUser');
+    }
+    if (!timestamp) {
+      throw this.createError(400, 'missing timestamp');
+    }    
+    eventType.updateUser = updateUser;
+    eventType.updateDttm = timestamp;
+
     //if the passed eventType is already a model, we have to explicitly call validate
     if (eventType.$modelClass) {
       eventType.$validate();
@@ -26,12 +33,19 @@ class eventTypeService extends baseService {
     return this.EventType.query().insertAndFetch(eventType);
   }
   
-  update = async (eventType) => {
+  update = async (eventType, updateUser, timestamp) => {
     if (!eventType.id) {
       throw this.createError(400, 'eventType lacks an id');
     }
-    eventType.updateUser = 'john.d.lednicky';
-    eventType.updateDttm = Math.floor((new Date()).getTime() / 1000);
+    if (!updateUser) {
+      throw this.createError(400, 'missing updateUser');
+    }
+    if (!timestamp) {
+      throw this.createError(400, 'missing timestamp');
+    }       
+    eventType.updateUser = updateUser;
+    eventType.updateDttm = timestamp;
+
     //if the passed eventType is already a model, we have to explicitly call validate
     if (eventType.$modelClass) {
       eventType.$validate();

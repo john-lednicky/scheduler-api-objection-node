@@ -47,7 +47,9 @@ test('personService.delete() - success', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   const deleteResult = await personService.delete(personCreated.id);
@@ -65,7 +67,9 @@ test('personService.delete() - success - cascade assignments', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   const eventToCreate = {
@@ -76,14 +80,15 @@ test('personService.delete() - success - cascade assignments', async () => {
     peopleNeeded: 3,
     comment: '',
   };
-  const eventCreated = await eventService.create(eventToCreate);
+  const eventCreated = await eventService.create(eventToCreate, updateUser, timestamp);
   expect(eventCreated).toHaveProperty('id');
 
   const assignmentToCreate = {
     eventId: eventCreated.id,
     personId: personCreated.id,
   };
-  const assignmentCreated = await assignmentService.create(assignmentToCreate);
+  const assignmentCreated = await assignmentService
+    .create(assignmentToCreate, updateUser, timestamp);
   expect(assignmentCreated).toHaveProperty('eventId');
   expect(assignmentCreated.eventId).toBe(eventCreated.id);
   expect(assignmentCreated).toHaveProperty('personId');
@@ -126,7 +131,9 @@ test('personService.find() - success', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   const personFetched = await personService.find(personCreated.id);
@@ -160,12 +167,10 @@ test('personService.create() - success', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-
-  const personCreated = await personService.create(personToCreate);
-
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
-
-  personToCreate.id = personCreated.id;
 
   expect(personCreated.firstName).toEqual(personToCreate.firstName);
   expect(personCreated.middleName).toEqual(personToCreate.middleName);
@@ -191,7 +196,10 @@ test('personService.create() - validation error firstName too long', async () =>
     email: 'william.watkins@scratch.com',
   };
   personToCreate.firstName = 'a'.repeat(21);
-  await expect(personService.create(personToCreate)).rejects.toThrow('firstName: should NOT be longer than 20 characters');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: should NOT be longer than 20 characters');
 });
 test('personService.create() - validation error firstName missing', async () => {
   const personToCreate = {
@@ -202,7 +210,10 @@ test('personService.create() - validation error firstName missing', async () => 
     email: 'william.watkins@scratch.com',
   };
   delete personToCreate.firstName;
-  await expect(personService.create(personToCreate)).rejects.toThrow('firstName: is a required property');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: is a required property');
 });
 test('personService.create() - validation error firstName empty string', async () => {
   const personToCreate = {
@@ -213,7 +224,10 @@ test('personService.create() - validation error firstName empty string', async (
     email: 'william.watkins@scratch.com',
   };
   personToCreate.firstName = '';
-  await expect(personService.create(personToCreate)).rejects.toThrow('firstName: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: should match pattern');
 });
 test('personService.create() - validation error firstName has invalid characters', async () => {
   const personToCreate = {
@@ -224,7 +238,10 @@ test('personService.create() - validation error firstName has invalid characters
     email: 'william.watkins@scratch.com',
   };
   personToCreate.firstName = 'William0';
-  await expect(personService.create(personToCreate)).rejects.toThrow('firstName: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: should match pattern');
 });
 
 test('personService.create() - validation error middleName too long', async () => {
@@ -236,7 +253,10 @@ test('personService.create() - validation error middleName too long', async () =
     email: 'william.watkins@scratch.com',
   };
   personToCreate.middleName = 'a'.repeat(21);
-  await expect(personService.create(personToCreate)).rejects.toThrow('middleName: should NOT be longer than 20 characters');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('middleName: should NOT be longer than 20 characters');
 });
 test('personService.create() - validation error middleName has invalid characters', async () => {
   const personToCreate = {
@@ -247,7 +267,10 @@ test('personService.create() - validation error middleName has invalid character
     email: 'william.watkins@scratch.com',
   };
   personToCreate.middleName = 'Bloop1';
-  await expect(personService.create(personToCreate)).rejects.toThrow('middleName: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('middleName: should match pattern');
 });
 
 test('personService.create() - validation error lastName too long', async () => {
@@ -259,7 +282,10 @@ test('personService.create() - validation error lastName too long', async () => 
     email: 'william.watkins@scratch.com',
   };
   personToCreate.lastName = 'a'.repeat(21);
-  await expect(personService.create(personToCreate)).rejects.toThrow('lastName: should NOT be longer than 20 characters');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: should NOT be longer than 20 characters');
 });
 test('personService.create() - validation error lastName missing', async () => {
   const personToCreate = {
@@ -270,7 +296,10 @@ test('personService.create() - validation error lastName missing', async () => {
     email: 'william.watkins@scratch.com',
   };
   delete personToCreate.lastName;
-  await expect(personService.create(personToCreate)).rejects.toThrow('lastName: is a required property');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: is a required property');
 });
 test('personService.create() - validation error lastName empty string', async () => {
   const personToCreate = {
@@ -281,7 +310,10 @@ test('personService.create() - validation error lastName empty string', async ()
     email: 'william.watkins@scratch.com',
   };
   personToCreate.lastName = '';
-  await expect(personService.create(personToCreate)).rejects.toThrow('lastName: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: should match pattern');
 });
 test('personService.create() - validation error lastName has invalid characters', async () => {
   const personToCreate = {
@@ -292,7 +324,10 @@ test('personService.create() - validation error lastName has invalid characters'
     email: 'william.watkins@scratch.com',
   };
   personToCreate.lastName = 'Watkins^';
-  await expect(personService.create(personToCreate)).rejects.toThrow('lastName: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: should match pattern');
 });
 
 test('personService.create() - validation error phone too long', async () => {
@@ -304,7 +339,10 @@ test('personService.create() - validation error phone too long', async () => {
     email: 'william.watkins@scratch.com',
   };
   personToCreate.phone = '1'.repeat(11);
-  await expect(personService.create(personToCreate)).rejects.toThrow('phone: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('phone: should match pattern');
 });
 test('personService.create() - validation error phone has invalid characters', async () => {
   const personToCreate = {
@@ -315,7 +353,10 @@ test('personService.create() - validation error phone has invalid characters', a
     email: 'william.watkins@scratch.com',
   };
   personToCreate.phone = '5127A78888';
-  await expect(personService.create(personToCreate)).rejects.toThrow('phone: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('phone: should match pattern');
 });
 
 test('personService.create() - validation error email too long', async () => {
@@ -327,7 +368,10 @@ test('personService.create() - validation error email too long', async () => {
     email: 'william.watkins@scratch.com',
   };
   personToCreate.email = `dot${'a'.repeat(190)}@dot.com`;
-  await expect(personService.create(personToCreate)).rejects.toThrow('email: should NOT be longer than 200 characters');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('email: should NOT be longer than 200 characters');
 });
 test('personService.create() - validation error email does not match pattern', async () => {
   const personToCreate = {
@@ -338,104 +382,102 @@ test('personService.create() - validation error email does not match pattern', a
     email: 'william.watkins@scratch.com',
   };
   personToCreate.email = 'william.watkins';
-
-  await expect(personService.create(personToCreate)).rejects.toThrow('email: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('email: should match pattern');
 });
 
-/*
 test('personService.create() - validation error updateUser too long', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'a'.repeat(46),
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  await expect(personService.create(personToCreate))
-    .rejects.toThrow('updateUser: should NOT be longer than 45 characters');
+  const updateUser = 'j'.repeat(201);
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('updateUser: should NOT be longer than 200 characters');
 });
 test('personService.create() - validation error updateUser missing', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  await expect(personService.create(personToCreate))
-    .rejects.toThrow('updateUser: is a required property');
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, null, timestamp))
+    .rejects.toThrow('missing updateUser');
 });
 test('personService.create() - validation error updateUser empty string', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': '',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  await expect(personService.create(personToCreate))
-    .rejects.toThrow('should NOT be shorter than 1 characters');
-  await expect(personService.create(personToCreate))
-    .rejects.toThrow('updateUser: should match pattern');
+  const updateUser = '';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('missing updateUser');
 });
-test('personService.create() - validation error updateUser has updateUser characters', async () => {
+test('personService.create() - validation error updateUser has invalid characters', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.ledni$cky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  await expect(personService.create(personToCreate))
+  const updateUser = 'no spaces allowed';
+  const timestamp = personService.getCurrentTimestamp();
+  await expect(personService.create(personToCreate, updateUser, timestamp))
     .rejects.toThrow('updateUser: should match pattern');
 });
 
 test('personService.create() - validation error updateDttm missing', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednicky'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  await expect(personService.create(personToCreate))
-    .rejects.toThrow('updateDttm: is a required property');
+  const updateUser = 'john.lednicky';
+  await expect(personService.create(personToCreate, updateUser))
+    .rejects.toThrow('missing timestamp');
 });
 test('personService.create() - validation error updateDttm empty string', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednick',
-    'updateDttm': ''
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  await expect(personService.create(personToCreate))
-    .rejects.toThrow('updateDttm: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = '';
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('missing timestamp');
 });
 test('personService.create() - validation error updateDttm has invalid characters', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.ledni$cky',
-    'updateDttm': '7-4-2021'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  await expect(personService.create(personToCreate))
-    .rejects.toThrow('updateDttm: should match pattern');
+  const updateUser = 'john.lednicky';
+  const timestamp = 'not a timestamp';
+  await expect(personService.create(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('updateDttm: should be integer');
 });
-*/
 // #endregion personService.create()
 
 // #region personService.update()
@@ -448,13 +490,15 @@ test('personService.update() - success', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.middleName = 'Wilberforce';
 
-  const personUpdated = await personService.update(personToCreate);
+  const personUpdated = await personService.update(personToCreate, updateUser, timestamp);
   expect(personUpdated.firstName).toEqual(personToCreate.firstName);
   expect(personUpdated.middleName).toEqual(personToCreate.middleName);
   expect(personUpdated.lastName).toEqual(personToCreate.lastName);
@@ -473,13 +517,16 @@ test('personService.update() - validation error firstName too long', async () =>
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.firstName = 'a'.repeat(21);
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('firstName: should NOT be longer than 20 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: should NOT be longer than 20 characters');
 });
 test('personService.update() - validation error firstName missing', async () => {
   const personToCreate = {
@@ -489,13 +536,16 @@ test('personService.update() - validation error firstName missing', async () => 
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   delete personToCreate.firstName;
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('firstName: is a required property');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: is a required property');
 });
 test('personService.udpate() - validation error firstName empty string', async () => {
   const personToCreate = {
@@ -505,14 +555,18 @@ test('personService.udpate() - validation error firstName empty string', async (
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.firstName = '';
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('firstName: should match pattern');
-  await expect(personService.update(personToCreate)).rejects.toThrow('should NOT be shorter than 1 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('should NOT be shorter than 1 characters');
 });
 test('personService.update() - validation error firstName has invalid characters', async () => {
   const personToCreate = {
@@ -522,13 +576,16 @@ test('personService.update() - validation error firstName has invalid characters
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.firstName = '876TGF#';
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('firstName: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('firstName: should match pattern');
 });
 test('personService.update() - validation error middleName too long', async () => {
   const personToCreate = {
@@ -538,13 +595,16 @@ test('personService.update() - validation error middleName too long', async () =
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.middleName = 'a'.repeat(21);
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('middleName: should NOT be longer than 20 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('middleName: should NOT be longer than 20 characters');
 });
 test('personService.update() - validation error middleName has invalid characters', async () => {
   const personToCreate = {
@@ -554,13 +614,16 @@ test('personService.update() - validation error middleName has invalid character
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.middleName = 'INvalid^';
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('middleName: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('middleName: should match pattern');
 });
 test('personService.update() - validation error lastName too long', async () => {
   const personToCreate = {
@@ -570,13 +633,16 @@ test('personService.update() - validation error lastName too long', async () => 
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.lastName = 'a'.repeat(21);
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('lastName: should NOT be longer than 20 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: should NOT be longer than 20 characters');
 });
 test('personService.update() - validation error lastName missing', async () => {
   const personToCreate = {
@@ -586,13 +652,16 @@ test('personService.update() - validation error lastName missing', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   delete personToCreate.lastName;
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('lastName: is a required property');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: is a required property');
 });
 test('personService.update() - validation error lastName empty string', async () => {
   const personToCreate = {
@@ -602,14 +671,18 @@ test('personService.update() - validation error lastName empty string', async ()
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.lastName = '';
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('lastName: should match pattern');
-  await expect(personService.update(personToCreate)).rejects.toThrow('should NOT be shorter than 1 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('should NOT be shorter than 1 characters');
 });
 test('personService.update() - validation error lastName has invalid characters', async () => {
   const personToCreate = {
@@ -619,13 +692,16 @@ test('personService.update() - validation error lastName has invalid characters'
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.lastName = 'Barg5%Flap';
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('lastName: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('lastName: should match pattern');
 });
 
 test('personService.update() - validation error phone too long', async () => {
@@ -636,14 +712,18 @@ test('personService.update() - validation error phone too long', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.phone = '9'.repeat(11);
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('phone: should match pattern');
-  await expect(personService.update(personToCreate)).rejects.toThrow('should NOT be longer than 10 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('phone: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('should NOT be longer than 10 characters');
 });
 test('personService.update() - validation error phone has invalid characters', async () => {
   const personToCreate = {
@@ -653,13 +733,16 @@ test('personService.update() - validation error phone has invalid characters', a
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.phone = '55542a7874';
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('phone: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('phone: should match pattern');
 });
 
 test('personService.update() - validation error email too long', async () => {
@@ -670,13 +753,16 @@ test('personService.update() - validation error email too long', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.email = `dot${'a'.repeat(190)}@dot.com`;
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('email: should NOT be longer than 200 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('email: should NOT be longer than 200 characters');
 });
 test('personService.update() - validation error email is invalid', async () => {
   const personToCreate = {
@@ -686,16 +772,18 @@ test('personService.update() - validation error email is invalid', async () => {
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
   personToCreate.email = 'william.watkins';
 
-  await expect(personService.update(personToCreate)).rejects.toThrow('email: should match pattern');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('email: should match pattern');
 });
 
-/*
 test('personService.update() - validation error updateUser too long', async () => {
   const personToCreate = {
     firstName: 'William',
@@ -704,125 +792,127 @@ test('personService.update() - validation error updateUser too long', async () =
     phone: '5127778888',
     email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  let updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
   personToCreate.id = personCreated.id;
-  personToCreate.updateUser = 'a'.repeat(46);
+  updateUser = 'a'.repeat(201);
 
-  await expect(personService.update(personToCreate))
-    .rejects.toThrow('updateUser: should NOT be longer than 45 characters');
+  await expect(personService.update(personToCreate, updateUser, timestamp))
+    .rejects.toThrow('updateUser: should NOT be longer than 200 characters');
 });
 test('personService.update() - validation error updateUser missing', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednicky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  let updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
-  delete personCreated.updateUser;
+  personToCreate.id = personCreated.id;
+  updateUser = null;
 
-  await expect(personService.update(personCreated))
-    .rejects.toThrow('updateUser: is a required property');
+  await expect(personService.update(personCreated, updateUser, timestamp))
+    .rejects.toThrow('missing updateUser');
 });
 test('personService.update() - validation error updateUser empty string', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednicky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  let updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
-  personCreated.updateUser = '';
+  personToCreate.id = personCreated.id;
+  updateUser = '';
 
-  await expect(personService.update(personCreated))
-    .rejects.toThrow('updateUser: should match pattern');
-  await expect(personService.update(personCreated))
-    .rejects.toThrow('should NOT be shorter than 1 characters');
+  await expect(personService.update(personCreated, updateUser, timestamp))
+    .rejects.toThrow('missing updateUser');
 });
 test('personService.update() - validation error updateUser has invalid characters', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednicky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  let updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
-  personCreated.updateUser = 'john.d.ledni&^y';
+  personToCreate.id = personCreated.id;
+  updateUser = 'john space lednicky';
 
-  await expect(personService.update(personCreated))
+  await expect(personService.update(personCreated, updateUser, timestamp))
     .rejects.toThrow('updateUser: should match pattern');
 });
-
 test('personService.update() - validation error updateDttm missing', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednicky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
-  delete personCreated.updateDttm;
+  personToCreate.id = personCreated.id;
 
-  await expect(personService.update(personCreated))
-    .rejects.toThrow('updateDttm: is a required property');
+  await expect(personService.update(personCreated, updateUser))
+    .rejects.toThrow('missing timestamp');
 });
 test('personService.update() - validation error updateDttm empty string', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednicky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
-  personCreated.updateDttm = '';
+  personToCreate.id = personCreated.id;
 
-  await expect(personService.update(personCreated))
-    .rejects.toThrow('updateDttm: should match pattern');
+  await expect(personService.update(personCreated, updateUser, ''))
+    .rejects.toThrow('missing timestamp');
 });
 test('personService.create() - validation error updateDttm is invalid', async () => {
   const personToCreate = {
-    'firstName': 'William',
-    'middleName': '',
-    'lastName': 'Watkins',
-    'phone': '5127778888',
-    'email': 'william.watkins@scratch.com',
-    'updateUser': 'john.d.lednicky',
-    'updateDttm': '2021-07-04 13:00:00.00'
+    firstName: 'William',
+    middleName: '',
+    lastName: 'Watkins',
+    phone: '5127778888',
+    email: 'william.watkins@scratch.com',
   };
-  const personCreated = await personService.create(personToCreate);
+  const updateUser = 'john.lednicky';
+  const timestamp = personService.getCurrentTimestamp();
+  const personCreated = await personService.create(personToCreate, updateUser, timestamp);
   expect(personCreated).toHaveProperty('id');
 
-  personCreated.updateDttm = '7-4-2021';
+  personToCreate.id = personCreated.id;
 
-  await expect(personService.update(personCreated))
-    .rejects.toThrow('updateDttm: should match pattern');
+  await expect(personService.update(personCreated, updateUser, 'not a timestamp'))
+    .rejects.toThrow('updateDttm: should be integer');
 });
-*/
+
 // #endregion personService.update()

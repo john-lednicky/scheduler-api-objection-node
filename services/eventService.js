@@ -31,9 +31,16 @@ class eventService extends baseService {
     return this.Event.query().deleteById(id);
   }
 
-  create = async (event) => {
-    event.updateUser = 'john.d.lednicky';
-    event.updateDttm = Math.floor((new Date()).getTime() / 1000);
+  create = async (event, updateUser, timestamp) => {
+    if (!updateUser) {
+      throw this.createError(400, 'missing updateUser');
+    }
+    if (!timestamp) {
+      throw this.createError(400, 'missing timestamp');
+    }    
+    event.updateUser = updateUser;
+    event.updateDttm = timestamp;
+
     event.beginDttm = this.convertZuluDateStringToSqlDateString(event.beginDttm);
     event.endDttm = this.convertZuluDateStringToSqlDateString(event.endDttm);
     
@@ -45,12 +52,19 @@ class eventService extends baseService {
     return this.Event.query().insertAndFetch(event);
   }
 
-  update = async (event) => {
+  update = async (event, updateUser, timestamp) => {
     if (!event.id) {
       throw this.createError(400, 'event lacks an id');
     }
-    event.updateUser = 'john.d.lednicky';
-    event.updateDttm = Math.floor((new Date()).getTime() / 1000);
+    if (!updateUser) {
+      throw this.createError(400, 'missing updateUser');
+    }
+    if (!timestamp) {
+      throw this.createError(400, 'missing timestamp');
+    }    
+    event.updateUser = updateUser;
+    event.updateDttm = timestamp;
+
     event.beginDttm = this.convertZuluDateStringToSqlDateString(event.beginDttm);
     event.endDttm = this.convertZuluDateStringToSqlDateString(event.endDttm);
 

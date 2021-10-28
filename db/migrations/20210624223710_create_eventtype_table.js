@@ -4,7 +4,7 @@ exports.up = async function (knex) {
     table.increments('id').unsigned().primary('event_type_pk');
     table.string('name', 25).notNullable();
     table.string('description', 250).nullable();
-    table.string('update_user', 45).notNullable();
+    table.string('update_user', 200).notNullable();
     table.integer('update_dttm', 11).unsigned().notNullable();
   });
   return Promise.resolve();

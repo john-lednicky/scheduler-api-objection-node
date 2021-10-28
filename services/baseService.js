@@ -17,6 +17,11 @@ class baseService {
       return x > 0 && (x | 0) === x;
     };
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  getCurrentTimestamp() {
+    return Math.floor((new Date()).getTime() / 1000);
+  }
 }
 
 module.exports = baseService;

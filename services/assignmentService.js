@@ -29,9 +29,16 @@ class assignmentService extends baseService {
     return this.Assignment.query().deleteById([personId, eventId]);
   }
 
-  create = async (assignment) => {
-    assignment.updateUser = 'john.d.lednicky';
-    assignment.updateDttm = Math.floor((new Date()).getTime() / 1000);
+  create = async (assignment, updateUser, timestamp) => {
+    if (!updateUser) {
+      throw this.createError(400, 'missing updateUser');
+    }
+    if (!timestamp) {
+      throw this.createError(400, 'missing timestamp');
+    }    
+    assignment.updateUser = updateUser;
+    assignment.updateDttm = timestamp;
+
     //if the passed event is already a model, we have to explicitly call validate
     if (assignment.$modelClass) {
       assignment.$validate();
