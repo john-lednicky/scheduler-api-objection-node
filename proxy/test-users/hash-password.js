@@ -13,7 +13,7 @@ if (!pw) {
   bcrypt.hash(pw, saltRounds)
     .then((data) => {
       console.log(data);
-      const insertSql = `insert into password (email, hash, username, user_id) values ("${pw}@dot.com","${data}", "${pw}", "${pw}");`; console.log(insertSql);
+      const insertSql = `insert into password (email, hash, username, user_id) values ("${pw}@dot.com","${data}", "${pw}", 0);`; console.log(insertSql);
     })
     .catch((err) => {
       console.log(err);
