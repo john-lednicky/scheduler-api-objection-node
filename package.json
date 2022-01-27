@@ -40,7 +40,7 @@
     "objection": "^2.2.15",
     "serve-favicon": "^2.5.0",
     "swagger-jsdoc": "^6.1.0",
-    "swagger-ui-express": "^4.1.6",
+    "swagger-ui-express": "^4.2.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
