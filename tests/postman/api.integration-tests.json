@@ -1,8 +1,9 @@
 {
 	"info": {
 		"_postman_id": "a77de328-7714-4d0b-9f4c-9489a41ed77c",
-		"name": "Initial API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"name": "Integration Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14869724"
 	},
 	"item": [
 		{
@@ -30,33 +31,38 @@
 											"\r",
 											"const configuration = pm.response.json();\r",
 											"\r",
-											"let host = pm.environment.get('dexhost').replace('{{dexdomain}}',pm.environment.get('dexdomain'));\r",
+											"let dexhost = pm.variables.get('host') + '/dex';\r",
 											"//host = 'http://dex.lednicky.app:5556';\r",
 											"\r",
 											"pm.test(\"token payload includes expected endpoints\", () => {\r",
-											"    pm.expect(configuration.issuer).to.equal(host);\r",
-											"    pm.expect(configuration.authorization_endpoint).to.equal(host + '/auth');\r",
-											"    pm.expect(configuration.jwks_uri).to.equal(host + '/keys');\r",
-											"    pm.expect(configuration.token_endpoint).to.equal(host + '/token');\r",
-											"    pm.expect(configuration.userinfo_endpoint).to.equal(host + '/userinfo');\r",
+											"    pm.expect(configuration.issuer).to.equal(dexhost);\r",
+											"    pm.expect(configuration.authorization_endpoint).to.equal(dexhost + '/auth');\r",
+											"    pm.expect(configuration.jwks_uri).to.equal(dexhost + '/keys');\r",
+											"    pm.expect(configuration.token_endpoint).to.equal(dexhost + '/token');\r",
+											"    pm.expect(configuration.userinfo_endpoint).to.equal(dexhost + '/userinfo');\r",
 											"});\r",
 											"\r",
-											"pm.environment.set('iss',configuration.issuer);\r",
+											"pm.collectionVariables.set('iss',configuration.issuer);\r",
 											""
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"strictSSL": false,
+								"followRedirects": false
+							},
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{dexhost}}/.well-known/openid-configuration",
+									"raw": "{{host}}/dex/.well-known/openid-configuration",
 									"host": [
-										"{{dexhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"dex",
 										".well-known",
 										"openid-configuration"
 									]
@@ -92,22 +98,26 @@
 											"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
 											"});\r",
 											"\r",
-											"pm.environment.set('keys',pm.response.json().keys);\r",
+											"pm.collectionVariables.set('keys',pm.response.json().keys);\r",
 											""
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{dexhost}}/keys",
+									"raw": "{{host}}/dex/keys",
 									"host": [
-										"{{dexhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"dex",
 										"keys"
 									]
 								}
@@ -117,19 +127,23 @@
 					]
 				},
 				{
-					"name": "authorization_code (local)",
+					"name": "login",
 					"item": [
 						{
 							"name": "00 sign-out (oauth2-proxy)",
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{oauthhost}}/sign_out",
+									"raw": "{{host}}/oauth2/sign_out",
 									"host": [
-										"{{oauthhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"oauth2",
 										"sign_out"
 									]
 								}
@@ -143,10 +157,10 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"pm.environment.set(\"token\", null);\r",
-											"pm.environment.set(\"auth_code\", null);\r",
-											"pm.environment.set(\"access_token\", null);\r",
-											"pm.environment.set(\"id_token\", null);"
+											"pm.collectionVariables.set(\"token\", null);\r",
+											"pm.collectionVariables.set(\"auth_code\", null);\r",
+											"pm.collectionVariables.set(\"access_token\", null);\r",
+											"pm.collectionVariables.set(\"id_token\", null);"
 										],
 										"type": "text/javascript"
 									}
@@ -168,37 +182,37 @@
 											"pm.test(\"location header includes 'approval_prompt='\", () => {\r",
 											"    pm.expect(location).to.include('approval_prompt=');\r",
 											"    const approval_prompt = location.match(/approval_prompt=([^&]*)/)[1];\r",
-											"    pm.environment.set(\"approval_prompt\", approval_prompt);\r",
+											"    pm.collectionVariables.set(\"approval_prompt\", approval_prompt);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"location header includes 'client_id='\", () => {\r",
 											"    pm.expect(location).to.include('client_id=');\r",
 											"    const client_id = location.match(/client_id=([^&]*)/)[1];\r",
-											"    pm.environment.set(\"client_id\", client_id);\r",
+											"    pm.collectionVariables.set(\"client_id\", client_id);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"location header includes 'redirect_uri='\", () => {\r",
 											"    pm.expect(location).to.include('redirect_uri=');\r",
 											"    const redirect_uri = location.match(/redirect_uri=([^&]*)/)[1];\r",
-											"    pm.environment.set(\"redirect_uri\", redirect_uri);\r",
+											"    pm.collectionVariables.set(\"redirect_uri\", redirect_uri);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"location header includes 'response_type='\", () => {\r",
 											"    pm.expect(location).to.include('response_type=');\r",
 											"    const response_type = location.match(/response_type=([^&]*)/)[1];\r",
-											"    pm.environment.set(\"response_type\", response_type);\r",
+											"    pm.collectionVariables.set(\"response_type\", response_type);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"location header includes 'scope='\", () => {\r",
 											"    pm.expect(location).to.include('scope=');\r",
 											"    const scope = location.match(/scope=([^&]*)/)[1];\r",
-											"    pm.environment.set(\"scope\", scope);\r",
+											"    pm.collectionVariables.set(\"scope\", scope);\r",
 											"});\r",
 											"\r",
 											"pm.test(\"location header includes 'state='\", () => {\r",
 											"    pm.expect(location).to.include('state=');\r",
 											"    const state = location.match(/state=([^&]*)/)[1];\r",
-											"    pm.environment.set(\"state\", state);\r",
+											"    pm.collectionVariables.set(\"state\", state);\r",
 											"});\r",
 											"\r",
 											""
@@ -207,6 +221,10 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"strictSSL": false,
+								"followRedirects": false
+							},
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -221,11 +239,12 @@
 									]
 								},
 								"url": {
-									"raw": "{{oauthhost}}/start",
+									"raw": "{{host}}/oauth2/start",
 									"host": [
-										"{{oauthhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"oauth2",
 										"start"
 									]
 								}
@@ -260,7 +279,7 @@
 											"\r",
 											"\r",
 											"const state = location.match(/state=(.*)(&|$)/)[1];\r",
-											"pm.environment.set(\"state\", state);\r",
+											"pm.collectionVariables.set(\"state\", state);\r",
 											"\r",
 											""
 										],
@@ -269,17 +288,19 @@
 								}
 							],
 							"protocolProfileBehavior": {
-								"followRedirects": false
+								"followRedirects": false,
+								"strictSSL": false
 							},
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{dexhost}}/auth/local?client_id={{client_id}}&redirect_uri={{redirect_uri}}&state={{state}}&scope={{scope}}&response_type={{response_type}}",
+									"raw": "{{host}}/dex/auth/local?client_id={{client_id}}&redirect_uri={{redirect_uri}}&state={{state}}&scope={{scope}}&response_type={{response_type}}",
 									"host": [
-										"{{dexhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"dex",
 										"auth",
 										"local"
 									],
@@ -329,13 +350,17 @@
 											"pm.test(\"location header includes 'req='\", () => {\r",
 											"    pm.expect(location).to.include('req=');\r",
 											"    const req = location.match(/req=([^&]*)/)[1];\r",
-											"    pm.environment.set(\"req\", req);\r",
+											"    pm.collectionVariables.set(\"req\", req);\r",
 											"});"
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"strictSSL": false,
+								"followRedirects": false
+							},
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -355,11 +380,12 @@
 									]
 								},
 								"url": {
-									"raw": "{{dexhost}}/auth/local/login?back=&state={{state}}",
+									"raw": "{{host}}/dex/auth/local/login?back=&state={{state}}",
 									"host": [
-										"{{dexhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"dex",
 										"auth",
 										"local",
 										"login"
@@ -395,29 +421,34 @@
 											"    pm.expect(location).to.include('code');\r",
 											"});\r",
 											"const auth_code = location.match(/code=([^&]*)/)[1];\r",
-											"pm.environment.set(\"auth_code\", auth_code);\r",
+											"pm.collectionVariables.set(\"auth_code\", auth_code);\r",
 											"console.log(`auth_code == ${auth_code}`);\r",
 											"\r",
 											"pm.test(\"location header includes 'state'\", () => {\r",
 											"    pm.expect(location).to.include('state');\r",
 											"});\r",
 											"const state = location.match(/state=([^&]*)/)[1];\r",
-											"pm.environment.set(\"state\", state);\r",
+											"pm.collectionVariables.set(\"state\", state);\r",
 											""
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"strictSSL": false,
+								"followRedirects": false
+							},
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{dexhost}}/approval?req={{req}}",
+									"raw": "{{host}}/dex/approval?req={{req}}",
 									"host": [
-										"{{dexhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"dex",
 										"approval"
 									],
 									"query": [
@@ -453,15 +484,20 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"strictSSL": false,
+								"followRedirects": false
+							},
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{oauthhost}}/callback?code={{auth_code}}&state={{state}}",
+									"raw": "{{host}}/oauth2/callback?code={{auth_code}}&state={{state}}",
 									"host": [
-										"{{oauthhost}}"
+										"{{host}}"
 									],
 									"path": [
+										"oauth2",
 										"callback"
 									],
 									"query": [
@@ -523,15 +559,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/api/persons",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons"
 							]
 						}
@@ -546,7 +586,7 @@
 							"script": {
 								"exec": [
 									"const person = pm.response.json();\r",
-									"postman.setEnvironmentVariable(\"personId\", person.id);\r",
+									"pm.collectionVariables.set(\"personId\", person.id);\r",
 									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -559,6 +599,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -572,11 +615,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/api/persons",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons"
 							]
 						},
@@ -585,7 +629,7 @@
 					"response": []
 				},
 				{
-					"name": "Events - create (copy)",
+					"name": "Events - create",
 					"event": [
 						{
 							"listen": "test",
@@ -601,13 +645,16 @@
 									"const event = pm.response.json();\r",
 									"pm.test(\"body json has a non null event.id\", () => {\r",
 									"    pm.expect(event.id).to.exist;\r",
-									"    postman.setEnvironmentVariable(\"eventId\", event.id);\r",
+									"    pm.collectionVariables.set(\"eventId\", event.id);\r",
 									"});"
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -621,11 +668,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/events",
+							"raw": "{{host}}/api/events",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"events"
 							]
 						},
@@ -651,6 +699,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -664,11 +715,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/api/persons",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons"
 							]
 						},
@@ -694,6 +746,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -707,11 +762,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/api/persons",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons"
 							]
 						},
@@ -720,7 +776,7 @@
 					"response": []
 				},
 				{
-					"name": "Assignments - create (copy)",
+					"name": "Assignments - create",
 					"event": [
 						{
 							"listen": "test",
@@ -737,6 +793,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -750,11 +809,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/assignments",
+							"raw": "{{host}}/api/assignments",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"assignments"
 							]
 						},
@@ -780,15 +840,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons/{{personId}}",
+							"raw": "{{host}}/api/persons/{{personId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons",
 								"{{personId}}"
 							]
@@ -815,15 +879,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons/{{personId}}",
+							"raw": "{{host}}/api/persons/{{personId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons",
 								"{{personId}}"
 							]
@@ -850,15 +918,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons/{{personId}}",
+							"raw": "{{host}}/api/persons/{{personId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons",
 								"{{personId}}"
 							]
@@ -883,15 +955,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons/{{personId}}",
+							"raw": "{{host}}/api/persons/{{personId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons",
 								"{{personId}}"
 							]
@@ -918,6 +994,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -931,11 +1010,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/api/persons",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons"
 							]
 						},
@@ -959,6 +1039,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -972,11 +1055,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/api/persons",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons"
 							]
 						},
@@ -990,15 +1074,14 @@
 			"name": "Assignments",
 			"item": [
 				{
-					"name": "Persons - create (copy)",
+					"name": "Persons - create",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const person = pm.response.json();\r",
-									"postman.setEnvironmentVariable(\"personId\", person.id);\r",
-									"\r",
+									"pm.collectionVariables.set(\"personId\", person.id);\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
@@ -1010,6 +1093,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1023,11 +1109,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/api/persons",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons"
 							]
 						},
@@ -1036,7 +1123,7 @@
 					"response": []
 				},
 				{
-					"name": "Events - create (copy)",
+					"name": "Events - create",
 					"event": [
 						{
 							"listen": "test",
@@ -1052,7 +1139,7 @@
 									"const event = pm.response.json();\r",
 									"pm.test(\"body json has a non null event.id\", () => {\r",
 									"    pm.expect(event.id).to.exist;\r",
-									"    postman.setEnvironmentVariable(\"eventId\", event.id);\r",
+									"    pm.collectionVariables.set(\"eventId\", event.id);\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -1063,6 +1150,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1076,11 +1166,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/events",
+							"raw": "{{host}}/api/events",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"events"
 							]
 						},
@@ -1106,15 +1197,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/assignments",
+							"raw": "{{host}}/api/assignments",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"assignments"
 							]
 						}
@@ -1139,6 +1234,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1152,11 +1250,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/assignments",
+							"raw": "{{host}}/api/assignments",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"assignments"
 							]
 						},
@@ -1182,6 +1281,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1195,11 +1297,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/assignments",
+							"raw": "{{host}}/api/assignments",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"assignments"
 							]
 						},
@@ -1225,6 +1328,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1238,11 +1344,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/assignments",
+							"raw": "{{host}}/api/assignments",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"assignments"
 							]
 						},
@@ -1268,15 +1375,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/assignments/{{personId}}/{{eventId}}",
+							"raw": "{{host}}/api/assignments/{{personId}}/{{eventId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"assignments",
 								"{{personId}}",
 								"{{eventId}}"
@@ -1301,15 +1412,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/assignments/{{personId}}/{{eventId}}",
+							"raw": "{{host}}/api/assignments/{{personId}}/{{eventId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"assignments",
 								"{{personId}}",
 								"{{eventId}}"
@@ -1337,15 +1452,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons/{{personId}}",
+							"raw": "{{host}}/api/persons/{{personId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"persons",
 								"{{personId}}"
 							]
@@ -1372,15 +1491,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/events/{{eventId}}",
+							"raw": "{{host}}/api/events/{{eventId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"events",
 								"{{eventId}}"
 							]
@@ -1699,15 +1822,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/eventTypes",
+							"raw": "{{host}}/api/eventTypes",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"eventTypes"
 							]
 						}
@@ -1733,7 +1860,7 @@
 									"const eventType = pm.response.json();\r",
 									"pm.test(\"body json has a non null eventType.id\", () => {\r",
 									"    pm.expect(eventType.id).to.exist;\r",
-									"    postman.setEnvironmentVariable(\"eventTypeId\", eventType.id);\r",
+									"    pm.collectionVariables.set(\"eventTypeId\", eventType.id);\r",
 									"});\r",
 									"\r",
 									""
@@ -1742,6 +1869,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1755,11 +1885,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/eventTypes",
+							"raw": "{{host}}/api/eventTypes",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"eventTypes"
 							]
 						}
@@ -1791,6 +1922,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -1804,11 +1938,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/eventTypes",
+							"raw": "{{host}}/api/eventTypes",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"eventTypes"
 							]
 						}
@@ -1834,15 +1969,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/eventTypes/{{eventTypeId}}",
+							"raw": "{{host}}/api/eventTypes/{{eventTypeId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"eventTypes",
 								"{{eventTypeId}}"
 							]
@@ -1869,15 +2008,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/eventTypes/{{eventTypeId}}",
+							"raw": "{{host}}/api/eventTypes/{{eventTypeId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"eventTypes",
 								"{{eventTypeId}}"
 							]
@@ -1908,15 +2051,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api-doc-ui/",
+							"raw": "{{host}}/api/api-doc-ui/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"api-doc-ui",
 								""
 							]
@@ -1942,15 +2089,19 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api-doc",
+							"raw": "{{host}}/api/api-doc",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"api-doc"
 							]
 						}
@@ -1958,6 +2109,88 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "iss",
+			"value": ""
+		},
+		{
+			"key": "keys",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "auth_code",
+			"value": ""
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "id_token",
+			"value": ""
+		},
+		{
+			"key": "approval_prompt",
+			"value": ""
+		},
+		{
+			"key": "client_id",
+			"value": ""
+		},
+		{
+			"key": "redirect_uri",
+			"value": ""
+		},
+		{
+			"key": "response_type",
+			"value": ""
+		},
+		{
+			"key": "scope",
+			"value": ""
+		},
+		{
+			"key": "state",
+			"value": ""
+		},
+		{
+			"key": "req",
+			"value": ""
+		},
+		{
+			"key": "personId",
+			"value": ""
+		},
+		{
+			"key": "eventId",
+			"value": ""
 		}
 	]
 }

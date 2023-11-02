@@ -7,13 +7,9 @@ These are end-to-end integration tests using the Postman application.
 
 These tests exercise the authentication subsystem and the authenticating proxy in addition to the API.
 
-- **Initial API.postman_collection.json** This is the XML export of the Postman "collection", which defines the tests.
+- **Initial api.integration-tests.json** This Postman collection tests authentication and all endpoints in the application. When the application is running locally in Docker, this collection should run successfully. The collection starts by logging in, so the cookie is set for the remaining tests.
 
-- **localhost.postman_environment.json** This is the XML export of the Postman "environment", which stores the values of variables used in the tests.
-
-- **Authenticating-Proxy.postman_collection.json** This is the XML export of a Postman collection that more completely tests dex and oauth2-proxy. These tests are not maintained since the integration of the authentication subsystem with the API.
-
-- **Authenticating-Proxy.postman_environment.json** This is the XML export of the Postman environment that supports Authenticating-Proxy.postman_collection.json
+- **api.integration-tests.environment.json** This environment contains only the protocol and host used to access the proxy. It is sufficient to run the collection. Variables set during the test run are set at the collection level, not the environment level.
 
 
 How to run
@@ -28,7 +24,6 @@ How to run
 5. Select the environment.
 6. Run the collection.
 
-You may have to fuss with the environment variables.
 
 [Postman: Running collections on the command line with Newman](https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/)
 

@@ -12,7 +12,7 @@
  +------------------+------------------+---------+
  password is the first name in lowercase
  */
-
+use dex;
 INSERT INTO password (email, hash, username, user_id) VALUES ("ann@dot.com","$2b$10$fdT4FxN8QJHuNlAcHyu.N.O09mfvC06vUUZhWpPjODIsgZil2h90q", "ann.abbot", "1");
 INSERT INTO password (email, hash, username, user_id) VALUES ("bob@dot.com","$2b$10$M6PC6KlRnPQ28ZA6db5GIe0NmqqM3u5DurrARPEB9AHPXR5oYc7nq", "bob.boebert", "2");
 INSERT INTO password (email, hash, username, user_id) VALUES ("carol@dot.com","$2b$10$ZCgTwSc8jaSL.XYSExvYp.lHfC1K9Z/4yKNl.DVjwfR/I1K61P2P2", "carol.cruz", "3");

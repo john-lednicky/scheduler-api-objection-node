@@ -74,8 +74,9 @@ MySql database names and passwords are mounted into the Docker instances as volu
 - ./proxy/config/MYSQL_ROOT_PASSWORD
 
 ---------------------
-The channel between the proxy and the dex provider is encrypted, so some extra SSL configuration is needed to get the proxy to trust dex. To leave the committed configuration files unchanged, the application must be addressed as:
-https://lednicky/localhost
+To leave the committed configuration files unchanged, the application must be addressed as:
+https://lednicky.localhost
+If you want to skip configuring your hosts file, you can update the paths in `\proxy\oauth2-proxy\oauth2-proxy.config.yaml` and `\proxy\dex\dex.config.yaml`.
 
 #### hosts file
 Add this to your hosts file:
@@ -103,6 +104,8 @@ Both the proxy and dex will pick up these files and configure themselves correct
 
 This is easy to get wrong.
 
+The proxy and the postman tests have been configured to ignore invalid SSL certificates to eliminate some of the problems associated with this configuration.
+
 ### Startup
 
 To build and stand up the API (on port 3333) and the proxy (on port 443)
@@ -111,12 +114,14 @@ Make sure Docker Desktop is running first and then execute this command:
 
 `docker-compose up -d --build` 
 
+The MySql container reports itself as ready before the database can receive connections. Dex frequently errors out on startup with an error about being unable to access the database. You can restart the dex container by itself after the environment is running with the following command: `docker-compose restart dex`.
+
 The swagger documentation from the API layer does not require authentication, so you should be able to navigate directly to:
 
 https://lednicky.localhost/api/api-doc/
 https://lednicky.localhost/api/api-doc-ui/
 
-After you've authenticated, call this API diagnostic endpoint:
+After you've authenticated, you can call this API diagnostic endpoint to see the JWT:
 
 https://lednicky.localhost/api/inspectRequest/headers
 
