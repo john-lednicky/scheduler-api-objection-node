@@ -7,7 +7,7 @@
 
 ## skip SSL checking for HTTPS requests
 # This can only be false if the CA of the dex cert is trusted in the oauth2-proxy Docker image.
- ssl_insecure_skip_verify = false 
+ ssl_insecure_skip_verify = true 
 
 ## TLS Settings
 tls_cert_file = "/etc/proxy/lednicky.localhost.crt"
