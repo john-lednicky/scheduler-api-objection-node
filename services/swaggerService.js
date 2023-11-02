@@ -1,6 +1,6 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 
-const { apiSchemas } = require('./jsonSchemaService');
+const { swaggerSchemas } = require('./jsonSchemaService');
 
 exports.getDoc = () => {
   const options = {
@@ -23,7 +23,7 @@ exports.getDoc = () => {
       },
       servers: [
         {
-          url: 'http://localhost:3333',
+          url: 'https://lednicky.localhost/api',
         },
       ],
       components: {
@@ -33,7 +33,7 @@ exports.getDoc = () => {
     apis: ['./routes/*.js'],
   };
 
-  options.definition.components.schemas = apiSchemas;
+  options.definition.components.schemas = swaggerSchemas;
 
   return swaggerJsdoc(options);
 };
