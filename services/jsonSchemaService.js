@@ -15,9 +15,9 @@ const timeZoneSchema = require('../models/schemas/TimeZone.json');
   because they're added later in the stack.
  */
 const swaggerSchemas = {
-  messageSchema,
-  errorMessageSchema,
-  timeZoneSchema,
+  messageSchema: JSON.parse(JSON.stringify(messageSchema)),
+  errorMessageSchema: JSON.parse(JSON.stringify(errorMessageSchema)),
+  timeZoneSchema: JSON.parse(JSON.stringify(timeZoneSchema)),
   personSchema: JSON.parse(JSON.stringify(personSchema)),
   personAddSchema: JSON.parse(JSON.stringify(personSchema)),
   personUpdateSchema: JSON.parse(JSON.stringify(personSchema)),
@@ -36,7 +36,11 @@ Object.keys(swaggerSchemas).forEach((key) => {
   if (key.endsWith('Schema')) {
     if (key.endsWith('AddSchema')) {
       delete swaggerSchemas[key].properties.id;
+      swaggerSchemas[key].title += ' (insert)';
       swaggerSchemas[key].required = swaggerSchemas[key].required.filter((r) => r !== 'id');
+    }
+    if (key.endsWith('UpdateSchema')) {
+      swaggerSchemas[key].title += ' (update)';
     }
     if (key.endsWith('UpdateSchema') || key.endsWith('AddSchema')) {
       delete swaggerSchemas[key].properties.updateUser;

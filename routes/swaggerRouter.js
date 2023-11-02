@@ -21,14 +21,12 @@ const swaggerService = require('../services/swaggerService');
  *     responses:
  *       200:
  *         description: The swagger doc
- *         content:
- *           application/json
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.get('/', async (req, res) => { res.send(swaggerService.getDoc()); });
 
@@ -43,14 +41,12 @@ router.get('/', async (req, res) => { res.send(swaggerService.getDoc()); });
  *     responses:
  *       200:
  *         description: The swagger ui
- *         content:
- *           text/html
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 
 module.exports = router;

@@ -26,19 +26,19 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TimeZone'
+ *                 $ref: '#/components/schemas/timeZoneSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.get('/', async (req, res, next) => {
   timeZoneService.getAll()

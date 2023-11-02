@@ -28,19 +28,19 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Event'
+ *                 $ref: '#/components/schemas/eventSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.get('/', async (req, res, next) => {
   eventService.getAll()
@@ -73,25 +73,25 @@ router.get('/', async (req, res, next) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Event'
+ *               $ref: '#/components/schemas/eventSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       404:
  *         description: Not Found Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
@@ -122,32 +122,32 @@ router.get('/:id', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/AddEvent'
+ *             $ref: '#/components/schemas/eventAddSchema'
  *     responses:
  *       200:
  *         description: The event created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Event'
+ *               $ref: '#/components/schemas/eventSchema'
  *       400:
  *         description: Validation Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.post('/', async (req, res, next) => {
   const event = req.body;
@@ -179,32 +179,32 @@ router.post('/', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UpdateEvent'
+ *             $ref: '#/components/schemas/eventUpdateSchema'
  *     responses:
  *       200:
  *         description: The event updated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Event'
+ *               $ref: '#/components/schemas/eventSchema'
  *       400:
  *         description: Validation Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.put('/', async (req, res, next) => {
   const event = req.body;
@@ -247,31 +247,31 @@ router.put('/', async (req, res, next) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Message'
+ *               $ref: '#/components/schemas/messageSchema'
  *       400:
  *         description: Validation Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       404:
  *         description: Not Found Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.delete('/:id', async (req, res, next) => {
   const { id } = req.params;

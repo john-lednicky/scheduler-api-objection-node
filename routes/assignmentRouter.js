@@ -28,19 +28,19 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Assignment'
+ *                 $ref: '#/components/schemas/assignmentSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.get('/', async (req, res, next) => {
   assignmentService.getAll()
@@ -65,13 +65,13 @@ router.get('/', async (req, res, next) => {
  *         in: path
  *         required: true
  *         type: int
- *         description: The person id of the assignment to delete.
+ *         description: The person id of the assignment to fetch.
  *         example: 5
  *       - name: eventId
  *         in: path
  *         required: true
  *         type: int
- *         description: The event id of the assignment to delete.
+ *         description: The event id of the assignment to fetch.
  *         example: 240
  *     responses:
  *       200:
@@ -79,25 +79,25 @@ router.get('/', async (req, res, next) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Person'
+ *               $ref: '#/components/schemas/assignmentSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       404:
  *         description: Not Found Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.get('/:personId/:eventId', async (req, res, next) => {
   const { personId, eventId } = req.params;
@@ -128,32 +128,32 @@ router.get('/:personId/:eventId', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/AddAssignment'
+ *             $ref: '#/components/schemas/assignmentAddSchema'
  *     responses:
  *       200:
  *         description: The assignment created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Assignment'
+ *               $ref: '#/components/schemas/assignmentSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       400:
  *         description: Validation Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.post('/', async (req, res, next) => {
   const assignment = req.body;
@@ -198,31 +198,31 @@ router.post('/', async (req, res, next) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Message'
+ *               $ref: '#/components/schemas/messageSchema'
  *       400:
  *         description: Validation Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       403:
  *         description: Forbidden
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       404:
  *         description: Not Found Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  *       500:
  *         description: Server Error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorMessage'
+ *               $ref: '#/components/schemas/errorMessageSchema'
  */
 router.delete('/:personId/:eventId', async (req, res, next) => {
   const { personId, eventId } = req.params;
