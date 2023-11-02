@@ -161,7 +161,8 @@ router.post('/', async (req, res, next) => {
   if (validationResult) {
     next(createError(400, validationResult));
   }
-  assignmentService.create(assignment)
+
+  assignmentService.create(assignment, req.tokenUserName, assignmentService.getCurrentTimestamp())
     .then((data) => {
       res.json(data);
     })

@@ -155,7 +155,8 @@ router.post('/', async (req, res, next) => {
   if (validationResult) {
     next(createError(400, validationResult));
   }
-  eventService.create(event)
+
+  eventService.create(event, req.tokenUserName, eventService.getCurrentTimestamp())
     .then((data) => {
       res.json(data);
     })
@@ -211,7 +212,8 @@ router.put('/', async (req, res, next) => {
   if (validationResult) {
     next(createError(400, validationResult));
   }
-  eventService.update(event)
+
+  eventService.update(event, req.tokenUserName, eventService.getCurrentTimestamp())
     .then((data) => {
       if (data) {
         res.json(data);
