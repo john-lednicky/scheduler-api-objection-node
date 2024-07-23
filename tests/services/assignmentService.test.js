@@ -179,7 +179,7 @@ test('assignmentService.create() - personId missing', async () => {
     eventId: event.id,
   };
   await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
-    .rejects.toThrow('personId: is a required property');
+    .rejects.toThrow('personId: must have required property');
 });
 test('assignmentService.create() - eventId missing', async () => {
   const { person } = await createPersonEventPair();
@@ -187,7 +187,7 @@ test('assignmentService.create() - eventId missing', async () => {
     personId: person.id,
   };
   await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
-    .rejects.toThrow('eventId: is a required property');
+    .rejects.toThrow('eventId: must have required property');
 });
 test('assignmentService.create() - personId invalid - not a positive integer', async () => {
   const { event } = await createPersonEventPair();
@@ -196,7 +196,7 @@ test('assignmentService.create() - personId invalid - not a positive integer', a
     eventId: event.id,
   };
   await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
-    .rejects.toThrow('personId: should be >= 1');
+    .rejects.toThrow('personId: must be >= 1');
 });
 test('assignmentService.create() - eventId invalid - not a positive integer', async () => {
   const { person } = await createPersonEventPair();
@@ -205,7 +205,7 @@ test('assignmentService.create() - eventId invalid - not a positive integer', as
     eventId: -1,
   };
   await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
-    .rejects.toThrow('eventId: should be >= 1');
+    .rejects.toThrow('eventId: must be >= 1');
 });
 test('assignmentService.create() - personId invalid - not a positive integer', async () => {
   const { event } = await createPersonEventPair();
@@ -214,7 +214,7 @@ test('assignmentService.create() - personId invalid - not a positive integer', a
     eventId: event.id,
   };
   await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
-    .rejects.toThrow('personId: should be integer');
+    .rejects.toThrow('personId: must be integer');
 });
 test('assignmentService.create() - eventId invalid - not a positive integer', async () => {
   const { person } = await createPersonEventPair();
@@ -223,7 +223,7 @@ test('assignmentService.create() - eventId invalid - not a positive integer', as
     eventId: 'a',
   };
   await expect(assignmentService.create(assignmentToCreate, 'john.lednicky', personService.getCurrentTimestamp()))
-    .rejects.toThrow('eventId: should be integer');
+    .rejects.toThrow('eventId: must be integer');
 });
 test('assignmentService.create() - personId invalid - no related record', async () => {
   const allPersons = await personService.getAll();
@@ -262,7 +262,7 @@ test('assignmentService.create() - validation error updateUser too long', async 
 
   await expect(assignmentService.create(assignmentToCreate,
     updateUser, personService.getCurrentTimestamp()))
-    .rejects.toThrow('updateUser: should NOT be longer than 200 characters');
+    .rejects.toThrow('updateUser: must NOT have more than 200 characters');
 });
 
 test('assignmentService.create() - validation error updateUser missing', async () => {
@@ -294,7 +294,7 @@ test('assignmentService.create() - validation error updateUser has bad character
   const updateUser = 'name space lname';
   await expect(assignmentService.create(assignmentToCreate,
     updateUser, personService.getCurrentTimestamp()))
-    .rejects.toThrow('updateUser: should match pattern');
+    .rejects.toThrow('updateUser: must match pattern');
 });
 
 test('assignmentService.create() - validation error updateDttm missing', async () => {
@@ -327,6 +327,6 @@ test('assignmentService.create() - validation error updateDttm invalid character
   };
   const updateUser = 'john.lednicky';
   await expect(assignmentService.create(assignmentToCreate, updateUser, 'not a timestamp'))
-    .rejects.toThrow('updateDttm: should be integer');
+    .rejects.toThrow('updateDttm: must be integer');
 });
 // #endregion assignmentService.create()

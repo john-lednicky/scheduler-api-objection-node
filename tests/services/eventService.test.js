@@ -163,7 +163,7 @@ test('eventService.create() - validation error eventTypeId missing', async () =>
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('eventTypeId: is a required property');
+    .rejects.toThrow('eventTypeId: must have required property');
 });
 test('eventService.create() - validation error eventTypeId not an integer', async () => {
   const eventToCreate = {
@@ -175,7 +175,7 @@ test('eventService.create() - validation error eventTypeId not an integer', asyn
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('eventTypeId: should be integer');
+    .rejects.toThrow('eventTypeId: must be integer');
 });
 test('eventService.create() - validation error eventTypeId less than 1', async () => {
   const eventToCreate = {
@@ -187,7 +187,7 @@ test('eventService.create() - validation error eventTypeId less than 1', async (
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('eventTypeId: should be >= 1');
+    .rejects.toThrow('eventTypeId: must be >= 1');
 });
 test('eventService.create() - validation error eventTypeId not in eventType table', async () => {
   const eventTypes = await eventTypeService.getAll();
@@ -215,7 +215,7 @@ test('eventService.create() - validation error peopleNeeded not an integer', asy
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('peopleNeeded: should be integer');
+    .rejects.toThrow('peopleNeeded: must be integer');
 });
 test('eventService.create() - validation error peopleNeeded less than 1', async () => {
   const eventToCreate = {
@@ -227,7 +227,7 @@ test('eventService.create() - validation error peopleNeeded less than 1', async 
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('peopleNeeded: should be >= 1');
+    .rejects.toThrow('peopleNeeded: must be >= 1');
 });
 test('eventService.create() - validation error peopleNeeded greater than 25', async () => {
   const eventToCreate = {
@@ -239,7 +239,7 @@ test('eventService.create() - validation error peopleNeeded greater than 25', as
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('peopleNeeded: should be <= 25');
+    .rejects.toThrow('peopleNeeded: must be <= 25');
 });
 
 test('eventService.create() - validation error beginDttm missing', async () => {
@@ -251,7 +251,7 @@ test('eventService.create() - validation error beginDttm missing', async () => {
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('beginDttm: is a required property');
+    .rejects.toThrow('beginDttm: must have required property');
 });
 test('eventService.create() - validation error beginDttm empty string', async () => {
   const eventToCreate = {
@@ -263,7 +263,7 @@ test('eventService.create() - validation error beginDttm empty string', async ()
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('beginDttm: should match pattern');
+    .rejects.toThrow('beginDttm: must match pattern');
 });
 test('eventService.create() - validation error beginDttm has invalid characters', async () => {
   const eventToCreate = {
@@ -275,7 +275,7 @@ test('eventService.create() - validation error beginDttm has invalid characters'
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('beginDttm: should match pattern');
+    .rejects.toThrow('beginDttm: must match pattern');
 });
 
 test('eventService.create() - validation error endDttm missing', async () => {
@@ -287,7 +287,7 @@ test('eventService.create() - validation error endDttm missing', async () => {
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('endDttm: is a required property');
+    .rejects.toThrow('endDttm: must have required property');
 });
 test('eventService.create() - validation error endDttm empty string', async () => {
   const eventToCreate = {
@@ -299,7 +299,7 @@ test('eventService.create() - validation error endDttm empty string', async () =
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('endDttm: should match pattern');
+    .rejects.toThrow('endDttm: must match pattern');
 });
 test('eventService.create() - validation error endDttm has invalid characters', async () => {
   const eventToCreate = {
@@ -311,7 +311,7 @@ test('eventService.create() - validation error endDttm has invalid characters', 
     comment: '',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('endDttm: should match pattern');
+    .rejects.toThrow('endDttm: must match pattern');
 });
 
 test('eventService.create() - validation error timeZone missing', async () => {
@@ -325,7 +325,7 @@ test('eventService.create() - validation error timeZone missing', async () => {
   };
   delete eventToCreate.timeZone;
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('timeZone: is a required property');
+    .rejects.toThrow('timeZone: must have required property');
 });
 test('eventService.create() - validation error timeZone is empty string', async () => {
   const eventToCreate = {
@@ -338,7 +338,7 @@ test('eventService.create() - validation error timeZone is empty string', async 
   };
   eventToCreate.timeZone = '';
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('timeZone: should be equal to one of the allowed values');
+    .rejects.toThrow('timeZone: must be equal to one of the allowed values');
 });
 test('eventService.create() - validation error timeZone has invalid characters', async () => {
   const eventToCreate = {
@@ -351,7 +351,7 @@ test('eventService.create() - validation error timeZone has invalid characters',
   };
   eventToCreate.timeZone = 'America\\Chicago';
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('timeZone: should be equal to one of the allowed values');
+    .rejects.toThrow('timeZone: must be equal to one of the allowed values');
 });
 
 test('eventService.create() - validation error comment too long', async () => {
@@ -364,7 +364,7 @@ test('eventService.create() - validation error comment too long', async () => {
     comment: 'a'.repeat(501),
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('comment: should NOT be longer than 500 characters');
+    .rejects.toThrow('comment: must NOT have more than 500 characters');
 });
 test('eventService.create() - validation error comment has invalid characters', async () => {
   const eventToCreate = {
@@ -376,7 +376,7 @@ test('eventService.create() - validation error comment has invalid characters', 
     comment: 'If you can\'t say something nice, then *&%*%$*&&',
   };
   await expect(eventService.create(eventToCreate, 'john.lednicky', eventService.getCurrentTimestamp()))
-    .rejects.toThrow('comment: should match pattern "^[a-zA-Z0-9 .,:;\\-?!&/\\\\\']*$"');
+    .rejects.toThrow('comment: must match pattern "^[a-zA-Z0-9 .,:;\\-?!&/\\\\\']*$"');
 });
 
 test('eventService.create() - validation error updateUser too long', async () => {
@@ -392,7 +392,7 @@ test('eventService.create() - validation error updateUser too long', async () =>
   const timestamp = eventService.getCurrentTimestamp();
 
   await expect(eventService.create(eventToCreate, updateUser, timestamp))
-    .rejects.toThrow('updateUser: should NOT be longer than 200 characters');
+    .rejects.toThrow('updateUser: must NOT have more than 200 characters');
 });
 test('eventService.create() - validation error updateUser missing', async () => {
   const eventToCreate = {
@@ -433,7 +433,7 @@ test('eventService.create() - validation error updateUser has bad characters', a
   const updateUser = 'john space lednicky';
   const timestamp = eventService.getCurrentTimestamp();
   await expect(eventService.create(eventToCreate, updateUser, timestamp))
-    .rejects.toThrow('updateUser: should match pattern');
+    .rejects.toThrow('updateUser: must match pattern');
 });
 test('eventService.create() - validation error updateDttm missing', async () => {
   const eventToCreate = {
@@ -474,7 +474,7 @@ test('eventService.create() - validation error updateDttm has invalid characters
   const updateUser = 'john.lednicky';
   const timestamp = 'not a timestamp';
   await expect(eventService.create(eventToCreate, updateUser, timestamp))
-    .rejects.toThrow('updateDttm: should be integer');
+    .rejects.toThrow('updateDttm: must be integer');
 });
 // #endregion eventService.create()
 
@@ -528,7 +528,7 @@ test('eventService.update() - validation error eventTypeId missing', async () =>
   eventToCreate.comment = 'This is the intended update.';
   delete eventToCreate.eventTypeId;
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('eventTypeId: is a required property');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('eventTypeId: must have required property');
 });
 test('eventService.create() - validation error eventTypeId not an integer', async () => {
   const eventToCreate = {
@@ -550,7 +550,7 @@ test('eventService.create() - validation error eventTypeId not an integer', asyn
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.eventTypeId = 'a';
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('eventTypeId: should be integer');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('eventTypeId: must be integer');
 });
 test('eventService.create() - validation error eventTypeId less than 1', async () => {
   const eventToCreate = {
@@ -571,7 +571,7 @@ test('eventService.create() - validation error eventTypeId less than 1', async (
   eventToCreate.id = eventCreated.id;
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.eventTypeId = 0;
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('eventTypeId: should be >= 1');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('eventTypeId: must be >= 1');
 });
 test('eventService.create() - validation error eventTypeId not in eventType table', async () => {
   const eventToCreate = {
@@ -620,7 +620,7 @@ test('eventService.update() - validation error beginDttm missing', async () => {
   eventToCreate.comment = 'This is the intended update.';
   delete eventToCreate.beginDttm;
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('beginDttm: is a required property');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('beginDttm: must have required property');
 });
 test('eventService.update() - validation error beginDttm empty string', async () => {
   const eventToCreate = {
@@ -642,7 +642,7 @@ test('eventService.update() - validation error beginDttm empty string', async ()
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.beginDttm = '';
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('beginDttm: should match pattern "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{3})?$"');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('beginDttm: must match pattern "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{3})?$"');
 });
 test('eventService.create() - validation error beginDttm is invalid', async () => {
   const eventToCreate = {
@@ -664,7 +664,7 @@ test('eventService.create() - validation error beginDttm is invalid', async () =
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.beginDttm = '7-4-2021';
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('beginDttm: should match pattern "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{3})?$"');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('beginDttm: must match pattern "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{3})?$"');
 });
 
 test('eventService.update() - validation error endDttm missing', async () => {
@@ -687,7 +687,7 @@ test('eventService.update() - validation error endDttm missing', async () => {
   eventToCreate.comment = 'This is the intended update.';
   delete eventToCreate.endDttm;
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('endDttm: is a required property');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('endDttm: must have required property');
 });
 test('eventService.update() - validation error endDttm empty string', async () => {
   const eventToCreate = {
@@ -709,7 +709,7 @@ test('eventService.update() - validation error endDttm empty string', async () =
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.endDttm = '';
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('endDttm: should match pattern "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{3})?$"');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('endDttm: must match pattern "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{3})?$"');
 });
 test('eventService.create() - validation error endDttm is invalid', async () => {
   const eventToCreate = {
@@ -731,7 +731,7 @@ test('eventService.create() - validation error endDttm is invalid', async () => 
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.endDttm = '7-4-2021';
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('endDttm: should match pattern');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('endDttm: must match pattern');
 });
 
 test('eventService.update() - validation error timeZone missing', async () => {
@@ -754,7 +754,7 @@ test('eventService.update() - validation error timeZone missing', async () => {
   eventToCreate.comment = 'This is the intended update.';
   delete eventToCreate.timeZone;
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('timeZone: is a required property');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('timeZone: must have required property');
 });
 test('eventService.update() - validation error timeZone is empty string', async () => {
   const eventToCreate = {
@@ -776,7 +776,7 @@ test('eventService.update() - validation error timeZone is empty string', async 
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.timeZone = '';
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('timeZone: should be equal to one of the allowed values');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('timeZone: must be equal to one of the allowed values');
 });
 test('eventService.update() - validation error timeZone has invalid characters', async () => {
   const eventToCreate = {
@@ -797,7 +797,7 @@ test('eventService.update() - validation error timeZone has invalid characters',
   eventToCreate.id = eventCreated.id;
   eventToCreate.comment = 'This is the intended update.';
   eventToCreate.timeZone = 'America\\Chicago';
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('timeZone: should be equal to one of the allowed values');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('timeZone: must be equal to one of the allowed values');
 });
 
 test('eventService.update() - validation error comment too long', async () => {
@@ -819,7 +819,7 @@ test('eventService.update() - validation error comment too long', async () => {
   eventToCreate.id = eventCreated.id;
   eventToCreate.comment = 'a'.repeat(501);
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('comment: should NOT be longer than 500 characters');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('comment: must NOT have more than 500 characters');
 });
 test('eventService.update() - validation error comment has invalid characters', async () => {
   const eventToCreate = {
@@ -840,7 +840,7 @@ test('eventService.update() - validation error comment has invalid characters', 
   eventToCreate.id = eventCreated.id;
   eventToCreate.comment = '876TGF#';
 
-  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('comment: should match pattern "^[a-zA-Z0-9 .,:;\\-?!&/\\\\\']*$"');
+  await expect(eventService.update(eventToCreate, userName, timestamp)).rejects.toThrow('comment: must match pattern "^[a-zA-Z0-9 .,:;\\-?!&/\\\\\']*$"');
 });
 
 test('eventService.update() - validation error updateUser too long', async () => {
@@ -862,7 +862,7 @@ test('eventService.update() - validation error updateUser too long', async () =>
   updateUser = 'a'.repeat(251);
 
   await expect(eventService.update(eventCreated, updateUser, timestamp))
-    .rejects.toThrow('updateUser: should NOT be longer than 200 characters');
+    .rejects.toThrow('updateUser: must NOT have more than 200 characters');
 });
 test('eventService.update() - validation error updateUser missing', async () => {
   const eventToCreate = {
@@ -920,7 +920,7 @@ test('eventService.update() - validation error updateUser has invalid characters
 
   userName = 'john space';
   await expect(eventService.update(eventCreated, userName, timestamp))
-    .rejects.toThrow('updateUser: should match pattern');
+    .rejects.toThrow('updateUser: must match pattern');
 });
 
 test('eventService.update() - validation error updateDttm missing', async () => {
@@ -979,7 +979,7 @@ test('eventService.create() - validation error updateDttm is invalid', async () 
 
   timestamp = 'not a timestamp';
   await expect(eventService.update(eventCreated, userName, timestamp)).rejects
-    .toThrow('updateDttm: should be integer');
+    .toThrow('updateDttm: must be integer');
 });
 /*
 */

@@ -13,18 +13,30 @@ These are intended to be comprehensive tests covering all error paths.
 How to run
 ----------
 
+NOTE: Package.json has a script named "test" that simply runs "jest", so `yarn jest` and `yarn test` are equivalent.
+
 [Jest CLI Options](https://jestjs.io/docs/cli)
 
 **Example `Run single file`**
 ```
-PS > yarn jest ./tests/services/assignmentService.test.js
+PS > yarn test ./tests/services/assignmentService.test.js
 ```
 ```
-PS tests\services> yarn jest eventService.test.js
+PS > yarn test eventService.test.js
 ```
+
+**Example `Run single test in a file`** (Please note the backslashes that escape regex reserved parenthesis.)
+```
+PS > yarn test eventService.test.js -t "eventService.create\(\) - validation error eventTypeId missing"
+```
+
 **Example `Run all files`**
 ```
-PS > yarn jest --config ./tests/jest.config.js
+PS > yarn test
 ```
-The config file should be specified relative to your current directory. 
-If you don't get it right, you won't exclude many tests not designed for jest.
+**Example `Run all files and display coverage`**
+```
+PS > yarn test --coverage
+```
+
+NOTE: The config file at `./jest.config.test` excludes a number of test files that are not intended to be run automatically.
