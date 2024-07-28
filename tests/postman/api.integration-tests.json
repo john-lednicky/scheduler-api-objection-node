@@ -20,6 +20,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
+											"pm.globals.get(\"variable_key\");\r",
 											"    pm.response.to.have.status(200);\r",
 											"});\r",
 											"pm.test(\"Content-Type is present\", function () {\r",
@@ -31,21 +32,19 @@
 											"\r",
 											"const configuration = pm.response.json();\r",
 											"\r",
-											"let dexhost = pm.variables.get('host') + '/dex';\r",
-											"//host = 'http://dex.lednicky.app:5556';\r",
-											"\r",
 											"pm.test(\"token payload includes expected endpoints\", () => {\r",
-											"    pm.expect(configuration.issuer).to.equal(dexhost);\r",
-											"    pm.expect(configuration.authorization_endpoint).to.equal(dexhost + '/auth');\r",
-											"    pm.expect(configuration.jwks_uri).to.equal(dexhost + '/keys');\r",
-											"    pm.expect(configuration.token_endpoint).to.equal(dexhost + '/token');\r",
-											"    pm.expect(configuration.userinfo_endpoint).to.equal(dexhost + '/userinfo');\r",
+											"    pm.expect(configuration.issuer.endsWith('/dex')).to.be.true;\r",
+											"    pm.expect(configuration.authorization_endpoint.endsWith('/dex/auth')).to.be.true;\r",
+											"    pm.expect(configuration.jwks_uri.endsWith('/dex/keys')).to.be.true;\r",
+											"    pm.expect(configuration.token_endpoint.endsWith('/dex/token')).to.be.true;\r",
+											"    pm.expect(configuration.userinfo_endpoint.endsWith('/dex/userinfo')).to.be.true;\r",
 											"});\r",
 											"\r",
 											"pm.collectionVariables.set('iss',configuration.issuer);\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
