@@ -3,6 +3,7 @@ config
 coverage 
 
 .vscode/
+.vs/
 sqlite3
 *.sqlite
 
