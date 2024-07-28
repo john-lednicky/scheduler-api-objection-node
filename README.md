@@ -8,6 +8,7 @@ scheduler-api-objection-node
   - [Running the Application](#running-the-application)
     - [Preparation](#preparation)
       - [secrets](#secrets)
+        - [local secrets (optional)](#local-secrets-optional)
       - [hosts file](#hosts-file)
       - [certificates](#certificates)
     - [Startup](#startup)
@@ -35,12 +36,6 @@ This is a sample project I've been using to learn API development in the node ec
 - **jose** for JWT validation
 - **Balsamiq** for documentation drawings
 
-I've set this aside to work on React, but intend to add the following:
-- Typescript
-- A React frontend
-- Kubernetes
-- Google Cloud Platform deployment from Github
-
 
 Domain
 ------------------
@@ -53,7 +48,7 @@ The API is intended to back a simplified "scheduling" application where events c
 
 Architecture
 ------------
-The API was very simple until I reached authentication. I could easily implement a local username/password authentication, but reached instead for the best-practice OAuth/OIDC pattern. A few months later, I had an authenticating proxy backed by a local federating OAuth/OIDC provider. This has the features I need to test token authentication in the API layer, but the login sequence between the proxy and the provider doesn't really meet my expectations, so it might be rewritten again using https://github.com/panva/node-oidc-provider and https://github.com/http-party/node-http-proxy
+The API was very simple until I decided to implement realistic token authentication. To do this, I needed to implement an authenticating proxy backed by a local federating OAuth/OIDC provider. It has the features I need to test token authentication in the API layer, but the login sequence between the proxy and the provider doesn't really meet my expectations, so it might be rewritten again using https://github.com/panva/node-oidc-provider and https://github.com/http-party/node-http-proxy, or perhaps Keycloak. In a real production environment, the OAuth/OIDC provider would be a third-party solution, either from the cloud provider or from a vendor like Okta.
 
 <img src="./readme-assets/scheduler-diagram.png" alt="diagram" />
 
@@ -77,6 +72,19 @@ MySql database names and passwords are mounted into the Docker instances as volu
 To leave the committed configuration files unchanged, the application must be addressed as:
 https://lednicky.localhost
 If you want to skip configuring your hosts file, you can update the paths in `\proxy\oauth2-proxy\oauth2-proxy.config.yaml` and `\proxy\dex\dex.config.yaml`.
+
+##### local secrets (optional)
+Some of the scripts in package.json can run the API independently of the docker-compose environment. These include "devstart", "migrate", and "seed", which allow you to point the application at any MySQL 8 database. To do this, you'll need to provide a dotenv file that exposes the secret files as environment variables. Do this by creating a file at `/api/.env`  It should include the following:
+
+```
+MYSQL_HOST_FILE='../config/MYSQL_HOST'
+MYSQL_DBNAME_FILE='../config/MYSQL_DBNAME'
+MYSQL_USERNAME_FILE='../config/MYSQL_USERNAME'
+MYSQL_PASSWORD_FILE='../config/MYSQL_PASSWORD'
+
+OAUTH_ISSUER='https://lednicky.localhost/dex'
+OAUTH_AUDIENCE='lednicky.localhost'
+```
 
 #### hosts file
 Add this to your hosts file:
@@ -158,15 +166,15 @@ That file creates test users as follows.
 ```
 Get out of MySql by typing "quit", then get out of the container by typing "exit"
 
-See more at [db/migrations/migrations.notes.md](db/migrations/migrations.notes.md)
+See more at [api/db/migrations/migrations.notes.md](api/db/migrations/migrations.notes.md)
 
 ### Seeding the API database
 
-The API won't work at all until the schema has been created. It won't do anything useful until it has been seeded with data. Do that by logging into the API container (named "app") and running knex migrations and seeds.
+The API won't work at all until the schema has been created. It won't do anything useful until it has been seeded with data. Do that by logging into the API container (named "api") and running knex migrations and seeds.
 
 Open the shell:
 ```
-docker exec -it app sh
+docker exec -it api sh
 ```
 From the prompt, run the migrations, which set up the tables in the database:
 ```
@@ -178,21 +186,23 @@ From the prompt, run the seeds, which populates the tables with test data:
 npx knex seed:run
 ```
 
-For a description of the test data, see [db/seeds/seeds.notes.md](db/seeds/seeds.notes.md)
+For a description of the test data, see [api/db/seeds/seeds.notes.md](api/db/seeds/seeds.notes.md)
 
 Running Tests
 -------------
 
 ### Jest
 
-Run jest tests with the following command from the root of the project:
+Run jest tests with the following command from `/api`:
 ```
 yarn test
 ```
+These are mostly integration tests targeting the service layer. 
 
+For details, see [api/tests/services/services.tests.md](api/tests/services/services.tests.md);
 ### Postman
 
-Postman test exports can be found at /tests/postman
+Postman test exports can be found at api/tests/postman
 
 For details, see [tests/postman/postman.tests.md](tests/postman/postman.tests.md);
 

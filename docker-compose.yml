@@ -1,29 +1,30 @@
 version: "3.8"
 
 networks:
-  app:
-  app-sql:
+  api:
+  api-sql:
   dex-data:
   oauth:
   
 volumes:
   scheduler-mysql-data:
-  scheduler-app-logs:
+  scheduler-api-logs:
   dex-mysql-data:
   
 services:
 
-  app:
-    container_name: app
-    image: lednicky/scheduler-app
+  api:
+    container_name: api
+    image: lednicky/scheduler-api
     build:
-      context: ./api
+      context: ./
+      dockerfile: ./api/Dockerfile
     depends_on:
-      - app-sql
+      - api-sql
       - dex
     networks:
-      - app
-      - app-sql
+      - api
+      - api-sql
     ports:
       - 3333:3333
     working_dir: /app
@@ -32,20 +33,20 @@ services:
       NODE_EXTRA_CA_CERTS: ./certs/lednicky.localhost.crt
       OAUTH_ISSUER: https://lednicky.localhost/dex
       OAUTH_AUDIENCE: lednicky.localhost
-      MYSQL_HOST: app-sql
+      MYSQL_HOST: api-sql
       MYSQL_DBNAME: scheduler
       MYSQL_USERNAME_FILE: /app/config/MYSQL_USERNAME
       MYSQL_PASSWORD_FILE: /app/config/MYSQL_PASSWORD
     volumes:
       - ./config/MYSQL_USERNAME:/app/config/MYSQL_USERNAME
       - ./config/MYSQL_PASSWORD:/app/config/MYSQL_PASSWORD
-      - scheduler-app-logs:/app/logs
+      - scheduler-api-logs:/app/logs
 
-  app-sql:
-    container_name: app-sql
+  api-sql:
+    container_name: api-sql
     image: mysql:8.0.26
     networks:
-      - app-sql
+      - api-sql
     volumes:
       - scheduler-mysql-data:/var/lib/mysql
       - ./config/MYSQL_USERNAME:/config/MYSQL_USERNAME
@@ -69,7 +70,7 @@ services:
       - dex
     networks:
       - oauth
-      - app
+      - api
     ports: 
       - 127.0.0.1:443:443
     volumes: 

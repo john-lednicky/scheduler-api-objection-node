@@ -4,11 +4,12 @@ coverage
 
 .vscode/
 .vs/
-sqlite3
+sqlite3/
 *.sqlite
 
 # Logs
 logs
+scheduler-api-logs
 *.log
 
 # Runtime data

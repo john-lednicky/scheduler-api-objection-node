@@ -50,7 +50,7 @@ client_secret = "3efda189-2102-4984-971f-664a547036a6"
 upstreams = [
     "https://mocktarget.apigee.net/echo",
     "https://dex.lednicky.localhost/dex/",
-    "http://app:3333/api/",
+    "http://api:3333/api/",
 ]
 
 ## bypass authentication for requests that match the method & path. Format: method=path_regex OR path_regex alone for all methods
