@@ -17,7 +17,7 @@ services:
     container_name: app
     image: lednicky/scheduler-app
     build:
-      context: ./
+      context: ./api
     depends_on:
       - app-sql
       - dex
