@@ -46,11 +46,13 @@ The API is intended to back a simplified "scheduling" application where events c
 - **person:** A person who can be assigned to an event.
 - **assignment:** The association of a person to an event.
 
+<img src="./readme-assets/entities.svg" alt="entity relationship diagram" />
+
 Architecture
 ------------
 The API was very simple until I decided to implement realistic token authentication. To do this, I needed to implement an authenticating proxy backed by a local federating OAuth/OIDC provider. It has the features I need to test token authentication in the API layer, but the login sequence between the proxy and the provider doesn't really meet my expectations, so it might be rewritten again using https://github.com/panva/node-oidc-provider and https://github.com/http-party/node-http-proxy, or perhaps Keycloak. In a real production environment, the OAuth/OIDC provider would be a third-party solution, either from the cloud provider or from a vendor like Okta.
 
-<img src="./readme-assets/scheduler-diagram.png" alt="diagram" />
+<img src="./readme-assets/scheduler-diagram.png" alt="architecture diagram" />
 
 Running the Application
 -----------------------
