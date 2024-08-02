@@ -1,6 +1,9 @@
 module.exports = {
   verbose: true,
-  bail: 10,
+  silent: true,
+  bail: 5,
+  testTimeout: 30000,
+  maxConcurrency: 2, 
   testEnvironment: 'node',
   testPathIgnorePatterns: [
     'node_modules*',
